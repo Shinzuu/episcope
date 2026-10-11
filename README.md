@@ -10,6 +10,7 @@ Big data surveillance, forecasting and response-planning platform (CSE 4345 CEP,
 make setup          # Java 17 + Python 3.12 via mise, pinned deps, .env from .env.example
 make all SF=0.25    # generate -> bronze -> silver -> gold -> analytics -> dashboard data
 make dashboard      # http://localhost:8000
+make check          # five verification gates (scripts/verify.py)
 ```
 
 ## Requirement traceability

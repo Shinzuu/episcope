@@ -59,16 +59,16 @@ OpenDengue, which shows national peaks in October, later than the monsoon itself
 All four diseases are detected. We forecast **dengue** (rain and temperature lag of 4–8 weeks) and
 **diarrhoeal disease** (spikes after extreme rainfall), because both have strong climate drivers to test.
 
-## 5. Roles (proposed, to be confirmed)
+## 5. Roles
 
 The brief defines three roles. Our group of four adds a fourth so that each member has a lead area to present.
 
 | Member | Lead role | Main requirements |
 |---|---|---|
-| TBD | Data Engineer: generator, ingestion, lakehouse, incremental loads, quality, lineage | ING-1–6, DQ-1–4 |
-| TBD | Analytics Engineer: detection, forecasting, demand conversion, optimiser, calendar | AN-1, 3, 4, 6, 7, 8, 9 |
-| TBD | Visualisation Engineer: serving exports, suppression in outputs, D3 dashboard, usability test | VIS-1–7, PRV-2, PRV-3 |
-| TBD | Platform & Evaluation Engineer: orchestration, tests, de-identification, evaluation harness, scaling study, report lead | ENG-1–4, PRV-1, PRV-4, AN-2, AN-5 |
+| Shezan | Data Engineer: generator, ingestion, lakehouse, incremental loads, quality, lineage | ING-1–6, DQ-1–4 |
+| Rafi | Analytics Engineer: detection, forecasting, demand conversion, optimiser, calendar | AN-1, 3, 4, 6, 7, 8, 9 |
+| Rimjhim | Visualisation Engineer: serving exports, suppression in outputs, D3 dashboard, usability test | VIS-1–7, PRV-2, PRV-3 |
+| Samira | Platform & Evaluation Engineer: orchestration, tests, de-identification, evaluation harness, scaling study, report lead | ENG-1–4, PRV-1, PRV-4, AN-2, AN-5 |
 
 Every member also commits outside their own role and can explain every component.
 
