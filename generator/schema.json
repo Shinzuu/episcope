@@ -1,0 +1,66 @@
+{
+  "_comment": "Schema contract for synthetic sources S4-S6 (brief section 5.2). The hidden test drop uses this exact schema, so field names, types and file layout must not change. Dates are ISO yyyy-mm-dd.",
+  "version": "1.0",
+  "layout": {
+    "S4_encounters": "data/raw/encounters/report_date=YYYY-MM-DD/part-*.csv",
+    "S5_facilities": "data/raw/facilities/facilities.csv",
+    "S6_stock": "data/raw/stock/snapshot_date=YYYY-MM-DD/part-*.json",
+    "ground_truth": "ground_truth/outbreaks.csv (never read by detection code)"
+  },
+  "S4_encounters": {
+    "format": "csv, header row, UTF-8",
+    "fields": [
+      {"name": "encounter_id", "type": "string", "note": "unique; about 2% deliberately duplicated (resubmissions)"},
+      {"name": "patient_id", "type": "string", "note": "synthetic national ID; bronze only, salted-hashed before silver (PRV-1)"},
+      {"name": "facility_id", "type": "string", "note": "FK to S5; about 0.5% orphan keys"},
+      {"name": "onset_date", "type": "date"},
+      {"name": "report_date", "type": "date", "note": "onset + right-skewed delay 0-21 days; fewer reports on Fri/Sat and holidays"},
+      {"name": "age_years", "type": "int", "note": "about 1% invalid (e.g. 212, -3)"},
+      {"name": "sex", "type": "string", "note": "M/F; about 1% invalid"},
+      {"name": "icd10_code", "type": "string", "note": "A90/A91 dengue, A00/A09 cholera/diarrhoea, J10/J11 influenza/ILI, B50-B54 malaria, other background codes"},
+      {"name": "lab_confirmed", "type": "boolean"},
+      {"name": "admitted", "type": "boolean"},
+      {"name": "outcome", "type": "string", "note": "recovered | referred | died | unknown"}
+    ]
+  },
+  "S5_facilities": {
+    "format": "csv, header row",
+    "fields": [
+      {"name": "facility_id", "type": "string"},
+      {"name": "facility_name", "type": "string"},
+      {"name": "facility_type", "type": "string", "note": "district_hospital | upazila_health_complex | clinic | medical_college_hospital"},
+      {"name": "district_code", "type": "string", "note": "HDX COD-AB ADM2 pcode"},
+      {"name": "upazila_code", "type": "string", "note": "ADM3 pcode, nullable"},
+      {"name": "latitude", "type": "double"},
+      {"name": "longitude", "type": "double"},
+      {"name": "beds", "type": "int"},
+      {"name": "icu_beds", "type": "int"}
+    ],
+    "min_rows": 600
+  },
+  "S6_stock": {
+    "format": "json lines, one object per facility per snapshot_date (incremental feed)",
+    "fields": [
+      {"name": "facility_id", "type": "string"},
+      {"name": "snapshot_date", "type": "date"},
+      {"name": "iv_saline_units", "type": "int"},
+      {"name": "ns1_kits", "type": "int"},
+      {"name": "ors_packets", "type": "int"},
+      {"name": "antimalarial_courses", "type": "int"},
+      {"name": "occupied_beds", "type": "int"}
+    ]
+  },
+  "ground_truth_outbreaks": {
+    "format": "csv, header row",
+    "fields": [
+      {"name": "outbreak_id", "type": "string"},
+      {"name": "disease", "type": "string"},
+      {"name": "district_code", "type": "string", "note": "or ALL for the nationwide respiratory surge"},
+      {"name": "start_date", "type": "date"},
+      {"name": "end_date", "type": "date"},
+      {"name": "peak_multiplier", "type": "double"},
+      {"name": "shape", "type": "string", "note": "fast | slow | nationwide"}
+    ],
+    "min_rows": 30
+  }
+}

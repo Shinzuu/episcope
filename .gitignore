@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+data/
+lake/
+spark-warehouse/
+metastore_db/
+derby.log
+ground_truth/
+*.parquet
+.ipynb_checkpoints/
