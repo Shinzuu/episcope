@@ -5,6 +5,7 @@ RUN := env -u HADOOP_CONF_DIR -u HADOOP_HOME -u YARN_CONF_DIR mise x -- $(PY)
 SF ?= 0.25
 SEED ?= 42
 
+drop:      ; $(RUN) -m generator.generate --incremental-days 14 --seed 7
 mock:      ; $(RUN) -m serving.mock_data
 dashboard-verify: ; node dashboard/tools/verify.mjs
 check:     ; $(RUN) scripts/verify.py

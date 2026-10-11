@@ -1,0 +1,9 @@
+district_code,district_name,division_code,division_name,lat,lon,population_2022,area_km2
+BD3026,Dhaka,BD30,Dhaka,23.79,90.25,18100000,1470
+BD2015,Chattogram,BD20,Chattogram,22.5,91.9,9200000,5280
+BD2003,Bandarban,BD20,Chattogram,21.8,92.37,500000,4590
+BD2084,Rangamati,BD20,Chattogram,22.83,92.28,680000,5640
+BD2022,Cox's Bazar,BD20,Chattogram,21.48,92.06,2890000,2330
+BD6091,Sylhet,BD60,Sylhet,24.9,91.87,4000000,3490
+BD4047,Khulna,BD40,Khulna,22.6,89.45,2600000,4390
+BD5081,Rajshahi,BD50,Rajshahi,24.45,88.6,2900000,2410

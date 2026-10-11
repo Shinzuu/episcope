@@ -14,7 +14,7 @@ contract, update this file first in its own commit and tell the team.
 
 ## Raw synthetic sources (produced by `generator/`)
 
-See `generator/schema.json`. Ground truth is written only to `ground_truth/outbreaks.csv`.
+See `generator/schema.json`. Ground truth is written only to `ground_truth/outbreaks.csv` and `ground_truth/artefacts.csv` (facility_id, district_code, silent_start, silent_end, backfill_date, type). `data/raw/_manifest.json` holds run metadata (underscore prefix, so Spark ignores it). Encounter IDs embed the seed (`E42-BD3026-20230115-B000012`), so drops with different seeds never collide.
 
 ## Epidemiological week
 
