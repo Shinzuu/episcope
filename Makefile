@@ -19,7 +19,10 @@ setup:
 	$(PY) -m pip install -r requirements.txt
 	test -f .env || { sed "s/^EPISCOPE_HASH_SALT=.*/EPISCOPE_HASH_SALT=$$($(PY) -c 'import secrets;print(secrets.token_hex(32))')/" .env.example > .env; }
 
-reference: ; $(RUN) -m pipeline.reference.build
+# Processed reference data is committed (data/reference/, about 0.6 MB), so a clean clone skips the
+# 2-hour rate-limited weather download. Rebuild with `make reference-rebuild`.
+reference: ; @test -f data/reference/weather_daily.parquet || $(RUN) -m pipeline.reference.build
+reference-rebuild: ; $(RUN) -m pipeline.reference.build
 
 all: reference generate bronze silver gold analytics serve
 
