@@ -25,6 +25,7 @@ bronze:     ; $(RUN) -m pipeline.bronze.ingest
 silver:     ; $(RUN) -m pipeline.silver.build
 gold:       ; $(RUN) -m pipeline.gold.build
 analytics:  ; $(RUN) -m analytics.run_all
+evaluate:   ; $(RUN) -m analytics.evaluation.run
 serve:      ; $(RUN) -m serving.export
 dashboard:  ; cd dashboard && python3 -m http.server 8000
 test:       ; $(RUN) -m pytest -q tests
