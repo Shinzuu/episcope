@@ -5,6 +5,8 @@ RUN := env -u HADOOP_CONF_DIR -u HADOOP_HOME -u YARN_CONF_DIR mise x -- $(PY)
 SF ?= 0.25
 SEED ?= 42
 
+mock:      ; $(RUN) -m serving.mock_data
+dashboard-verify: ; node dashboard/tools/verify.mjs
 check:     ; $(RUN) scripts/verify.py
 
 .PHONY: check setup all generate bronze silver gold analytics serve dashboard test clean

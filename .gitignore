@@ -10,3 +10,5 @@ derby.log
 ground_truth/
 *.parquet
 .ipynb_checkpoints/
+dashboard/data/*.json
+!dashboard/data/bd_districts.topo.json
