@@ -13,3 +13,4 @@ ground_truth/
 .ipynb_checkpoints/
 dashboard/data/*.json
 !dashboard/data/bd_districts.topo.json
+!/data/reference/*.parquet
