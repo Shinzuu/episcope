@@ -497,7 +497,7 @@ inner = F.unhex(F.sha2(F.concat(F.lit(kipad), F.col("patient_id").cast("binary")
 F.sha2(F.concat(F.lit(kopad), inner), 256).alias("patient_key")
 ```
   Unit-test it against `hmac.new(K, m, sha256).hexdigest()` (ENG-4).
-- Load the key from `EPISCOPE_HMAC_KEY` (`.env`, git-ignored, with `.env.example` committed). Never log it.
+- Load the key from `EPISCOPE_HASH_SALT` (`.env`, git-ignored, with `.env.example` committed). Never log it.
 - Why HMAC rather than sha256(salt‖id): the national-ID space is small enough to enumerate, so the secret key is the only protection. Rotating the key breaks linkage over time, so document a key-rotation policy.
 - Dates of birth become age bands in silver: 5-year bands, matching the population table.
 
