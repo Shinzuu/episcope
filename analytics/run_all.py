@@ -20,7 +20,11 @@ def main():
         t0 = time.time()
         print(f"[run_all] {mod} ...", flush=True)
         sys.argv = [mod]
-        runpy.run_module(mod, run_name="__main__")
+        try:
+            runpy.run_module(mod, run_name="__main__")
+        except SystemExit as e:  # stages end with sys.exit(main()); only a non-zero code is a failure
+            if e.code not in (0, None):
+                raise
         print(f"[run_all] {mod} done in {time.time() - t0:.0f}s", flush=True)
 
 

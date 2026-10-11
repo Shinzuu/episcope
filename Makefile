@@ -5,7 +5,8 @@ RUN := env -u HADOOP_CONF_DIR -u HADOOP_HOME -u YARN_CONF_DIR mise x -- $(PY)
 SF ?= 0.25
 SEED ?= 42
 
-drop:      ; $(RUN) -m generator.generate --incremental-days 14 --seed 7
+# Incremental 14-day drop at the same SF as the base build; DROP_SEED picks the drop (ING-4 drill).
+drop:      ; $(RUN) -m generator.generate --incremental-days 14 --sf $(SF) --seed $(or $(DROP_SEED),7)
 mock:      ; $(RUN) -m serving.mock_data
 dashboard-verify: ; node dashboard/tools/verify.mjs
 check:     ; $(RUN) scripts/verify.py
@@ -16,9 +17,11 @@ setup:
 	mise install
 	mise x -- python -m venv .venv
 	$(PY) -m pip install -r requirements.txt
-	test -f .env || cp .env.example .env
+	test -f .env || { sed "s/^EPISCOPE_HASH_SALT=.*/EPISCOPE_HASH_SALT=$$($(PY) -c 'import secrets;print(secrets.token_hex(32))')/" .env.example > .env; }
 
-all: generate bronze silver gold analytics serve
+reference: ; $(RUN) -m pipeline.reference.build
+
+all: reference generate bronze silver gold analytics serve
 
 generate:   ; $(RUN) -m generator.generate --sf $(SF) --seed $(SEED)
 bronze:     ; $(RUN) -m pipeline.bronze.ingest

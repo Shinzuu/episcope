@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "summary": "PASS: clean clone, SF=0.05 seed 42, then a 14-day drop with seed 9608 ingested unmodified: +8292 silver rows, data through 2025-12-31 -> 2026-01-14, 0 duplicates after re-run, export 9.64 MB with no 1-4 counts, 22 min",
+  "rows_added": 8292,
+  "duplicates_after_rerun": 0,
+  "checks": {
+    "drop_ingested_as_new_batch": true,
+    "rows_added": true,
+    "data_through_advanced": true,
+    "no_duplicates_after_rerun": true,
+    "rerun_changed_nothing": true,
+    "export_has_no_small_counts": true,
+    "export_under_10mb": true
+  },
+  "sf": 0.05,
+  "seed": 42,
+  "drop_seed": 9608,
+  "setup": "make",
+  "seconds": 1361,
+  "before": {
+    "silver_rows": 1614917,
+    "silver_duplicate_ids": 0,
+    "gold_rows": 67400,
+    "gold_duplicate_keys": 0,
+    "max_report_date": "2025-12-31",
+    "bronze_batches": 1,
+    "quarantined": 66979
+  },
+  "after": {
+    "silver_rows": 1623209,
+    "silver_duplicate_ids": 0,
+    "gold_rows": 67912,
+    "gold_duplicate_keys": 0,
+    "max_report_date": "2026-01-14",
+    "bronze_batches": 2,
+    "quarantined": 67298
+  },
+  "rerun": {
+    "silver_rows": 1623209,
+    "silver_duplicate_ids": 0,
+    "gold_rows": 67912,
+    "gold_duplicate_keys": 0,
+    "max_report_date": "2026-01-14",
+    "bronze_batches": 2,
+    "quarantined": 67298
+  },
+  "export": {
+    "small_counts": 0,
+    "bytes": 9644053,
+    "weeks": 137,
+    "last_week": "2026-01-12"
+  },
+  "inputs_not_from_readme": [
+    "data/reference copied from the working checkout",
+    "random EPISCOPE_HASH_SALT written to .env (setup copies the placeholder)"
+  ]
+}

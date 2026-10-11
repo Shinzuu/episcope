@@ -1,0 +1,106 @@
+{
+  "b_ref_bdt": 550.0,
+  "budget_levels": [
+    0.25,
+    0.5,
+    0.75,
+    1.0,
+    1.5
+  ],
+  "alphas": [
+    0.0,
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    1.0
+  ],
+  "recommended": {
+    "alpha": 0.0,
+    "tolerance_pp": 2.0,
+    "admissible_alphas": [
+      0.0
+    ],
+    "per_budget_max_alpha": {
+      "0.25": 0.0,
+      "0.5": 0.2,
+      "0.75": 0.2
+    },
+    "reason": "alpha = 0.0: of the equity floors that keep the share of need met within 2 percentage points of pure efficiency at every scarce budget (alpha <= 0.0 qualifies), it gives the best-covered worst-off district on average (mean lowest district coverage 0.28 vs 0.28 at alpha = 0.0). At 0.5xB_ref it meets 29.5% of need (vs 29.5% at alpha = 0, 0.5% for the population-proportional baseline); the worst-covered district gets 0.30 of its need (vs 0.30 at alpha = 0).",
+    "reference_budget_level": 0.5,
+    "pct_need_met_alpha0": 29.51390727272727,
+    "pct_need_met_recommended": 29.51390727272727,
+    "min_district_coverage_alpha0": 0.2951390727272727,
+    "min_district_coverage_recommended": 0.2951390727272727,
+    "gini_alpha0": 0.9843750000000001,
+    "gini_recommended": 0.9843750000000001,
+    "pct_need_met_population_baseline": 0.4874619284973347
+  },
+  "lp_vs_population_baseline_at_recommended_alpha": [
+    {
+      "budget_level": 0.25,
+      "lp_pct_need_met": 25.0,
+      "baseline_pct_need_met": 0.24373096424867846,
+      "lp_objective": 0.75,
+      "baseline_objective": 0.9975626903575132
+    },
+    {
+      "budget_level": 0.5,
+      "lp_pct_need_met": 29.51390727272727,
+      "baseline_pct_need_met": 0.4874619284973347,
+      "lp_objective": 0.7048609272727273,
+      "baseline_objective": 0.9951253807150267
+    },
+    {
+      "budget_level": 0.75,
+      "lp_pct_need_met": 29.51390727272727,
+      "baseline_pct_need_met": 0.7311928927460132,
+      "lp_objective": 0.7048609272727273,
+      "baseline_objective": 0.9926880710725399
+    },
+    {
+      "budget_level": 1.0,
+      "lp_pct_need_met": 29.51390727272727,
+      "baseline_pct_need_met": 0.9749238569946694,
+      "lp_objective": 0.7048609272727273,
+      "baseline_objective": 0.9902507614300533
+    },
+    {
+      "budget_level": 1.5,
+      "lp_pct_need_met": 29.51390727272727,
+      "baseline_pct_need_met": 1.4623857854920153,
+      "lp_objective": 0.7048609272727273,
+      "baseline_objective": 0.9853761421450798
+    }
+  ],
+  "national_net_need": {
+    "antimalarials": 1.1,
+    "beds": 0.0,
+    "iv_saline": 0.0,
+    "ns1_kits": 0.0,
+    "ors": 0.0
+  },
+  "assumptions": {
+    "unit_cost_bdt": {
+      "beds": 3000.0,
+      "iv_saline": 100.0,
+      "ns1_kits": 300.0,
+      "ors": 6.0,
+      "antimalarials": 500.0
+    },
+    "unit_volume_m3": {
+      "beds": 0.5,
+      "iv_saline": 0.0015,
+      "ns1_kits": 0.0002,
+      "ors": 0.0001,
+      "antimalarials": 0.0005
+    },
+    "transport_factor": 1.5,
+    "normalisation": "unmet[d,r] / national net need N_r (our extension, research.md \u00a710)"
+  }
+}

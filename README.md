@@ -18,9 +18,13 @@ make check          # five verification gates (scripts/verify.py)
 | ID | File | Report section |
 |---|---|---|
 | ING-1 | generator/generate.py | §4 |
+| ING-2 | pipeline/silver/build.py | §3 |
+| ING-3 | pipeline/gold/build.py | §3 |
+| ING-4 | pipeline/silver/build.py | §3, §6 |
 | DQ-1 | pipeline/quality/rules.py | §4 |
 | DQ-2 | pipeline/quality/engine.py | §4 |
 | DQ-3 | pipeline/quality/engine.py | §4 |
+| DQ-4 | pipeline/silver/dedup.py | §4 |
 | PRV-1 | pipeline/privacy/deid.py | §4 |
 | PRV-2 | pipeline/privacy/suppression.py | §4 |
 | PRV-4 | pipeline/privacy/kanon.py | §4, §8 |
@@ -36,7 +40,7 @@ make check          # five verification gates (scripts/verify.py)
 | VIS-1 | dashboard/index.html | §7 |
 | VIS-2 | dashboard/js/views/ | §7 |
 | VIS-3 | dashboard/js/state.js | §7 |
-| VIS-4 | serving/mock_data.py | §7 |
+| VIS-4 | serving/export.py | §7 |
 | VIS-5 | dashboard/js/views/allocation.js | §7 |
 | VIS-6 | dashboard/css/style.css | §7 |
 | VIS-7 | dashboard/css/style.css | §7 |
