@@ -5,12 +5,17 @@ file paths to hdfs://localhost:9000, which also matters for the instructor's hid
 """
 
 import os
+import sys
 
 from delta import configure_spark_with_delta_pip
 from pyspark.sql import SparkSession
 
 
-def get_spark(app="episcope", memory=os.environ.get("EPISCOPE_DRIVER_MEMORY", "6g")):
+def get_spark(app="episcope", memory=None):
+    memory = memory or os.environ.get("EPISCOPE_DRIVER_MEMORY", "6g")
+    # Python workers must use this interpreter (the venv), not the system python3 without pandas.
+    os.environ.setdefault("PYSPARK_PYTHON", sys.executable)
+    os.environ.setdefault("PYSPARK_DRIVER_PYTHON", sys.executable)
     builder = (
         SparkSession.builder.master(os.environ.get("EPISCOPE_SPARK_MASTER", "local[*]"))
         .appName(app)
