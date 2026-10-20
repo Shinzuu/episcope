@@ -1,0 +1,90 @@
+\section{Data Generation, Quality, Lineage and Privacy}\label{sec:data}
+
+\subsection{Public sources and the generator}
+District boundaries, codes and the 2022 census population by age band and sex come from the HDX COD-AB and
+COD-PS datasets~\cite{hdx2025codab}; daily precipitation, temperature and humidity at each district centroid
+for 2021--2025 come from the Open-Meteo archive~\cite{zippenfeld2023openmeteo}. Open-Meteo allows about 5,000
+weighted calls an hour and 64 districts over five years cost about 8,400, so the download is throttled and the
+processed reference files (0.6\,MB) are committed. A clean clone therefore skips a two-hour download.
+
+The generator (\texttt{generator/}) writes the three synthetic sources: encounters (S4) as one CSV folder per
+report date, a register of 736 facilities (S5) and daily stock snapshots (S6) as JSON. It is vectorised numpy,
+seeded per (seed, stream, district, year), so the same arguments give byte-identical output whatever the number
+of worker processes. Rates are per head of population, so the row count follows the census rather than a
+constant: SF=1 gives about 6.2 million encounters a year, or about 31 million for 2021--2025.
+
+Each disease has its own annual cycle. Dengue peaks in early October, because OpenDengue's national counts peak
+in October in 2022 and 2024, later than ``follows the monsoon'' suggests. Dengue responds to rainfall and
+temperature four to eight weeks earlier, diarrhoea spikes after extreme rainfall, malaria is concentrated in
+the three Hill Tracts districts and Cox's Bazar, and every count has negative-binomial noise. Reporting delay is
+a discretised negative binomial with mean 3 days truncated at 21, and 65\% of Friday and Saturday reports move
+to Sunday (Bangladesh's weekend). The SF=0.05 run injected 35 outbreaks\prov{} of different shape and size,
+including a slow-growing one and a nationwide novel respiratory surge, and two reporting artefacts: a facility
+that goes silent for three weeks and then back-fills. They are written only to \texttt{ground\_truth/}, which
+the detection code never reads (a test fails if it does).
+
+The generator also plants the defects the quality rules must catch: 2\% repeated \texttt{encounter\_id},
+0.5\% orphan \texttt{facility\_id}, 0.5\% invalid age, 0.5\% invalid sex, 0.3\% malformed ICD-10 codes and
+0.3\% onsets after the report date. A 14-day incremental drop (\texttt{make drop}) uses the same layout and
+carries records with onsets up to 21 days before the drop.
+
+\subsection{Bronze: keep what arrived}
+\texttt{pipeline/bronze/ingest.py} finds files by glob, never by name, date or count. It computes each file's
+SHA-256 and skips any file whose checksum is already in the ingest log, so a re-run reads nothing and a new
+drop loads only its own files. Every value of the contract fields is kept as a string, exactly as written, and
+each row gets the source, its file, the checksum, the batch ID and the load time (ING-1). One run is one batch;
+batch IDs start with a UTC timestamp, so they sort in load order.
+
+\subsection{Silver: rules, quarantine and de-identification}
+The rule catalogue (\texttt{pipeline/quality/rules.py}) has 14 rules for encounters and 7 each for facilities
+and stock (DQ-1). Each rule is a Spark column expression that is true when a row breaks it, with a stable reason
+code, a severity (quarantine or warn) and the requirement it serves. The six planted defects map one to one onto
+six rules:
+\begin{itemize}
+\item \texttt{DQ\_DUP\_ENCOUNTER} and \texttt{DQ\_ORPHAN\_FACILITY};
+\item \texttt{DQ\_INVALID\_AGE} and \texttt{DQ\_INVALID\_SEX};
+\item \texttt{DQ\_ONSET\_AFTER\_REPORT} and \texttt{DQ\_BAD\_ICD10}.
+\end{itemize}
+The rest cover nulls, types, long delays, future dates and outcome values. Spark~4 runs in ANSI mode, where a plain cast of a bad
+string throws, so every rule reads values through \texttt{try\_cast} and an unparseable value is a defect of
+its own. A failing row goes to \texttt{silver.quarantine} once, with the list of every code it broke. In the
+first SF=0.05 load, 66,979 of 1,681,896 encounter rows (4.0\%)\prov{} were quarantined. Each load writes one
+row of rule pass rates to \texttt{gold.dq\_report}, which the dashboard shows (DQ-2).
+
+Before a clean row is stored, \texttt{patient\_id} becomes an HMAC-SHA256 under a key held only in
+\texttt{.env} (PRV-1). Spark has no HMAC function and a Python UDF over 25 million rows is slow, so the HMAC is
+built from Spark's native \texttt{sha2} with the RFC~2104 inner and outer pads. A plain salted hash would not be
+enough: national IDs are few enough to enumerate, so the secret key is the only protection. The code refuses to
+run with a missing key or the placeholder from \texttt{.env.example}. Exact age becomes an age band.
+
+\subsection{Idempotent incremental loads (ING-4)}
+Clean rows are merged into \texttt{silver.encounters} with a Delta MERGE on \texttt{encounter\_id}. A matched
+row is replaced only when the incoming \texttt{report\_date} is later. That one condition gives both required
+properties: re-running a batch matches every row with an equal date and changes nothing, and a resubmitted or
+late record replaces the old copy and moves to its own onset week. The MERGE is limited to the epi-years in the
+batch (plus one either side), so partition pruning keeps it from scanning the whole table.
+
+Silver records the weeks each batch changed: the onset weeks of new and replaced rows and the old weeks of
+replaced rows. Gold rebuilds only those weeks, plus the week after each, with a Delta \texttt{replaceWhere}.
+
+\subsection{Gold, lineage and patient de-duplication}
+\texttt{gold.cases\_weekly} counts cases, admissions, deaths and lab confirmations per district, disease and
+ISO week of \emph{onset}. Counting by onset rather than report date is what keeps the back-filled weeks of the
+silent facility from looking like an outbreak. Every district-week with at least one reporting facility gets a
+row for all four diseases, so a missing row means ``nothing reported'' rather than zero, which the detector
+uses to treat silent weeks as missing (AN-3). Each row carries the sorted bronze batch IDs of the records it
+counts, which link through the ingest log to file names and checksums (DQ-3).
+
+Cross-facility patient de-duplication (DQ-4) flags a record as a repeat when the same patient key, disease,
+sex and compatible age band appear at another facility within seven days. On SF=0.05 it flagged 441 pairs, of
+which 440 were true repeats (precision 0.998)\prov{}. Recall within the window was only 0.11\prov{}, because the
+generator draws age and sex afresh for a repeat visit, so most planted repeats fail the attribute check. We
+kept the strict rule: a false merge would hide a real case.
+
+\subsection{Hidden-drop drill}
+\texttt{scripts/hidden\_drop\_drill.sh} rehearses the instructor's test: clone, \texttt{make setup},
+\texttt{make all}, a new 14-day drop with an unseen seed, the incremental steps, then the same steps again. On
+11 October at SF=0.05 it passed every check\prov{}: the drop was one new bronze batch, silver gained 8,292 rows,
+the data moved from 31 December 2025 to 14 January 2026, the re-run changed nothing and left zero duplicate IDs
+and zero duplicate gold keys, and the export was 9.64\,MB with no count from 1 to 4. It took 22 minutes,
+including setup.

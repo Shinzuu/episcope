@@ -90,3 +90,13 @@ Paused for the group pack (BRIEF-SUBMIT.md, last section). Done before the pause
 (with test), ING-3 catalog step `pipeline/catalog.py` + `make catalog` (manual run registered 24 tables; its
 test timed out at 300 s on this laptop, timeout raised, re-run pending), `scripts/scaling.sh` written, not run.
 Resume at: run scaling.sh 0.25 0.5 1, then evaluation + backtest, then ING-6, ING-7, README.
+
+## Group pack built 2026-10-20 (BRIEF-SUBMIT.md "group package first", amended by "Change 18:20")
+
+`share/EpiScope-group-pack/`: `00-README.md`, `01-Status-and-tasks.pdf`, `02-Report-draft.pdf`
+(built by `share/src/build.sh`). Change 18:20 moved the video out: 03-Video-plan, 04-Transcript-Shezan and
+05-Transcript-template are not in the pack, and step 3.2 (transcript, video plan) is cancelled; a separate
+agent builds slides and a script in ~/Projects/episcope-video. The README carries "Slides and script: <links
+coming>". The drafts written before the change, `video/TRANSCRIPT-shezan.md` (654 words) and
+`video/VIDEO-PLAN.md`, are left uncommitted in `video/` for shinzuu to pass on or delete. The ten review passes
+now cover the report only.

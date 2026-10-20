@@ -1,0 +1,11 @@
+\section{Dashboard Design and Usability}
+The dashboard (\texttt{dashboard/}) uses only D3.js v7 and the TopoJSON client, both vendored with
+subresource-integrity hashes. It loads only the aggregated JSON exports, which must stay under 10\,MB: the
+export keeps the most recent weeks that fit. Five views are linked: a district choropleth of incidence per
+100,000 with alert markers, a weekly time series with a brush, forecast and bands, a seasonal heatmap, an
+allocation view with a what-if panel, and a ranked early-warning table. Suppressed cells are hatched and every
+view shows the data-freshness time.
+\begin{teammate}{Rimjhim}
+Design rationale (encodings, colour-blind-safe palette, why these aggregation levels), screenshots, and the
+usability test with at least two non-CS users: tasks, findings, changes made.
+\end{teammate}

@@ -1,0 +1,22 @@
+\section{Evaluation}
+\subsection{Detection}
+\begin{teammate}{Samira (AN-2), Rafi (AN-3)}
+Sensitivity, false alerts per district-year and median days to detection for EARS C2 and CUSUM against the
+naive detector; the C1 curve with the operating point; the artefact facility with and without our handling.
+Source: \texttt{detection\_tradeoff.json} from \texttt{make evaluate} on the v1.0 data.
+\end{teammate}
+\subsection{Forecast backtest}
+\begin{teammate}{Samira (AN-5)}
+MAE, 80\% coverage and WIS~\cite{bracher2021wis} against seasonal naive over 52 rolling origins, per horizon.
+Source: \texttt{backtest\_metrics.csv}.
+\end{teammate}
+\subsection{Allocation against the population baseline}
+\begin{teammate}{Rafi}
+Share of need met and the worst-covered district for the LP and the population-proportional baseline at five
+budgets; the efficiency and equity curve. Source: \texttt{allocation\_summary.json} of the v1.0 run.
+\end{teammate}
+\subsection{Scalability and Spark optimisations}
+\begin{teammate}{Samira (ENG-2, ENG-3)}
+Runtime per stage and output sizes at SF 0.25, 0.5 and 1 from \texttt{scaling.json}, with the hardware; the
+bottleneck stage from the Spark UI; two optimisations with before and after numbers and screenshots.
+\end{teammate}

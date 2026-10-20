@@ -1,0 +1,20 @@
+\section{Analytics Methods}
+The code below exists and is tested; the leads write the method justification.
+
+\textbf{Detection (AN-1, AN-3).} EARS C2~\cite{hutwagner2003ears} runs on seasonally adjusted, completeness-scaled
+weekly counts with Spark window functions; CUSUM runs per district and disease in \texttt{applyInPandas}.
+Farrington~\cite{farrington1996} was ruled out because it needs about five years of history before its first
+test week. Silent facility-weeks are treated as missing, not zero.
+
+\textbf{Forecasting (AN-4).} One negative-binomial GLM per district for dengue and diarrhoea, with weather
+lagged at least as far as the horizon, fitted in parallel through a cogrouped \texttt{applyInPandas}.
+
+\textbf{Demand, allocation and calendar (AN-6, AN-7, AN-9).} Forecast quantiles become beds, IV saline, NS1 kits,
+ORS and antimalarials with the assumptions in \texttt{analytics/forecast/demand\_assumptions.py}; the brief's LP
+is solved with PuLP~3.3.2 and CBC; STL per division and disease gives the onset and peak weeks.
+
+\begin{teammate}{Rafi}
+Write the justification of each method from the literature, the LP formulation with our normalisation per
+resource, and what $\alpha$ means for policy. Check the allocation first: in the SF=0.05 run the national net
+need was 0 for beds, IV saline, NS1 kits and ORS, so the LP had almost nothing to allocate.
+\end{teammate}

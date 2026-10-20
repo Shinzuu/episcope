@@ -1,0 +1,11 @@
+\section{Ethical, Societal and Sustainability Considerations}
+No real patient data is used; every encounter is synthetic and labelled so. Direct identifiers stop at bronze:
+silver and gold hold only the keyed hash and age bands, the key never enters Git, and every export hides counts
+from 1 to 4 with complementary suppression so that a total cannot reveal a hidden cell~\cite{sweeney2002k}.
+One residual risk is known and documented in the code: the padded HMAC key appears in Spark's query plan, so
+Spark event logs of the silver job must be treated as secret and kept outside the repository.
+\begin{teammate}{Samira}
+Equity (what $\alpha$ protects and costs), misuse (stigma of a named district, alert fatigue), the
+differential-privacy discussion for public releases (PRV-4), the limits of big-data signals~\cite{lazer2014flu},
+and the energy and hardware footprint.
+\end{teammate}

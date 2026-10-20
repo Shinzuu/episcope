@@ -1,0 +1,21 @@
+\section{CEP Attributes and Conflict Resolution}
+\begin{teammate}{Samira, with each lead for their conflict}
+P1 to P7, each tied to a design decision. Suggested mapping from the code: P1 depth (Spark, Delta, HMAC,
+EARS, NB-GLM, LP); P3 (threshold sweep, backtest); P4 unfamiliar issues (late data via MERGE, the silent
+facility, duplicates across facilities, Dhaka skew); P5 (ICD-10 buckets, IDSR); P6 stakeholders; P7 the
+dependency chain bronze to dashboard.
+\end{teammate}
+
+\textbf{C4 freshness against cost.} We load once a day in batch. Forecasts and allocations are weekly
+decisions, and a daily batch over the new files of that day takes minutes, while an always-on stream would hold
+memory that the 16\,GB laptop needs for Spark. Re-running a day costs nothing because bronze skips files it
+already holds (Section~\ref{sec:data}).
+\begin{teammate}{Shezan}
+Update C4 once the ING-6 streaming path is measured (alert latency against the 5-minute target).
+\end{teammate}
+
+\begin{teammate}{Rafi (C1, C3, C5), Rimjhim (C2)}
+C1: trade-off curve and operating point. C2: suppression policy (counts 1 to 4 hidden, complementary
+suppression across diseases and weeks). C3: efficiency and equity curve and the recommended $\alpha$. C5: why
+the NB-GLM over a more complex model.
+\end{teammate}

@@ -1,0 +1,33 @@
+\section{Architecture and Design Decisions}
+EpiScope follows the brief's reference architecture: a medallion lakehouse (bronze, silver, gold) on Apache
+Spark~4.0.1~\cite{zaharia2016spark} in local mode with Delta Lake~4.0.1~\cite{armbrust2020delta}, analytics
+jobs that read gold and write gold, a serving step that exports suppressed JSON, and a D3.js
+v7~\cite{bostock2011d3} dashboard. One command, \texttt{make all}, runs every stage in order
+(\texttt{reference}, \texttt{generate}, \texttt{bronze}, \texttt{silver}, \texttt{gold}, \texttt{analytics},
+\texttt{serve}, \texttt{catalog}); Java~17 and Python~3.12 come from \texttt{mise.toml} and every Python package
+is pinned in \texttt{requirements.txt}.
+
+\textbf{Delta rather than plain Parquet.} Late records (up to 21 days) must update their epi-week without
+duplicates. Delta's ACID MERGE makes that a single atomic statement, \texttt{replaceWhere} rewrites only the
+changed weeks of gold, and the transaction log gives time travel for ``what did we know on date $t$''.
+Iceberg would also work; Delta has the documented pairing with Spark~4.0.1 and pip packaging.
+
+\textbf{Local filesystem rather than HDFS or an object store (ING-5 not done).} A Docker HDFS or S3 store costs
+1--2\,GB of RAM that Spark needs on the target laptop. All paths come from two environment variables, so the
+lake can move to another URI without code changes.
+
+\textbf{Partitioning.} Bronze is partitioned by \texttt{batch\_id}, because silver reads exactly one new batch
+at a time. Silver encounters and gold \texttt{cases\_weekly} are partitioned by \texttt{epi\_year} only: one year
+of gold holds at most $64\times4\times53$ rows, so a finer key (district or week) would create thousands of
+tiny files at SF=1 without saving any reads. The proposal planned \texttt{division} as a second key; we
+dropped it for the same reason.
+
+\textbf{Catalog.} The jobs read and write by path, and a separate \texttt{make catalog} step registers every
+table as an external table (\texttt{bronze.encounters}, \texttt{gold.cases\_weekly}, \dots) in a Hive
+metastore stored inside the lake. Derby allows one process at a time, so keeping the catalog out of the jobs
+means a locked metastore can never stop the pipeline.
+
+\begin{teammate}{Samira}
+Architecture figure (redraw Fig.~1 of the brief with our components) and the alternatives table
+(Airflow against a Makefile DAG, Iceberg against Delta, streaming against batch).
+\end{teammate}

@@ -1,0 +1,120 @@
+\titleblock{Status and tasks}{\members}
+
+\section*{Where we are}
+The pipeline runs end to end and passes 141 automated tests. The hidden-drop drill passed from a clean clone
+on 11 Oct at SF=0.05: a new 14-day drop added 8,292 rows, a re-run added no duplicates, and the dashboard data
+was 9.64\,MB with no counts from 1 to 4. What is missing is mostly evidence and writing: the scaling study,
+the Spark optimisation measurements, the detection and backtest result files, the usability test, the report
+and the video. All 14 commits so far are Shezan's and fall on one day; R9 grades each person's own Git share,
+so \textbf{everyone must commit their own work from now on}.
+
+The deadline has not been announced. Plan as if it is a few days away.
+
+\section*{Every requirement}
+\small
+\begin{longtable}{@{}l l l l >{\raggedright\arraybackslash}p{7.2cm}@{}}
+\toprule
+\textbf{ID} & \textbf{Pri} & \textbf{Owner} & \textbf{Status} & \textbf{Evidence or gap} \\
+\midrule
+\endhead
+ING-1 & M & Shezan & done & generator plus bronze with checksum, batch ID, load time; path bug fixed 20 Oct \\
+ING-2 & M & Shezan & done & every heavy transform in Spark \\
+ING-3 & M & Shezan & done & Delta by \texttt{epi\_year}; Hive catalog step added 20 Oct (\texttt{make catalog}) \\
+ING-4 & M & Shezan & done & Delta MERGE keeps the latest report; tests and drill show no duplicates \\
+ING-5 & S & Shezan & missing & skipped on purpose (RAM); the report says why \\
+ING-6 & S & Shezan & missing & streaming path promised in the proposal, not built yet \\
+ING-7 & C & Shezan & missing & Delta history exists; ``as of date $t$'' reader not built yet \\
+DQ-1 & M & Shezan & done & 14 encounter, 7 facility, 7 stock rules; quarantine with reason codes \\
+DQ-2 & M & Shezan & done & \texttt{gold.dq\_report} and \texttt{dq.json} on the dashboard \\
+DQ-3 & M & Shezan & done & \texttt{batch\_ids} on every gold row; lineage test \\
+DQ-4 & S & Shezan & done & precision 0.998 on 441 flagged pairs; recall 0.11 (stated honestly) \\
+PRV-1 & M & Samira & done & HMAC-SHA256 from Spark \texttt{sha2}; key only in \texttt{.env} \\
+PRV-2 & M & Rimjhim & done & complementary suppression with a leak audit in every export \\
+PRV-3 & S & Rimjhim & missing & no role-based (national or district) view \\
+PRV-4 & C & Samira & partial & k-anonymity check exists; differential-privacy text still to write \\
+AN-1 & M & Rafi & done & EARS C2 (window functions) and CUSUM (\texttt{applyInPandas}) \\
+AN-2 & M & Samira & partial & evaluation code and tests; no result file committed \\
+AN-3 & S & Rafi & done & onset-week counting and completeness; numbers wait for the evaluation run \\
+AN-4 & M & Rafi & done & per-district NB-GLM with lagged weather \\
+AN-5 & M & Samira & partial & backtest code; no result file committed \\
+AN-6 & M & Rafi & done & demand conversion with stated assumptions \\
+AN-7 & M & Rafi & partial & LP works, but the only run so far had almost no net need (see Rafi) \\
+AN-8 & S & Rafi & partial & curve over 5 budgets and 11 values of $\alpha$; recommends $\alpha=0$ everywhere \\
+AN-9 & M & Rafi & done & STL calendar per division and disease \\
+AN-10 & C & Rafi & missing & SEIR only inside the generator \\
+VIS-1--7 & M/S/C & Rimjhim & done & D3 v7 only, five linked views, what-if panel, mobile layout \\
+Usability & M & Rimjhim & missing & test with at least two non-CS users \\
+ENG-1 & M & Samira & partial & \texttt{make setup \&\& make all} works; README lacks prerequisites, drop steps, architecture \\
+ENG-2 & M & Samira & missing & scaling at SF 0.25, 0.5, 1; harness \nolinkurl{scripts/scaling.sh} ready \\
+ENG-3 & M & Samira & missing & two optimisations with before and after Spark UI screenshots \\
+ENG-4 & S & Samira & partial & 141 tests; no DAG with retries \\
+Report & & all & draft & skeleton in \nolinkurl{report/} (02 in this pack) \\
+Video & & all & elsewhere & slides and script built separately; links coming \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\section*{Shezan (Data Engineer)}
+\begin{tabularx}{\linewidth}{@{}Y l F@{}}
+\toprule
+\textbf{Task} & \textbf{Effort} & \textbf{Files} \\
+\midrule
+Run the scaling harness at SF 0.25, 0.5 and 1 (feeds Samira's ENG-2 and gate 5) & 2 h of runs & \nolinkurl{scripts/scaling.sh} \\
+ING-6 streaming path that refreshes alerts within 5 minutes & 2 h & \nolinkurl{pipeline/stream.py} (new) \\
+ING-7 ``what did we know on date $t$'' reader on Delta history & 45 min & \nolinkurl{pipeline/bronze/lake.py} \\
+README: prerequisites, hidden-drop steps, architecture summary & 30 min & \texttt{README.md} \\
+Final hidden-drop drill on the last commit & 30 min & \nolinkurl{scripts/hidden_drop_drill.sh} \\
+Report \S4 (data generation, quality, lineage), own reflection & 2 h & \nolinkurl{report/sections/} \\
+\bottomrule
+\end{tabularx}
+
+\section*{Rafi (Analytics)}
+\begin{tabularx}{\linewidth}{@{}Y l F@{}}
+\toprule
+\textbf{Task} & \textbf{Effort} & \textbf{Files} \\
+\midrule
+Check the allocation: in the SF=0.05 run the national net need was 0 for beds, saline, NS1 kits and ORS
+(stock exceeded demand), so the LP had nothing to allocate. Recheck on the final data; consider planning over
+the season peak or a lower starting stock & 1--2 h & \nolinkurl{analytics/optimise/}, \nolinkurl{analytics/forecast/demand.py} \\
+AN-8: the recommender picks $\alpha=0$ at every budget; make sure the curve supports a real choice & 1 h & \nolinkurl{analytics/optimise/curve.py} \\
+AN-3 figure: naive detector against ours on the artefact facility & 1 h & \nolinkurl{analytics/evaluation/} \\
+AN-10 SEIR module (bonus, optional) & 2 h & \nolinkurl{analytics/scenario/} (new) \\
+Report \S5 and the analytics part of \S6, own reflection & 3 h & \nolinkurl{report/sections/} \\
+\bottomrule
+\end{tabularx}
+
+\section*{Rimjhim (Visualisation)}
+\begin{tabularx}{\linewidth}{@{}Y l F@{}}
+\toprule
+\textbf{Task} & \textbf{Effort} & \textbf{Files} \\
+\midrule
+Usability test with at least two non-CS users: tasks, what they did, what we changed & 1 h plus fixes & \nolinkurl{docs/usability.md} (new) \\
+PRV-3 role-based view: national sees all; a district user sees their own district in detail & 2 h & \nolinkurl{dashboard/js/state.js}, \nolinkurl{serving/export.py} \\
+Dashboard screenshots for the report (all five views, what-if, suppressed cells) & 30 min & \nolinkurl{report/figures/} \\
+Report \S7, own reflection & 2 h & \nolinkurl{report/sections/} \\
+\bottomrule
+\end{tabularx}
+
+\section*{Samira (Platform \& Evaluation, report lead)}
+\begin{tabularx}{\linewidth}{@{}Y l F@{}}
+\toprule
+\textbf{Task} & \textbf{Effort} & \textbf{Files} \\
+\midrule
+ENG-2 write-up: runtime per stage, sizes, bottleneck from the Spark UI (runs from Shezan's harness) & 1 h & \nolinkurl{docs/experiments/scaling.json} \\
+ENG-3: two optimisations with before and after numbers and Spark UI screenshots (for example broadcast of the
+register, partition pruning on \texttt{epi\_year}, AQE skew on Dhaka) & 2 h & \nolinkurl{docs/experiments/eng3/} (new) \\
+ENG-4: DAG with retries (the proposal promised it) & 1 h & \nolinkurl{orchestration/} \\
+AN-2 and AN-5: run \texttt{make evaluate} and the backtest on the final data and commit the result files & 1 h plus run time & \nolinkurl{analytics/evaluation/}, \nolinkurl{analytics/forecast/backtest.py} \\
+Report lead: \S1, \S2, \S3, \S6 (scaling), \S8, \S9, policy brief (Appendix A), contribution matrix & 5 h & \nolinkurl{report/} \\
+\bottomrule
+\end{tabularx}
+
+\section*{Rules for everyone}
+\begin{itemize}
+\item Commit your own work under your own Git identity, in small commits that start with the requirement ID,
+for example \texttt{AN-8: ...}. Nobody commits in someone else's name.
+\item Never commit \texttt{.env}, a salt or a key. Data stays out of Git (\nolinkurl{data/} and \nolinkurl{lake/} are ignored).
+\item Every number in the report and the video comes from a file in \nolinkurl{docs/experiments/} of the final run.
+\item Nobody tags \texttt{v1.0} or records the video until the group agrees the code is frozen.
+\item Write your own half-page reflection (Appendix C) and agree the contribution matrix (Appendix B) together.
+\end{itemize}
