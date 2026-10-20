@@ -54,7 +54,8 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   (local[4] on 8 threads, 64 district groups); AQE skew/salting still to show.
 
 ## Next, in order
-1. Commit fix after tests, re-time SF=0.25 full (scaling.sh, own flock), then SF=1 (own flock, EVENT_LOG, KEEP).
+1. Running (task bfb67vchg): re-time SF=0.25 full, then SF=1 (separate flocks; KEEP, EVENT_LOG). Logs
+   /var/tmp/episcope-runs/retime-sf0.25.log, scaling-sf1.log. Profile workspace deleted (numbers saved).
 2. ING-6 latency: live `make stream`, then `make drop`, read docs/experiments/stream_latency.json.
 3. Final hidden-drop drill on HEAD.
 4. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
