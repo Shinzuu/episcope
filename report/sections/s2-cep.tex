@@ -1,21 +1,44 @@
 \section{CEP Attributes and Conflict Resolution}
-\begin{teammate}{Samira, with each lead for their conflict}
-P1 to P7, each tied to a design decision. Suggested mapping from the code: P1 depth (Spark, Delta, HMAC,
-EARS, NB-GLM, LP); P3 (threshold sweep, backtest); P4 unfamiliar issues (late data via MERGE, the silent
-facility, duplicates across facilities, Dhaka skew); P5 (ICD-10 buckets, IDSR); P6 stakeholders; P7 the
-dependency chain bronze to dashboard.
+\subsection{Attributes P1 to P7}
+\begin{itemize}
+\item \textbf{P1 depth of knowledge.} Distributed processing and storage (Spark, Delta, partitioning, broadcast
+joins), keyed hashing built from \texttt{sha2}, surveillance statistics (EARS C2, CUSUM), count regression (NB-GLM),
+linear programming and visual encoding in D3.
+\item \textbf{P2 conflicting requirements.} The five conflicts below, each settled with a number.
+\item \textbf{P3 depth of analysis.} Thresholds come from a sweep against injected outbreaks, forecasts from a
+52-origin backtest against a baseline, and $\alpha$ from a curve over budgets.
+\item \textbf{P4 unfamiliar issues.} Late records (MERGE on the latest report), a facility that goes silent and
+back-fills (onset-week counts, missing rather than zero), the same patient at two facilities (DQ-4), and the
+Dhaka skew.
+\item \textbf{P5 beyond standard codes.} ICD-10 three-character buckets, WHO IDSR~\cite{who2019idsr} for the
+diseases and the weekly cadence, and our own suppression and allocation rules where no standard exists.
+\item \textbf{P6 stakeholders.} Table~\ref{tab:stakeholders}.
+\item \textbf{P7 interdependence.} An error in bronze reaches the dashboard: counting by report date would
+create a false outbreak, which would raise forecast demand and move stock. Every gold row carries its bronze
+batch IDs, so such an error can be traced back.
+\end{itemize}
+
+\subsection{Conflicts C1 to C5}
+\textbf{C1 sensitivity against specificity.} We allow at most two false alerts per district-year and take the
+most sensitive setting under that limit: EARS C2 at threshold 4.0 finds 97\% of outbreaks with 1.27 false
+alerts per district-year\prov{} (Section~\ref{sec:eval}).
+
+\textbf{C2 granularity against privacy.} We publish district by week, not upazila. Every count from 1 to 4 is
+hidden, and a second cell is hidden in any row or column with only one hidden cell, so no total reveals it.
+
+\textbf{C3 efficiency against equity.} The LP's equity floor $\alpha$ gives every district a share of each
+resource in proportion to its population.
+\begin{teammate}{Rafi}
+The recommended $\alpha$ and its cost from the curve, once the allocation has real need to allocate.
 \end{teammate}
 
-\textbf{C4 freshness against cost.} We load once a day in batch. Forecasts and allocations are weekly
-decisions, and a daily batch over the new files of that day takes minutes, while an always-on stream would hold
-memory that the 16\,GB laptop needs for Spark. Re-running a day costs nothing because bronze skips files it
-already holds (Section~\ref{sec:data}).
-\begin{teammate}{Shezan}
-Update C4 once the ING-6 streaming path is measured (alert latency against the 5-minute target).
-\end{teammate}
+\textbf{C4 freshness against cost.} Forecasts and allocations are weekly decisions, so they run in a daily
+batch. Alerts can also run from a Structured Streaming file source that refreshes them as files land
+(Section~\ref{sec:data}); between files it holds almost no memory.
 
-\begin{teammate}{Rafi (C1, C3, C5), Rimjhim (C2)}
-C1: trade-off curve and operating point. C2: suppression policy (counts 1 to 4 hidden, complementary
-suppression across diseases and weeks). C3: efficiency and equity curve and the recommended $\alpha$. C5: why
-the NB-GLM over a more complex model.
+\textbf{C5 accuracy against interpretability.} The forecast is a negative-binomial GLM with seasonal terms and
+lagged rainfall and temperature: each coefficient can be read as a rate ratio. It beats seasonal naive with a
+relative WIS of 0.83\prov.
+\begin{teammate}{Rafi}
+Confirm whether a more complex model was tried; if not, say so.
 \end{teammate}

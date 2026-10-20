@@ -10,8 +10,27 @@ demand one to four weeks ahead, (iii) allocates a limited national stock, and (i
 calendar for the next year. The users are not data scientists, the data is late and incomplete, no patient may
 be exposed, and the system must run on a 16\,GB laptop.
 
+\begin{table}[htbp]
+\caption{Stakeholders and what the design does for each}
+\label{tab:stakeholders}
+\centering\footnotesize
+\begin{tabular}{@{}p{2.1cm}p{5.6cm}@{}}
+\toprule
+Stakeholder & Need, and where the design meets it \\
+\midrule
+MoH policymakers & Defensible allocation: LP against a population baseline, equity floor $\alpha$ \\
+Epidemiologists & Transparent methods: EARS C2 and CUSUM, thresholds from a sweep, artefact handling \\
+District officers & Early local warning: ranked alert table, district view \\
+Hospital managers & Bed and supply demand with 80\% intervals \\
+Vector control & Hotspots by district and week; upazila withheld for privacy \\
+Patients, public & Keyed hash, age bands, suppression of counts 1 to 4 \\
+Privacy regulator & Line-level data never leaves the lake; only aggregates reach the browser \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \begin{teammate}{Samira}
-Stakeholder table (MoH, epidemiologists, district officers, hospital managers, vector control, public,
-regulator) with each one's need and concern, and the risk register (at least 5 risks; start from
-\texttt{docs/proposal.md} \S6 and update likelihood and status).
+Risk register (at least 5 risks): start from \texttt{docs/proposal.md} \S6 and update each risk's status. Known
+updates: risk 2 (SF=1 within 45 minutes) waits on the scaling run; risk 3 (hidden drop) passed the drill;
+risk 7 (uneven commits) has happened.
 \end{teammate}

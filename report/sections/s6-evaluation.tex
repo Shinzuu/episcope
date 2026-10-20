@@ -1,22 +1,87 @@
-\section{Evaluation}
+\section{Evaluation}\label{sec:eval}
+All numbers in this section come from the SF=0.25 build with real weather (seed 42) of 20 October\prov{}:
+\texttt{docs/experiments/detection\_tradeoff.json} and \texttt{backtest\_metrics.csv}.
+
 \subsection{Detection}
-\begin{teammate}{Samira (AN-2), Rafi (AN-3)}
-Sensitivity, false alerts per district-year and median days to detection for EARS C2 and CUSUM against the
-naive detector; the C1 curve with the operating point; the artefact facility with and without our handling.
-Source: \texttt{detection\_tradeoff.json} from \texttt{make evaluate} on the v1.0 data.
+\texttt{make evaluate} scores every alert against the 35 injected outbreaks in \texttt{ground\_truth/}, the only
+code allowed to read that folder. Consecutive alert weeks merge into one episode; an episode that overlaps no
+outbreak window counts as a false alert. The sweep picks, for each method, the most sensitive setting that keeps
+false alerts at or below two per district-year. Table~\ref{tab:detection} shows the chosen operating points.
+
+\begin{table}[htbp]
+\caption{Detection at the chosen operating points (SF=0.25)\prov}
+\label{tab:detection}
+\centering\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+ & EARS C2 & CUSUM \\
+\midrule
+Setting & threshold 4.0 & $k=0.5$, $h=6$ \\
+Outbreaks detected & 34 of 35 & 32 of 35 \\
+Sensitivity & 0.97 & 0.91 \\
+False alerts per district-year & 1.27 & 1.49 \\
+Positive predictive value & 0.22 & 0.28 \\
+Median days to detection & 8 & 9 \\
+Detected within 14 days & 0.91 & 0.83 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+EARS C2 is the better default here: it finds more outbreaks, sooner, with fewer false alerts. We expected CUSUM
+to do better on slow growth, but on the one slow outbreak both methods found it late, EARS C2 after 48 days and
+CUSUM after 69.
+
+\begin{teammate}{Samira (AN-2), Rafi (AN-3): confirm}
+Add the C1 trade-off figure from \texttt{detection\_tradeoff.csv} (sensitivity against false alerts per
+district-year, one curve per method, the chosen points marked), results by outbreak shape, and the artefact
+facility with the naive detector and with ours. Replace with the v1.0 numbers.
 \end{teammate}
+
 \subsection{Forecast backtest}
-\begin{teammate}{Samira (AN-5)}
-MAE, 80\% coverage and WIS~\cite{bracher2021wis} against seasonal naive over 52 rolling origins, per horizon.
-Source: \texttt{backtest\_metrics.csv}.
+The backtest refits the per-district NB-GLM at 52 rolling origins (every fourth origin, reused in between) and
+forecasts one to four weeks ahead using only data up to each origin. The seasonal-naive baseline is scored on
+exactly the same district, disease, origin and horizon cells. The weighted interval score~\cite{bracher2021wis}
+uses eleven central intervals plus the median; relative WIS below 1 means the model beats the baseline.
+
+\begin{table}[htbp]
+\caption{Backtest over 52 origins, model against seasonal naive (SF=0.25)\prov}
+\label{tab:backtest}
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Disease & $h$ & MAE & MAE base & Cov.\,80\% & Rel.\ WIS \\
+\midrule
+Dengue & 1 & 39.4 & 42.5 & 0.83 & 0.88 \\
+ & 4 & 41.4 & 44.9 & 0.82 & 0.89 \\
+Diarrhoea & 1 & 18.5 & 26.3 & 0.80 & 0.70 \\
+ & 4 & 19.3 & 26.4 & 0.80 & 0.74 \\
+\midrule
+All & 1--4 & 29.5 & 35.0 & 0.81 & 0.83 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The model beats the baseline at every horizon for both diseases, by more for diarrhoea (relative WIS 0.72)
+than for dengue (0.88). Its 80\% intervals cover 81\% of outcomes overall, against 78\% for the baseline, so
+the bands mean what they say.
+
+\begin{teammate}{Samira (AN-5): confirm}
+Horizons 2 and 3 are in \texttt{backtest\_metrics.csv}. Add the WIS decomposition (for dengue, most of the model's WIS
+is underprediction, which matters for stock planning). Replace with the v1.0 numbers.
 \end{teammate}
+
 \subsection{Allocation against the population baseline}
 \begin{teammate}{Rafi}
-Share of need met and the worst-covered district for the LP and the population-proportional baseline at five
-budgets; the efficiency and equity curve. Source: \texttt{allocation\_summary.json} of the v1.0 run.
+In the SF=0.25 run the national net need is zero for beds, IV saline, NS1 kits and ORS, and 8.8 courses of
+antimalarials, because the generated stock exceeds the forecast demand. The LP's ``50\% of need met against 1\%
+for the population baseline'' is therefore about antimalarials only. Fix the demand or stock assumptions, then
+report share of need met and the worst-covered district at five budgets, and the efficiency and equity curve.
 \end{teammate}
+
 \subsection{Scalability and Spark optimisations}
 \begin{teammate}{Samira (ENG-2, ENG-3)}
-Runtime per stage and output sizes at SF 0.25, 0.5 and 1 from \texttt{scaling.json}, with the hardware; the
-bottleneck stage from the Spark UI; two optimisations with before and after numbers and screenshots.
+Runtime per stage and output sizes at SF 0.25, 0.5 and 1 from \texttt{scaling.json} (run by Shezan's harness,
+in progress), with the hardware; the bottleneck stage from the Spark UI; two optimisations with before and
+after numbers and screenshots.
 \end{teammate}
