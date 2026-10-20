@@ -81,6 +81,19 @@ which 440 were true repeats (precision 0.998)\prov{}. Recall within the window w
 generator draws age and sex afresh for a repeat visit, so most planted repeats fail the attribute check. We
 kept the strict rule: a false merge would hide a real case.
 
+\subsection{Time travel and the near-real-time path}
+Every gold build appends one row to \texttt{gold.\_snapshots}: the Delta version of \texttt{cases\_weekly} it
+wrote and the latest report date that version contains. \texttt{pipeline/gold/asof.py} answers ``what did we
+know on date $t$'' by reading the newest version whose data ends on or before $t$ with Delta's
+\texttt{versionAsOf} (ING-7). A test checks that the answer for a date between two loads leaves out a record
+that arrived 21 days late, which is exactly what a backtest origin should not see.
+
+\texttt{pipeline/stream.py} (ING-6) is a Structured Streaming query over the encounter file source. Each
+micro-batch with new files runs the same incremental chain as the daily batch (bronze, silver MERGE, gold
+rebuild of the changed weeks, detection, export) in one Spark session, so a streamed record passes the same
+rules and keeps the same lineage. The bronze checksum log makes the stream and the batch safe to mix: whichever
+sees a file first loads it. [LATENCY: measured after the scaling runs]
+
 \subsection{Hidden-drop drill}
 \texttt{scripts/hidden\_drop\_drill.sh} rehearses the instructor's test: clone, \texttt{make setup},
 \texttt{make all}, a new 14-day drop with an unseen seed, the incremental steps, then the same steps again. On
