@@ -11,7 +11,7 @@ doc() {  # doc NAME BODYFILE: wrap a body in the pack style and build NAME.pdf
   cat >"$B/$1.tex" <<TEX
 \\documentclass[11pt]{article}
 \\usepackage{pack}
-\\newcommand{\\members}{Shezan (Data Engineer), Rafi (Analytics), Rimjhim (Visualisation), Samira (Platform \\& Evaluation)}
+\\newcommand{\\members}{Shezan (Data Engineer), Tahsin Ahmed (Rafi, Analytics), Rimjhim (Visualisation), Samira (Platform \\& Evaluation)}
 \\begin{document}
 \\input{$2}
 \\end{document}
