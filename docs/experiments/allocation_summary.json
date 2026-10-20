@@ -1,5 +1,5 @@
 {
-  "b_ref_bdt": 550.0,
+  "b_ref_bdt": 4400.0,
   "budget_levels": [
     0.25,
     0.5,
@@ -28,58 +28,58 @@
     ],
     "per_budget_max_alpha": {
       "0.25": 0.0,
-      "0.5": 0.2,
-      "0.75": 0.2
+      "0.5": 0.0,
+      "0.75": 0.1
     },
-    "reason": "alpha = 0.0: of the equity floors that keep the share of need met within 2 percentage points of pure efficiency at every scarce budget (alpha <= 0.0 qualifies), it gives the best-covered worst-off district on average (mean lowest district coverage 0.28 vs 0.28 at alpha = 0.0). At 0.5xB_ref it meets 29.5% of need (vs 29.5% at alpha = 0, 0.5% for the population-proportional baseline); the worst-covered district gets 0.30 of its need (vs 0.30 at alpha = 0).",
+    "reason": "alpha = 0.0: of the equity floors that keep the share of need met within 2 percentage points of pure efficiency at every scarce budget (alpha <= 0.0 qualifies), it gives the best-covered worst-off district on average (mean lowest district coverage 0.20 vs 0.20 at alpha = 0.0). At 0.5xB_ref it meets 50.0% of need (vs 50.0% at alpha = 0, 1.1% for the population-proportional baseline); the worst-covered district gets 0.20 of its need (vs 0.20 at alpha = 0).",
     "reference_budget_level": 0.5,
-    "pct_need_met_alpha0": 29.51390727272727,
-    "pct_need_met_recommended": 29.51390727272727,
-    "min_district_coverage_alpha0": 0.2951390727272727,
-    "min_district_coverage_recommended": 0.2951390727272727,
-    "gini_alpha0": 0.9843750000000001,
-    "gini_recommended": 0.9843750000000001,
-    "pct_need_met_population_baseline": 0.4874619284973347
+    "pct_need_met_alpha0": 50.00000011363637,
+    "pct_need_met_recommended": 50.00000011363637,
+    "min_district_coverage_alpha0": 0.1958514878787878,
+    "min_district_coverage_recommended": 0.1958514878787878,
+    "gini_alpha0": 0.9786470902583121,
+    "gini_recommended": 0.9786470902583121,
+    "pct_need_met_population_baseline": 1.0765037045622816
   },
   "lp_vs_population_baseline_at_recommended_alpha": [
     {
       "budget_level": 0.25,
-      "lp_pct_need_met": 25.0,
-      "baseline_pct_need_met": 0.24373096424867846,
-      "lp_objective": 0.75,
-      "baseline_objective": 0.9975626903575132
+      "lp_pct_need_met": 25.000000113636368,
+      "baseline_pct_need_met": 0.5382518522811353,
+      "lp_objective": 0.7499999988636363,
+      "baseline_objective": 0.9946174814771886
     },
     {
       "budget_level": 0.5,
-      "lp_pct_need_met": 29.51390727272727,
-      "baseline_pct_need_met": 0.4874619284973347,
-      "lp_objective": 0.7048609272727273,
-      "baseline_objective": 0.9951253807150267
+      "lp_pct_need_met": 50.00000011363637,
+      "baseline_pct_need_met": 1.0765037045622816,
+      "lp_objective": 0.49999999886363633,
+      "baseline_objective": 0.9892349629543773
     },
     {
       "budget_level": 0.75,
-      "lp_pct_need_met": 29.51390727272727,
-      "baseline_pct_need_met": 0.7311928927460132,
-      "lp_objective": 0.7048609272727273,
-      "baseline_objective": 0.9926880710725399
+      "lp_pct_need_met": 50.18727284090909,
+      "baseline_pct_need_met": 1.6147555568433947,
+      "lp_objective": 0.4981272715909091,
+      "baseline_objective": 0.9838524444315659
     },
     {
       "budget_level": 1.0,
-      "lp_pct_need_met": 29.51390727272727,
-      "baseline_pct_need_met": 0.9749238569946694,
-      "lp_objective": 0.7048609272727273,
-      "baseline_objective": 0.9902507614300533
+      "lp_pct_need_met": 50.18727284090909,
+      "baseline_pct_need_met": 2.153007409124552,
+      "lp_objective": 0.4981272715909091,
+      "baseline_objective": 0.9784699259087545
     },
     {
       "budget_level": 1.5,
-      "lp_pct_need_met": 29.51390727272727,
-      "baseline_pct_need_met": 1.4623857854920153,
-      "lp_objective": 0.7048609272727273,
-      "baseline_objective": 0.9853761421450798
+      "lp_pct_need_met": 50.18727284090909,
+      "baseline_pct_need_met": 3.2295111136868115,
+      "lp_objective": 0.4981272715909091,
+      "baseline_objective": 0.9677048888631318
     }
   ],
   "national_net_need": {
-    "antimalarials": 1.1,
+    "antimalarials": 8.8,
     "beds": 0.0,
     "iv_saline": 0.0,
     "ns1_kits": 0.0,
