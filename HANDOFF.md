@@ -1,4 +1,4 @@
-# Handoff (2026-10-20 22:05)
+# Handoff (2026-10-20 22:40)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -53,9 +53,17 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
 - For Samira (ENG-3): this before/after is usable evidence; backtest (310 s, constant) is the next cost
   (local[4] on 8 threads, 64 district groups); AQE skew/salting still to show.
 
+## 22:40 re-time and SF=1
+- SF=0.25 re-timed after the silver fix (balanced): 15.4 min (generate 15, bronze 113, silver 229, gold 111,
+  analytics 414, serve 45), against 17.1 min before the fix and 58.6 min in power-saver.
+- SF=1 first try failed in silver after 10.3 min (generate 29 s, bronze 231): `java.io.IOException: Disk quota
+  exceeded`. Spark spills to /tmp, a RAM tmpfs with usrquota. Fixed: EPISCOPE_SPARK_LOCAL_DIR (spark.py,
+  .env.example), scaling.sh sets it to $WORK/spark-local. Failed workspace deleted.
+- SF=1 re-run started 22:40 (task buj3uofy8), KEEP=1 EVENT_LOG=1, log /var/tmp/episcope-runs/scaling-sf1.log.
+  Kept workspace holds event logs with the padded key: delete after the Spark UI screenshots.
+
 ## Next, in order
-1. Running (task bfb67vchg): re-time SF=0.25 full, then SF=1 (separate flocks; KEEP, EVENT_LOG). Logs
-   /var/tmp/episcope-runs/retime-sf0.25.log, scaling-sf1.log. Profile workspace deleted (numbers saved).
+1. SF=1 (running); then commit scaling.json and check gate 5.
 2. ING-6 latency: live `make stream`, then `make drop`, read docs/experiments/stream_latency.json.
 3. Final hidden-drop drill on HEAD.
 4. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
