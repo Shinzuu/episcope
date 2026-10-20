@@ -13,6 +13,7 @@ Tables (docs/contracts.md), Delta at <EPISCOPE_LAKE_DIR>/gold/<name>:
     weather_weekly  district x ISO week from the latest reference weather batch (skipped if there is none).
     stock_latest    district x resource from each facility's latest snapshot; beds = free beds (beds - occupied).
     dq_report       one row per batch and source, from silver._dq_log.
+    _snapshots      ING-7 ledger: Delta version of cases_weekly -> latest report_date it includes.
 
 Incremental (ING-4): cases_weekly rebuilds only the weeks listed in silver._changes by batches gold has not yet
 applied, plus the week after each (a new record can turn a later record into a DQ-4 duplicate), using a Delta
@@ -39,6 +40,7 @@ from pipeline.silver.dedup import WINDOW_DAYS, flag_duplicates
 from pipeline.silver.transform import DISEASES, with_epi_week
 
 APPLIED = "_applied"
+SNAPSHOTS = "_snapshots"
 RESOURCES = {  # gold resource -> silver.stock column (beds handled separately)
     "iv_saline": "iv_saline_units", "ns1_kits": "ns1_kits", "ors": "ors_packets",
     "antimalarials": "antimalarial_courses",
@@ -195,9 +197,30 @@ def build_dq(spark) -> dict:
     return {"mode": "full", "rows": dq.count()}
 
 
+# ------------------------------------------------------------------------------------------------ snapshots
+
+def record_snapshot(spark) -> dict | None:
+    """ING-7: note which Delta version of gold.cases_weekly holds the data known through which report date.
+    One row per version in gold._snapshots; pipeline/gold/asof.py reads it to answer "what did we know on date t".
+    A re-run that wrote nothing new leaves the version, and so the ledger, unchanged."""
+    if not lake.exists("gold", "cases_weekly"):
+        return None
+    version = lake.delta_table(spark, "gold", "cases_weekly").history(1).first()["version"]
+    if lake.exists("gold", SNAPSHOTS) and \
+            lake.read(spark, "gold", SNAPSHOTS).where(F.col("version") == version).limit(1).count():
+        return {"version": version, "new": False}
+    through = lake.read(spark, "silver", "encounters").agg(F.max("report_date")).first()[0]
+    row = spark.createDataFrame([(version, through)], "version long, data_through date") \
+        .withColumn("recorded_at", F.current_timestamp())
+    lake.write(row, "gold", SNAPSHOTS, mode="append")
+    return {"version": version, "data_through": str(through), "new": True}
+
+
 def build(spark, full: bool = False) -> dict:
-    return {"cases_weekly": build_cases(spark, full), "weather_weekly": build_weather(spark, full),
-            "stock_latest": build_stock(spark), "dq_report": build_dq(spark)}
+    res = {"cases_weekly": build_cases(spark, full), "weather_weekly": build_weather(spark, full),
+           "stock_latest": build_stock(spark), "dq_report": build_dq(spark)}
+    res["snapshot"] = record_snapshot(spark)
+    return res
 
 
 def main(argv=None):
