@@ -26,4 +26,10 @@ def get_spark(app="episcope", memory=None):
         .config("spark.sql.session.timeZone", "Asia/Dhaka")
         .config("spark.sql.adaptive.enabled", "true")
     )
+    # Spark UI evidence for ENG-2/ENG-3 (scripts/scaling.sh EVENT_LOG=1). Off by default: the silver plan holds
+    # the padded HMAC key (pipeline/privacy/deid.py), so event logs must stay outside the repository.
+    event_dir = os.environ.get("EPISCOPE_EVENT_LOG_DIR")
+    if event_dir:
+        builder = (builder.config("spark.eventLog.enabled", "true")
+                   .config("spark.eventLog.dir", "file://" + os.path.abspath(event_dir)))
     return configure_spark_with_delta_pip(builder).getOrCreate()
