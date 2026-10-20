@@ -11,7 +11,7 @@ mock:      ; $(RUN) -m serving.mock_data
 dashboard-verify: ; node dashboard/tools/verify.mjs
 check:     ; $(RUN) scripts/verify.py
 
-.PHONY: check setup all generate bronze silver gold analytics serve catalog dashboard test clean
+.PHONY: check setup all generate bronze silver gold analytics serve catalog stream asof dashboard test clean
 
 setup:
 	mise install
@@ -34,6 +34,8 @@ analytics:  ; $(RUN) -m analytics.run_all
 evaluate:   ; $(RUN) -m analytics.evaluation.run
 serve:      ; $(RUN) -m serving.export
 catalog:    ; $(RUN) -m pipeline.catalog --list
+stream:     ; $(RUN) -m pipeline.stream   # ING-6: refresh alerts as new encounter files land
+asof:       ; $(RUN) -m pipeline.gold.asof $(DATE)   # ING-7: make asof DATE=2025-06-30
 dashboard:  ; cd dashboard && python3 -m http.server 8000
 test:       ; $(RUN) -m pytest -q tests
 clean:      ; rm -rf data lake spark-warehouse metastore_db derby.log

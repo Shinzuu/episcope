@@ -267,3 +267,34 @@ def test_catalog_registers_every_table(spark, env, late_load):
     assert int(out["ROWS"]) == lake.read(spark, "gold", "cases_weekly").count()
     assert out["LEDGER"] == "True"
     assert out["AGAIN"] == "0"  # re-registering is a no-op
+
+
+def test_time_travel_reproduces_what_we_knew(spark, late_load):
+    """ING-7: as of a date between the two loads, gold is the first load's version, without the late record."""
+    import datetime as dt
+
+    from pipeline.gold.asof import cases_as_of, version_as_of
+
+    assert version_as_of(spark, dt.date(2024, 3, 1)) is None            # before any report
+    before = cases_as_of(spark, dt.date(2024, 3, 15))                    # batch 1 runs to 13 March
+    now = cases_as_of(spark, dt.date(2024, 3, 31))
+    key = (F.col("district_code") == "BD3026") & (F.col("disease") == "dengue") & (F.col("epi_week") == 9)
+    assert now.where(key).first()["cases"] == before.where(key).first()["cases"] + 1  # E7, 21 days late
+    assert version_as_of(spark, dt.date(2024, 3, 15))[1] == dt.date(2024, 3, 13)
+
+
+def test_stream_refreshes_alerts_on_new_file(spark, env, late_load, monkeypatch, tmp_path):
+    """ING-6: a new encounter file picked up by the file-source stream runs the incremental chain and rewrites
+    gold.alerts; the latency is logged."""
+    from analytics.detection import config as DC
+    from pipeline import stream
+
+    monkeypatch.setattr(DC, "ALERTS_PATH", env["lake"] / "gold" / "alerts")
+    monkeypatch.setattr(stream, "LATENCY_LOG", tmp_path / "latency.json")
+    write_csv(env["data"] / "raw" / "encounters" / "report_date=2024-03-27" / "part-0.csv", ENC_COLS, [
+        enc("E8", "P8", "F3", "2024-03-25", "2024-03-27", icd="J11")])
+    stream.start(spark, once=True, export=False).awaitTermination()
+    log = json.loads((tmp_path / "latency.json").read_text())
+    assert log[-1]["batch_id"] is not None and log[-1]["latency_seconds"] >= 0
+    assert lake.exists("gold", "alerts")
+    assert cell(spark, "BD2015", "ili", 13)["cases"] == 1  # the streamed record reached gold
