@@ -1,0 +1,27 @@
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\scriptsize, >=Stealth,
+  box/.style={draw, rounded corners=1pt, align=center, text width=22mm, minimum height=9mm, inner sep=1.5pt, fill=#1},
+  box/.default=white]
+\node[box=gray!10]  (pub) at (0,0)     {Public data\\HDX, Open-Meteo};
+\node[box=gray!10]  (gen) at (0,-1.2)  {Generator\\S4, S5, S6};
+\node[box=blue!8]   (br)  at (2.85,-0.6) {Bronze: files as\\written, checksum,\\batch ID};
+\node[box=blue!8]   (si)  at (5.7,-0.6)  {Silver: 28 rules,\\HMAC key, MERGE};
+\node[box=red!6]    (qu)  at (5.7,-2.0)  {Quarantine,\\DQ report};
+\node[box=blue!8]   (go)  at (2.85,-2.0) {Gold: onset-week\\marts, lineage};
+\node[box=orange!10](an)  at (0,-2.9)  {Analytics: alerts,\\forecasts, LP, calendar};
+\node[box=green!8]  (se)  at (2.85,-3.4) {Serving: suppressed\\JSON, $\le$ 10\,MB};
+\node[box=green!8]  (da)  at (5.7,-3.4)  {Dashboard\\D3.js v7};
+\draw[->] (pub.east) -- (br.west |- pub.east);
+\draw[->] (gen.east) -- (br.west |- gen.east);
+\draw[->] (br) -- (si);
+\draw[->] (si) -- (qu);
+\draw[->] (si.south west) -- (go.north east);
+\draw[->] (go.west) -- (an.north east);
+\draw[->] (an.south east) -- (se.west);
+\draw[->] (go) -- (se);
+\draw[->] (se) -- (da);
+\end{tikzpicture}
+\caption{EpiScope data flow. Blue: Delta lakehouse on Spark; one Makefile runs every stage.}
+\label{fig:arch}
+\end{figure}

@@ -4,8 +4,10 @@ Spark~4.0.1~\cite{zaharia2016spark} in local mode with Delta Lake~4.0.1~\cite{ar
 jobs that read gold and write gold, a serving step that exports suppressed JSON, and a D3.js
 v7~\cite{bostock2011d3} dashboard. One command, \texttt{make all}, runs every stage in order
 (\texttt{reference}, \texttt{generate}, \texttt{bronze}, \texttt{silver}, \texttt{gold}, \texttt{analytics},
-\texttt{serve}, \texttt{catalog}); Java~17 and Python~3.12 come from \texttt{mise.toml} and every Python package
+\texttt{serve}, \texttt{catalog}; Fig.~\ref{fig:arch}); Java~17 and Python~3.12 come from \texttt{mise.toml} and every Python package
 is pinned in \texttt{requirements.txt}.
+
+\input{sections/fig-architecture}
 
 \textbf{Delta rather than plain Parquet.} Late records (up to 21 days) must update their epi-week without
 duplicates. Delta's ACID MERGE makes that a single atomic statement, \texttt{replaceWhere} rewrites only the
@@ -28,6 +30,6 @@ metastore stored inside the lake. Derby allows one process at a time, so keeping
 means a locked metastore can never stop the pipeline.
 
 \begin{teammate}{Samira}
-Architecture figure (redraw Fig.~1 of the brief with our components) and the alternatives table
+Check Fig.~\ref{fig:arch} and add the alternatives table
 (Airflow against a Makefile DAG, Iceberg against Delta, streaming against batch).
 \end{teammate}
