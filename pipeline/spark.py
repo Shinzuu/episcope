@@ -32,4 +32,10 @@ def get_spark(app="episcope", memory=None):
     if event_dir:
         builder = (builder.config("spark.eventLog.enabled", "true")
                    .config("spark.eventLog.dir", "file://" + os.path.abspath(event_dir)))
+    # Shuffle and persist spill go to spark.local.dir (default /tmp). Where /tmp is a small RAM tmpfs, SF=1 silver
+    # fails with "Disk quota exceeded"; EPISCOPE_SPARK_LOCAL_DIR moves the spill to a disk folder.
+    local_dir = os.environ.get("EPISCOPE_SPARK_LOCAL_DIR")
+    if local_dir:
+        os.makedirs(local_dir, exist_ok=True)
+        builder = builder.config("spark.local.dir", os.path.abspath(local_dir))
     return configure_spark_with_delta_pip(builder).getOrCreate()

@@ -32,6 +32,7 @@ for SF in "$@"; do
   ln -s "$REPO/.venv" "$CLONE/.venv"
   sed "s/^EPISCOPE_HASH_SALT=.*/EPISCOPE_HASH_SALT=$(python3 -c 'import secrets;print(secrets.token_hex(32))')/" \
     "$CLONE/.env.example" >"$CLONE/.env"
+  export EPISCOPE_SPARK_LOCAL_DIR="$WORK/spark-local"   # spill on disk, not in a /tmp tmpfs; deleted with $WORK
   if [ "${EVENT_LOG:-0}" = "1" ]; then
     mkdir -p "$WORK/spark-events"
     export EPISCOPE_EVENT_LOG_DIR="$WORK/spark-events"
