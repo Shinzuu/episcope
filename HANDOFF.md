@@ -1,4 +1,4 @@
-# Handoff (2026-10-20 21:20)
+# Handoff (2026-10-20 22:05)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -42,8 +42,19 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   window) is recomputed for quarantine write, its count(), dq_report and the clean merge. Fix only if outputs
   stay identical; anything that changes results goes to shinzuu first.
 
+## 22:05 profile and silver fix
+- SF=0.5 (partly power-saver): 34.8 min (generate 60 s, bronze 457, silver 995, gold 125, analytics 406, serve 44).
+- SF=0.25 balanced, before fix: 17.1 min (generate 15, bronze 114, silver 329, gold 99, analytics 425, serve 48).
+  Analytics is near constant across SF (detection 55, forecast 35, backtest 310, rest 25 s); silver scales.
+  Workspace kept: /var/tmp/episcope-scale-sf0.25.p2THK5 (holds event logs with the padded key: delete later).
+- Silver fix (engine.flag_rows; quarantine count from the written slice; changed weeks checkpointed): Spark
+  app 325 s -> 214 s, all silver tables identical (fingerprint). Evidence docs/experiments/silver_optimisation.json.
+  test_quality 39 passed (one new equivalence test). test_pipeline + test_privacy 26 passed.
+- For Samira (ENG-3): this before/after is usable evidence; backtest (310 s, constant) is the next cost
+  (local[4] on 8 threads, 64 district groups); AQE skew/salting still to show.
+
 ## Next, in order
-1. Profile, fix the biggest cost, re-time SF=0.25 balanced (before/after), then SF=1 (own flock).
+1. Commit fix after tests, re-time SF=0.25 full (scaling.sh, own flock), then SF=1 (own flock, EVENT_LOG, KEEP).
 2. ING-6 latency: live `make stream`, then `make drop`, read docs/experiments/stream_latency.json.
 3. Final hidden-drop drill on HEAD.
 4. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
