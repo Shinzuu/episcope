@@ -100,3 +100,19 @@ agent builds slides and a script in ~/Projects/episcope-video. The README carrie
 coming>". The drafts written before the change, `video/TRANSCRIPT-shezan.md` (654 words) and
 `video/VIDEO-PLAN.md`, are left uncommitted in `video/` for shinzuu to pass on or delete. The ten review passes
 now cover the report only.
+
+## Progress after the pack (2026-10-20 19:30)
+
+| ID | New status | Evidence |
+|---|---|---|
+| ING-3 | done | `pipeline/catalog.py`, `make catalog` (27 tables at SF=0.25); test passes |
+| ING-6 | done, latency to measure | `pipeline/stream.py`, `make stream`; test passes (new file reaches gold and alerts) |
+| ING-7 | done | `pipeline/gold/asof.py`, `make asof DATE=...`; test reproduces gold before a 21-day-late record |
+| ENG-1 | done | README: prerequisites, hidden-drop steps, architecture |
+| AN-2 | results committed | `docs/experiments/detection_tradeoff.json` (SF=0.25): EARS C2 sensitivity 0.97, 1.27 false alerts per district-year, median 8 days; CUSUM 0.91, 1.49, 9 days |
+| AN-5 | results committed | `docs/experiments/backtest_metrics.csv` (SF=0.25): relative WIS 0.83 overall; MAE dengue 40.1 vs 43.6, diarrhoea 19.0 vs 26.3 |
+| AN-7 | still degenerate | SF=0.25 with real weather: national net need 0 for beds, IV saline, NS1 kits and ORS; only antimalarials (8.8) need allocating. For Rafi |
+| ENG-2 | running | `scripts/scaling.sh 0.25 0.5 1` started 19:30 after the thesis jobs ended |
+| ENG-3, ENG-4 | left for Samira | decision 2026-10-20 (R9 is per person) |
+
+Tests: `tests/test_pipeline.py` + `tests/test_generator.py` 23 passed (9 min 49 s).
