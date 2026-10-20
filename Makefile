@@ -11,7 +11,7 @@ mock:      ; $(RUN) -m serving.mock_data
 dashboard-verify: ; node dashboard/tools/verify.mjs
 check:     ; $(RUN) scripts/verify.py
 
-.PHONY: check setup all generate bronze silver gold analytics serve dashboard test clean
+.PHONY: check setup all generate bronze silver gold analytics serve catalog dashboard test clean
 
 setup:
 	mise install
@@ -24,7 +24,7 @@ setup:
 reference: ; @test -f data/reference/weather_daily.parquet || $(RUN) -m pipeline.reference.build
 reference-rebuild: ; $(RUN) -m pipeline.reference.build
 
-all: reference generate bronze silver gold analytics serve
+all: reference generate bronze silver gold analytics serve catalog
 
 generate:   ; $(RUN) -m generator.generate --sf $(SF) --seed $(SEED)
 bronze:     ; $(RUN) -m pipeline.bronze.ingest
@@ -33,6 +33,7 @@ gold:       ; $(RUN) -m pipeline.gold.build
 analytics:  ; $(RUN) -m analytics.run_all
 evaluate:   ; $(RUN) -m analytics.evaluation.run
 serve:      ; $(RUN) -m serving.export
+catalog:    ; $(RUN) -m pipeline.catalog --list
 dashboard:  ; cd dashboard && python3 -m http.server 8000
 test:       ; $(RUN) -m pytest -q tests
 clean:      ; rm -rf data lake spark-warehouse metastore_db derby.log

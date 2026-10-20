@@ -248,3 +248,22 @@ def test_export_has_no_small_counts(spark, env, late_load):
         json.loads(text)
     meta = json.loads((out / "meta.json").read_text())
     assert meta["suppression_threshold"] == 5 and meta["data_through"] == "2024-03-20"
+
+
+def test_catalog_registers_every_table(spark, env, late_load):
+    """ING-3: every lake table is queryable by name from a Hive-catalog session (own process: Derby is
+    single-user and this module's SparkSession has no Hive support)."""
+    import subprocess
+    import sys
+
+    code = ("from pipeline import catalog as c; c.register(s := c.session()); "
+            "print('ROWS', s.sql('SELECT count(*) FROM gold.cases_weekly').first()[0]); "
+            "print('LEDGER', s.catalog.tableExists('bronze.ops_ingest_log')); "
+            "print('AGAIN', len(c.register(s))); s.stop()")
+    r = subprocess.run([sys.executable, "-c", code], cwd=ROOT, capture_output=True, text=True, timeout=900,
+                       env={**os.environ, "EPISCOPE_SPARK_MASTER": "local[1]", "EPISCOPE_DRIVER_MEMORY": "1g"})
+    assert r.returncode == 0, r.stderr[-2000:]
+    out = dict(line.split(" ", 1) for line in r.stdout.splitlines() if line.startswith(("ROWS", "LEDGER", "AGAIN")))
+    assert int(out["ROWS"]) == lake.read(spark, "gold", "cases_weekly").count()
+    assert out["LEDGER"] == "True"
+    assert out["AGAIN"] == "0"  # re-registering is a no-op
