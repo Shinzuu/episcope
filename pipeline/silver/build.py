@@ -37,7 +37,7 @@ from pyspark.sql import functions as F
 from pipeline.bronze import lake
 from pipeline.bronze.ingest import LOG as BRONZE_LOG, contract_fields, latest_batch
 from pipeline.privacy import deidentify
-from pipeline.quality import (REASON_CODES, apply_rules, dq_report, encounter_rules, facility_rules,
+from pipeline.quality import (REASON_CODES, apply_rules, dq_report, encounter_rules, facility_rules, flag_rows,
                               load_district_codes, stock_rules, with_facility_lookup)
 from pipeline.silver import transform as T
 
@@ -94,8 +94,9 @@ def write_quarantine(quar: DataFrame, source: str, batch_id: str) -> int:
         F.to_json(F.struct(*payload)).alias("record"),
         F.col("quarantined_at"),
     )
-    _replace(out, "silver", QUARANTINE, f"source = {lake.sql_str(source)} AND batch_id = {lake.sql_str(batch_id)}")
-    return out.count()
+    where = f"source = {lake.sql_str(source)} AND batch_id = {lake.sql_str(batch_id)}"
+    _replace(out, "silver", QUARANTINE, where)
+    return lake.read(quar.sparkSession, "silver", QUARANTINE).where(where).count()  # count the written slice
 
 
 def write_dq(report: DataFrame, source: str, batch_id: str) -> None:
@@ -183,7 +184,7 @@ def merge_encounters(spark, src: DataFrame, batch_id: str) -> DataFrame:
     weeks = src.select("epi_year", "epi_week", "week_start")
     if not lake.exists("silver", "encounters"):
         lake.write(src, "silver", "encounters", partition_by=["epi_year"])
-        changed = weeks.distinct()
+        changed = weeks.distinct().localCheckpoint()  # src is unpersisted below; the caller counts changed
     else:
         tgt = lake.read(spark, "silver", "encounters")
         years = sorted({r[0] for r in src.select("epi_year").distinct().collect() if r[0] is not None})
@@ -211,8 +212,8 @@ def merge_encounters(spark, src: DataFrame, batch_id: str) -> DataFrame:
 def process_encounters(spark, batch_id: str) -> dict:
     raw = bronze_batch(spark, "encounters", batch_id, "S4_encounters")
     fac = facilities(spark)
-    enc = with_facility_lookup(raw, fac).persist()
     rules = encounter_rules()
+    enc = flag_rows(with_facility_lookup(raw, fac), rules).persist()  # rules once, reused by every output
     clean, quar = apply_rules(enc, rules, batch_id, "encounters")
     report = dq_report(enc, rules, batch_id, "encounters")
     nq = write_quarantine(quar, "encounters", batch_id)
@@ -228,8 +229,8 @@ def process_encounters(spark, batch_id: str) -> dict:
 
 def process_stock(spark, batch_id: str) -> dict:
     raw = bronze_batch(spark, "stock", batch_id, "S6_stock")
-    st = with_facility_lookup(raw, facilities(spark)).persist()
     rules = stock_rules()
+    st = flag_rows(with_facility_lookup(raw, facilities(spark)), rules).persist()
     clean, quar = apply_rules(st, rules, batch_id, "stock")
     nq = write_quarantine(quar, "stock", batch_id)
     write_dq(dq_report(st, rules, batch_id, "stock"), "stock", batch_id)

@@ -1,0 +1,41 @@
+{
+  "what": "silver build: evaluate the DQ rules once (flag_rows, persisted) instead of once per output; count the quarantine slice from the written table; checkpoint changed weeks before src is unpersisted",
+  "sf": 0.25,
+  "seed": 42,
+  "spark": {
+    "master": "local[4]",
+    "driver_memory": "5g"
+  },
+  "power_profile": "balanced",
+  "spark_app_seconds": {
+    "before": 325.5,
+    "after": 213.8
+  },
+  "encounters_sql_seconds_before": {
+    "quarantine_write": 61.7,
+    "quarantine_count": 24.3,
+    "dq_log_write": 24.2,
+    "encounters_write": 106.8,
+    "changed_weeks_count": 27.6
+  },
+  "encounters_sql_seconds_after": {
+    "quarantine_write": 57.6,
+    "quarantine_count": 1.5,
+    "dq_log_write": 3.4,
+    "encounters_write": 79.4,
+    "changed_weeks_checkpoint": 2.8
+  },
+  "outputs_identical": true,
+  "rows_per_table": {
+    "_batches": 3,
+    "_changes": 265,
+    "_dq_log": 3,
+    "districts": 64,
+    "encounters": 8190980,
+    "facilities": 736,
+    "population": 768,
+    "quarantine": 341724,
+    "stock": 1330426
+  },
+  "method": "Spark event logs of both runs in the same workspace (same data, same salt); identity = per-table row count and sum of xxhash64 over all non-timestamp columns"
+}

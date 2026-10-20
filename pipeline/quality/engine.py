@@ -34,11 +34,20 @@ def _check(df: DataFrame, rules: Sequence[Rule]) -> None:
             raise ValueError(f"rule {r.code} needs columns {missing}{hint}")
 
 
-def _flagged(df: DataFrame, rules: Sequence[Rule]) -> DataFrame:
-    """Input plus one boolean flag column per rule (True = fails). Null results count as pass."""
+def _flag(r: Rule) -> str:
+    return f"{_FLAG}{r.code}"
+
+
+def flag_rows(df: DataFrame, rules: Sequence[Rule]) -> DataFrame:
+    """Input plus one boolean flag column per rule (True = fails). Null results count as pass.
+
+    apply_rules and dq_report reuse flags that are already present, so a caller that persists the result of
+    flag_rows evaluates every rule (the duplicate rules sort the whole load) once instead of once per output."""
+    missing = [r for r in rules if _flag(r) not in df.columns]
+    if not missing:
+        return df
     _check(df, rules)
-    flags = [F.coalesce(r.expr(df), F.lit(False)).alias(f"{_FLAG}{i}") for i, r in enumerate(rules)]
-    return df.select("*", *flags)
+    return df.select("*", *[F.coalesce(r.expr(df), F.lit(False)).alias(_flag(r)) for r in missing])
 
 
 def _original_columns(df: DataFrame) -> list[str]:
@@ -53,12 +62,12 @@ def apply_rules(df: DataFrame, rules: Sequence[Rule], batch_id: str, source: str
     batch_id, source and quarantined_at. Internal ``_dq_*`` helper columns are dropped from both.
     """
     original = _original_columns(df)
-    flagged = _flagged(df, rules)
-    q_flags = [F.col(f"{_FLAG}{i}") for i, r in enumerate(rules) if r.severity == QUARANTINE]
+    flagged = flag_rows(df, rules)
+    q_flags = [F.col(_flag(r)) for r in rules if r.severity == QUARANTINE]
     is_quarantined = F.lit(False)
     for f in q_flags:
         is_quarantined = is_quarantined | f
-    reasons = F.array_compact(F.array(*[F.when(F.col(f"{_FLAG}{i}"), F.lit(r.code)) for i, r in enumerate(rules)]))
+    reasons = F.array_compact(F.array(*[F.when(F.col(_flag(r)), F.lit(r.code)) for r in rules]))
     marked = flagged.withColumn("_dq_quarantined", is_quarantined)
 
     clean = marked.where(~F.col("_dq_quarantined")).select(*original)
@@ -77,13 +86,13 @@ def dq_report(df: DataFrame, rules: Sequence[Rule], batch_id: str, source: str) 
     batch_id, source, rows_in, rows_clean, rows_quarantined, rule_pass_rates (map code -> share passing),
     loaded_at. Computed from the same flags as apply_rules, so the counts always agree with the split.
     ``df`` is the input that was passed to apply_rules (with any lookups applied)."""
-    flagged = _flagged(df, rules)
-    q_idx = [i for i, r in enumerate(rules) if r.severity == QUARANTINE]
+    flagged = flag_rows(df, rules)
     any_q = F.lit(False)
-    for i in q_idx:
-        any_q = any_q | F.col(f"{_FLAG}{i}")
+    for r in rules:
+        if r.severity == QUARANTINE:
+            any_q = any_q | F.col(_flag(r))
     aggs = [F.count(F.lit(1)).alias("rows_in"), F.sum(F.when(any_q, 1).otherwise(0)).alias("rows_quarantined")]
-    aggs += [F.sum(F.col(f"{_FLAG}{i}").cast("long")).alias(f"_fail_{i}") for i in range(len(rules))]
+    aggs += [F.sum(F.col(_flag(r)).cast("long")).alias(f"_fail_{i}") for i, r in enumerate(rules)]
     totals = flagged.agg(*aggs)
 
     rows_in = F.col("rows_in")

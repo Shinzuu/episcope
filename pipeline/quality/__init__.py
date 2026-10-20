@@ -12,7 +12,7 @@ Facilities go first (``rules_for("facilities", district_codes)``), because the o
 on encounters and stock join against the clean facility register.
 """
 
-from .engine import REASON_CODES, apply_rules, dq_report
+from .engine import REASON_CODES, apply_rules, dq_report, flag_rows
 from .rules import (
     AGE_MAX,
     AGE_MIN,
@@ -30,6 +30,6 @@ from .rules import (
 
 __all__ = [
     "AGE_MAX", "AGE_MIN", "ICD10_REGEX", "QUARANTINE", "REASON_CODES", "WARN", "Rule", "apply_rules",
-    "dq_report", "encounter_rules", "facility_rules", "load_district_codes", "rules_for", "stock_rules",
+    "dq_report", "encounter_rules", "facility_rules", "flag_rows", "load_district_codes", "rules_for", "stock_rules",
     "with_facility_lookup",
 ]

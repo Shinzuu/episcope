@@ -25,7 +25,7 @@ from pipeline.quality import (  # noqa: E402
     stock_rules,
     with_facility_lookup,
 )
-from pipeline.quality.engine import _flagged  # noqa: E402
+from pipeline.quality.engine import flag_rows  # noqa: E402
 
 DISTRICTS = ["BD1004", "BD3026", "BD2003"]  # test pcodes only; production reads data/reference/districts.csv
 
@@ -82,8 +82,8 @@ def facilities(spark):
 
 def fails(df, rule):
     """Per-row result of one rule, in input order (True = row fails)."""
-    out = _flagged(df.withColumn("_dq_order", F.monotonically_increasing_id()), [rule])
-    return [r[0] for r in out.orderBy("_dq_order").select("_dq_flag_0").collect()]
+    out = flag_rows(df.withColumn("_dq_order", F.monotonically_increasing_id()), [rule])
+    return [r[0] for r in out.orderBy("_dq_order").select(f"_dq_flag_{rule.code}").collect()]
 
 
 def by_code(rules):
@@ -308,3 +308,22 @@ def test_rules_for_and_district_loader(tmp_path):
     assert {r.code for r in rules_for("facilities", ["BD1004"])} == {r.code for r in facility_rules(["BD1004"])}
     with pytest.raises(ValueError):
         rules_for("weather")
+
+
+def test_precomputed_flags_give_the_same_split_and_report(spark, facilities):
+    """Persisting flag_rows once (as the silver job does) must not change the split or the report."""
+    rows = [enc(), enc(), enc(encounter_id="E2", patient_id=None), enc(encounter_id="E3", facility_id="F9"),
+            enc(encounter_id="E4", age_years="250", sex="X", outcome="gone"), enc(encounter_id="E5", report_date="2024-06-01")]
+    df = with_facility_lookup(frame(spark, rows, ENC_COLS), facilities)
+    rules = encounter_rules()
+    pre = flag_rows(df, rules).persist()
+
+    def split(x):
+        clean, quar = apply_rules(x, rules, "b1", "encounters")
+        rep = dq_report(x, rules, "b1", "encounters").drop("loaded_at").first().asDict()
+        return (sorted(map(tuple, clean.collect())),
+                sorted((r["encounter_id"], tuple(r["reason_codes"])) for r in quar.collect()), rep)
+
+    assert split(pre) == split(df)
+    assert set(apply_rules(pre, rules, "b1", "encounters")[0].columns) == set(ENC_COLS)
+    pre.unpersist()
