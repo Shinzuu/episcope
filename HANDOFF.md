@@ -25,6 +25,9 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   and charging, then resume by themselves. State T = paused on purpose: do not kill, restart or clear the lock.
   Light work only during the pause.
 
+- During the pause (light work): report §1, §2, §5, §6 (SF=0.25 numbers, provisional), §8, appendix A outline,
+  architecture figure; 6 pages, 0 warnings. LaTeX builds (seconds) ran outside flock.
+
 ## Next, in order
 1. Scaling SF 0.25, 0.5, 1 under flock (SF=1 with event log, workspace kept) -> docs/experiments/scaling.json.
 2. ING-6 latency: live `make stream`, then `make drop`, read docs/experiments/stream_latency.json.
