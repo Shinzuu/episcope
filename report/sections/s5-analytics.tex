@@ -1,20 +1,45 @@
 \section{Analytics Methods}
-The code below exists and is tested; the leads write the method justification.
-
-\textbf{Detection (AN-1, AN-3).} EARS C2~\cite{hutwagner2003ears} runs on seasonally adjusted, completeness-scaled
-weekly counts with Spark window functions; CUSUM runs per district and disease in \texttt{applyInPandas}.
-Farrington~\cite{farrington1996} was ruled out because it needs about five years of history before its first
-test week. Silent facility-weeks are treated as missing, not zero.
-
-\textbf{Forecasting (AN-4).} One negative-binomial GLM per district for dengue and diarrhoea, with weather
-lagged at least as far as the horizon, fitted in parallel through a cogrouped \texttt{applyInPandas}.
-
-\textbf{Demand, allocation and calendar (AN-6, AN-7, AN-9).} Forecast quantiles become beds, IV saline, NS1 kits,
-ORS and antimalarials with the assumptions in \texttt{analytics/forecast/demand\_assumptions.py}; the brief's LP
-is solved with PuLP~3.3.2 and CBC; STL per division and disease gives the onset and peak weeks.
-
-\begin{teammate}{Rafi}
-Write the justification of each method from the literature, the LP formulation with our normalisation per
-resource, and what $\alpha$ means for policy. Check the allocation first: in the SF=0.05 run the national net
-need was 0 for beds, IV saline, NS1 kits and ORS, so the LP had almost nothing to allocate.
+\begin{teammate}{Rafi: confirm this section, written from the code}
+Check each choice below against what you intended, and add the literature for each method.
 \end{teammate}
+
+\subsection{Outbreak detection (AN-1, AN-3)}
+Both detectors run per district and disease on a series prepared in Spark (\texttt{analytics/detection/}).
+First, every week a district reported nothing at all is marked missing, as is any week where fewer than 80\% of
+its expected facilities reported; above that, the count is scaled by $1/\text{completeness}$. Second, counts
+are divided by a seasonal index per division, disease and week of year, taken as the median over the
+\emph{other} years, so an outbreak cannot raise its own expected value.
+
+EARS C2~\cite{hutwagner2003ears} compares each week with the mean and standard deviation of lags 3 to 9 and runs
+on Spark window functions. CUSUM accumulates standardised excesses over a 26-week baseline behind a two-week
+guard band and runs in \texttt{applyInPandas}. Neither may alarm unless the last four weeks hold at least five
+cases, which keeps near-empty series quiet. Farrington~\cite{farrington1996} was ruled out: it needs about five
+years of history before its first test week, and we have five in total.
+
+The reporting artefact is handled twice: gold counts by onset week, so back-filled records land on the weeks
+they happened, and the silent weeks are missing rather than zero.
+
+\subsection{Forecasting (AN-4)}
+For dengue and diarrhoea, one model per district and horizon $h=1,\dots,4$:
+\begin{multline}
+\log\mu_t = \beta_0 + \textstyle\sum_{k=1}^{2} \text{Fourier}_k(t) + \beta_r\,\text{rain}_{t-\ell} \\
++ \beta_T\,\text{temp}_{t-\ell} + \beta_y \log(1+\text{level}_{t-h})
+\end{multline}
+with lags $\ell$ of four to eight weeks and $\text{Var}(y)=\mu+\alpha\mu^2$ (NB2), fitted with statsmodels.
+Because every weather lag is at least as long as the horizon, no weather forecast is needed. Districts are
+fitted in parallel through a cogrouped \texttt{applyInPandas}. Predictive quantiles are the plug-in NB
+quantiles, which ignore parameter uncertainty.
+
+\subsection{Demand, allocation and calendar (AN-6, AN-7, AN-9)}
+Forecast cases become demand for beds, IV saline, NS1 kits, ORS and antimalarials through admission shares
+estimated from the data, lengths of stay and units per case or admission, all in
+\texttt{demand\_assumptions.py} and marked as our assumptions. The LP plans against the 90th percentile.
+
+The allocation is the brief's LP solved with PuLP~3.3.2 and CBC, with one change: unmet need for each resource
+is divided by its national net need, so a bed and a test kit are not worth the same in one objective. With
+$\alpha=0$ the LP is pure efficiency; with $\alpha=1$ every resource is split by population. The model is
+feasible for every $\alpha$ because $x=0$ satisfies every constraint.
+
+The preparedness calendar fits STL per division and disease in \texttt{applyInPandas}. Onset is the first week
+after the trough where the seasonal index passes 25\% of the trough-to-peak range; supplies are pre-positioned
+three weeks before onset and campaigns start four to six weeks before it.

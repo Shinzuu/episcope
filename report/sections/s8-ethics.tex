@@ -1,11 +1,19 @@
 \section{Ethical, Societal and Sustainability Considerations}
-No real patient data is used; every encounter is synthetic and labelled so. Direct identifiers stop at bronze:
-silver and gold hold only the keyed hash and age bands, the key never enters Git, and every export hides counts
-from 1 to 4 with complementary suppression so that a total cannot reveal a hidden cell~\cite{sweeney2002k}.
-One residual risk is known and documented in the code: the padded HMAC key appears in Spark's query plan, so
+\textbf{Privacy by design.} No real patient data is used; every encounter is synthetic and labelled so.
+Direct identifiers stop at bronze: silver and gold hold only the keyed hash and age bands, the key never enters
+Git, and every export hides counts from 1 to 4 with complementary suppression, so a total cannot reveal a hidden
+cell. One residual risk is known and written in the code: the padded HMAC key appears in Spark's query plan, so
 Spark event logs of the silver job must be treated as secret and kept outside the repository.
-\begin{teammate}{Samira}
-Equity (what $\alpha$ protects and costs), misuse (stigma of a named district, alert fatigue), the
-differential-privacy discussion for public releases (PRV-4), the limits of big-data signals~\cite{lazer2014flu},
-and the energy and hardware footprint.
+
+\textbf{Record-level extracts and public release (PRV-4).} \texttt{pipeline/privacy/kanon.py} measures
+k-anonymity~\cite{sweeney2002k} over the quasi-identifiers (age band, sex, district, onset week, disease,
+facility) of any record-level extract. k-anonymity does not stop a homogeneity attack, where everyone in a class
+shares one diagnosis, so a disease extract also needs l-diversity. For a public release, differential
+privacy~\cite{dwork2006dp} is the stronger tool: the Laplace mechanism adds noise with standard deviation
+$\sqrt{2}/\varepsilon$ to each count, about 1.4 cases at $\varepsilon=1$. The privacy budget adds up over every
+published cell and week, and noisy counts can be negative and must be post-processed. We would use it for the
+public release only; ministry users keep exact counts with suppression.
+\begin{teammate}{Samira: confirm}
+Equity (what $\alpha$ protects and what it costs), misuse (stigma of a named district, alert fatigue), the
+limits of big-data signals~\cite{lazer2014flu}, and the energy and hardware footprint.
 \end{teammate}
