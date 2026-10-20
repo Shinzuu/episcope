@@ -38,6 +38,7 @@ from generator import facilities as F
 from generator import outbreaks as O
 from generator import reference as R
 from generator import stock as S
+from pipeline.bronze import lake
 
 _CTX = None
 
@@ -121,9 +122,10 @@ def parse(argv):
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--start", help="first report_date (default: weather start, or after existing data)")
     p.add_argument("--end", help="last report_date (default: weather end)")
-    p.add_argument("--out", default="data/raw")
+    lake.load_env()  # the same EPISCOPE_DATA_DIR that bronze reads, so a custom .env still lines up (ING-1)
+    p.add_argument("--out", default=str(lake.data_dir() / "raw"))
     p.add_argument("--truth-dir", default="ground_truth")
-    p.add_argument("--reference", default="data/reference")
+    p.add_argument("--reference", default=str(lake.data_dir() / "reference"))
     p.add_argument("--incremental-days", type=int, help="write a fresh N-day drop in the same layout")
     p.add_argument("--facility-seed", type=int, default=42, help="seed of the S5 registry (keep fixed)")
     p.add_argument("--workers", type=int, default=min(4, os.cpu_count() or 1))

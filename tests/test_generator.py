@@ -239,3 +239,11 @@ def test_holiday_calendar():
     days = {str(np.datetime64(int(d), "D")) for d in h}
     assert {"2024-02-21", "2024-03-26", "2024-12-16", "2024-04-10", "2024-06-17"} <= days
     assert cal.weekday(np.datetime64("2024-10-11").astype(np.int64)) == cal.FRIDAY
+
+
+def test_default_paths_follow_data_dir(tmp_path, monkeypatch):
+    """ING-1: the generator writes where bronze reads (EPISCOPE_DATA_DIR), not a fixed ./data."""
+    monkeypatch.setenv("EPISCOPE_DATA_DIR", str(tmp_path / "elsewhere"))
+    a = G.parse([])
+    assert pathlib.Path(a.out) == tmp_path / "elsewhere" / "raw"
+    assert pathlib.Path(a.reference) == tmp_path / "elsewhere" / "reference"
