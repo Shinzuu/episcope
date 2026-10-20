@@ -16,6 +16,11 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   /var/tmp/episcope-scale-sf0.25.* deleted; log kept as /var/tmp/episcope-runs/scaling-killed-1927.log.
 - Nothing else was running. Derby `.lck` files in lake/_catalog are normal (Spark never shuts Derby down).
 
+## 19:36 second stop
+- Restarted scaling was stopped by the power guard (battery 12%, `power-guard.state` paused=1): Spark
+  context shut down in SF=0.25 bronze. Workspace deleted. A waiter (background) starts scaling under flock
+  once `power-guard.state` shows paused=0. If it trips again mid-run, the guard log says so.
+
 ## Next, in order
 1. Scaling SF 0.25, 0.5, 1 under flock (SF=1 with event log, workspace kept) -> docs/experiments/scaling.json.
 2. ING-6 latency: live `make stream`, then `make drop`, read docs/experiments/stream_latency.json.
