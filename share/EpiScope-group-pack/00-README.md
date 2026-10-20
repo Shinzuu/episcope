@@ -9,7 +9,10 @@ Draft v0.1, 20 Oct 2026. From Shezan, for Rafi, Rimjhim and Samira.
 | `01-Status-and-tasks.pdf` | Every requirement with its status, then one section per member with open tasks, effort and the files to touch |
 | `02-Report-draft.pdf` | The report skeleton in IEEE format with every required section. Data engineering is filled in; yellow boxes mark what each of you writes |
 
-Slides and script: <links coming>
+Slides and script:
+
+- Slides: https://shinzuu.github.io/episcope-video/
+- Script: https://shinzuu.github.io/episcope-video/script.html
 
 ## Where the project stands
 
