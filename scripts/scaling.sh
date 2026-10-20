@@ -47,7 +47,7 @@ for SF in "$@"; do
       echo "SF=$SF failed at $st (log: $LOG)" >&2
     fi
     t1=$(date +%s.%N)
-    printf '%s\t%s\n' "$st" "$(echo "$t1 - $t0" | bc)" >>"$TIMES"
+    printf '%s\t%s\n' "$st" "$(awk -v a="$t0" -v b="$t1" 'BEGIN{printf "%.1f", b - a}')" >>"$TIMES"
     [ "$status" = ok ] || break
   done
   python3 - "$OUT" "$SF" "$SEED" "$TIMES" "$CLONE" "$status" <<'PY'
