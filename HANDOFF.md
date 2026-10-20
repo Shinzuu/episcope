@@ -21,6 +21,10 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   context shut down in SF=0.25 bronze. Workspace deleted. A waiter (background) starts scaling under flock
   once `power-guard.state` shows paused=0. If it trips again mid-run, the guard log says so.
 
+- Power guard live (`bin/lilith-power-guard`, every 30 s): jobs on heavy.lock get SIGSTOP until battery >= 35%
+  and charging, then resume by themselves. State T = paused on purpose: do not kill, restart or clear the lock.
+  Light work only during the pause.
+
 ## Next, in order
 1. Scaling SF 0.25, 0.5, 1 under flock (SF=1 with event log, workspace kept) -> docs/experiments/scaling.json.
 2. ING-6 latency: live `make stream`, then `make drop`, read docs/experiments/stream_latency.json.
