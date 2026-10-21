@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 10:25)
+# Handoff (2026-10-21 10:30)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -81,7 +81,9 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   f1fc38d differ only in docs and the spill-folder option). scaling.json committed.
 
 ## Next, in order
-1. ING-6 latency: live `make stream`, then `make drop`, read docs/experiments/stream_latency.json.
+1. ING-6 latency running in the kept SF=1 workspace (task b3adhlwoo, script in the session scratchpad):
+   stream up, `make drop SF=1`, first refreshed epoch, stop. Log /var/tmp/episcope-runs/latency-sf1.log.
+   Main checkout untouched; copy stream_latency.json back after.
 2. Final hidden-drop drill on HEAD.
 3. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
 
