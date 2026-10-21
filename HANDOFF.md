@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 15:35)
+# Handoff (2026-10-21 16:20)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -139,6 +139,13 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
 - SF=1 workspace deleted. Nothing pushed or tagged.
 - For shinzuu/team: group number and IDs, video link, contribution matrix cells, shares, signatures,
   reflections; tag v1.0 and push (outbound, not done).
+
+## 16:20 examiner review (REVIEW-EXAMINER-2026-10-21.md)
+- make check on 9c8fa53 and on 2beae27: all 5 gates PASS, 156 tests. Pack 00/01 show the 21 Oct state.
+- Review items 2-10 fixed except the LP cap in item 6 (allocation above need at high alpha): adding x <= need
+  changes the §6 alpha-curve numbers and needs a new SF=1 run, so it waits on shinzuu. The report states the
+  over-allocation with its source (excess_cost in allocation_curve.csv). Item 1 (contribution matrix) waits.
+- Footer/groupplots change sits in 348074e (ENG-3 commit) by mistake; content correct, history left as is.
 
 ## Next, in order
 1. ING-6 measured at SF=1 (kept workspace, main checkout untouched): drop written 10:30:27, alerts refreshed
