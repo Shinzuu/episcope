@@ -22,7 +22,8 @@ Our extension (research.md §10.3 issue 2): unmet need is divided by N_r = sum_d
 for resource r. A bed and an NS1 kit are otherwise worth the same in the objective; after normalisation each
 term is "share of the national need for r left unmet", unit-free and comparable across resources.
 
-alpha = 0 is pure efficiency; alpha = 1 forces every resource to be split exactly by population. The model is
+alpha = 0 is pure efficiency; alpha = 1 splits every resource by population share of what is sent, except that no
+district gets more than its net need (x <= need; the floor is min(alpha p_d sum_e x[e,r], need[d,r]), a MILP). The model is
 feasible for every alpha in [0, 1] (x = 0 satisfies every constraint; research.md §10.3).
 """
 
@@ -79,7 +80,8 @@ def solve(need, pop, division, budget, alpha, cost=None, volume=None, transport_
     m = pulp.LpProblem("episcope_allocation", pulp.LpMinimize)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
-        x = pulp.LpVariable.dicts("x", idx, lowBound=0)
+        # Cap (review, 2026-10-21): a district never receives more of a resource than its net need.
+        x = {(i, j): pulp.LpVariable(f"x_{i}_{j}", lowBound=0, upBound=nd[(D[i], Ract[j])]) for i, j in idx}
         u = pulp.LpVariable.dicts("u", tidx, lowBound=0)
     bscale = max(float(budget), 1.0)
     m += (pulp.lpSum(w[d] * tw[k] * u[(di[d], ri[r], k)] * (1.0 / N[r]) for d in D for r in Ract for k in range(K))
@@ -91,10 +93,19 @@ def solve(need, pop, division, budget, alpha, cost=None, volume=None, transport_
             for k in range(K):
                 m += u[(i, j, k)] <= nd[(d, r)] / K, f"tranche_{i}_{j}_{k}"
     if equity and alpha > 0:
+        # Equity floor: x[d,r] >= min(alpha * p_d * sum_e x[e,r], need[d,r]). The min makes it a MILP: z = 1 means
+        # the district's need is met in full (x = need), z = 0 means the population floor binds. With the cap,
+        # alpha = 1 is "population share of what is sent, but never more than a district needs".
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            z = {k: pulp.LpVariable(f"z_{k[0]}_{k[1]}", cat="Binary") for k in idx}
         for r in Ract:
             tot = pulp.lpSum(x[(di[e], ri[r])] for e in D)
+            big = alpha * N[r]  # >= alpha * p_d * tot, because tot <= N_r under the cap
             for d in D:
-                m += x[(di[d], ri[r])] >= alpha * p[d] * tot, f"equity_{di[d]}_{ri[r]}"
+                i, j = di[d], ri[r]
+                m += x[(i, j)] >= alpha * p[d] * tot - big * z[(i, j)], f"equity_{i}_{j}"
+                m += x[(i, j)] >= nd[(d, r)] * z[(i, j)], f"equity_full_{i}_{j}"
     m += pulp.lpSum(cost[r] * x[(di[d], ri[r])] for d in D for r in Ract) <= float(budget), "budget"
     tnames = {}
     if transport_cap:
@@ -127,6 +138,7 @@ def solve(need, pop, division, budget, alpha, cost=None, volume=None, transport_
         "objective": float(sum(w[d] * alloc_unmet / N[r]
                                for d, r, alloc_unmet in alloc[["district_code", "resource", "unmet"]].itertuples(index=False)
                                if N.get(r, 0) > 0)),
+        "solver_objective": float(pulp.value(m.objective) or 0.0),  # what the solver minimises (tranche-weighted)
         "budget_dual": _pi(m, "budget"),
         "transport_duals": {str(k): _pi(m, n) for k, n in tnames.items()},
     }

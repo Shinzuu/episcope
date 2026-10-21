@@ -42,7 +42,8 @@ def run_grid(need, pop, division, budget_levels=A.BUDGET_LEVELS, alphas=A.ALPHAS
             sid = scenario_id(level, alpha)
             allocs.append(alloc.assign(scenario_id=sid, budget=budget, alpha=float(alpha)))
             curve.append({"scenario_id": sid, "kind": "lp", "budget_level": level, "budget": budget, "alpha": alpha,
-                          "status": info["status"], "budget_dual": info["budget_dual"],
+                          "status": info["status"], "solver_objective": info["solver_objective"],
+                          "budget_dual": info["budget_dual"],
                           "binding_transport": sum(1 for v in info["transport_duals"].values() if v and abs(v) > 1e-12),
                           **lp.evaluate(alloc, need, pop, cost, weights)})
         base = lp.population_proportional(need, pop, budget, cost)

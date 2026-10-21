@@ -47,10 +47,11 @@ def test_budget_and_equity_floor_hold(level, alpha):
     spend = (alloc["allocation"] * alloc["resource"].map(COST)).sum()
     assert spend <= budget * (1 + 1e-7) + 1e-6
     p = _share(POP)
+    need = NEED.set_index(["district_code", "resource"])["need"]
     for r, g in alloc.groupby("resource"):
         tot = g["allocation"].sum()
         for d, x in zip(g["district_code"], g["allocation"]):
-            assert x >= alpha * p[d] * tot - 1e-6 * max(1.0, tot)
+            assert x >= min(alpha * p[d] * tot, need[(d, r)]) - 1e-5 * max(1.0, tot)   # floor, capped at need
     for k, cap in tcap.items():
         vol = sum(A.UNIT_VOLUME_M3[r] * x for d, r, x in alloc[["district_code", "resource", "allocation"]]
                   .itertuples(index=False) if DIV[d] == k)
@@ -87,12 +88,25 @@ def test_alpha_zero_is_pure_efficiency(level):
     assert (merged["allocation"] <= merged["need"] * (1 + 1e-6) + 1e-3).all()   # CBC tolerance
 
 
-def test_alpha_one_is_population_split():
+def test_alpha_one_is_population_split_capped_at_need():
+    """alpha = 1: each district gets its population share of what is sent, or its whole need if that is less."""
     alloc, _ = lp.solve(NEED, POP, DIV, 0.5 * BREF, 1.0)
     p = _share(POP)
+    need = NEED.set_index(["district_code", "resource"])["need"]
     for r, g in alloc.groupby("resource"):
         tot = g["allocation"].sum()
-        assert np.allclose(g["allocation"].values, [p[d] * tot for d in g["district_code"]], atol=1e-6 * max(tot, 1))
+        floor = [min(p[d] * tot, need[(d, r)]) for d in g["district_code"]]
+        assert (g["allocation"].values >= np.array(floor) - 1e-4 * max(tot, 1)).all()
+
+
+@pytest.mark.parametrize("level", [0.25, 0.5, 1.0, 1.5])
+@pytest.mark.parametrize("alpha", [0.0, 0.5, 1.0])
+def test_allocation_never_exceeds_need(level, alpha):
+    """Review 2026-10-21: no district receives more of a resource than its net need, whatever the floor."""
+    alloc, info = lp.solve(NEED, POP, DIV, level * BREF, alpha)
+    merged = alloc.merge(NEED, on=["district_code", "resource"])
+    assert info["status"] == "Optimal"
+    assert (merged["allocation"] <= merged["need"] * (1 + 1e-6) + 1e-6).all()   # CBC tolerance
 
 
 def test_lp_beats_population_baseline_and_baseline_respects_budget():
@@ -119,10 +133,11 @@ def test_grid_curve_and_recommendation():
     assert len(alloc) == len(levels) * len(alphas) * NEED.shape[0]
     assert (curve.loc[curve.kind == "lp", "status"] == "Optimal").all()
     assert len(curve[curve.kind == "population_proportional"]) == len(levels)
-    # more equity never improves efficiency at a fixed budget
+    # more equity never improves efficiency at a fixed budget: a higher floor only shrinks the feasible set, so
+    # the objective the solver minimises cannot fall (MILP gap tolerance allowed)
     for _, g in curve[curve.kind == "lp"].groupby("budget_level"):
-        obj = g.sort_values("alpha")["objective"].values
-        assert (np.diff(obj) >= -1e-7).all()
+        obj = g.sort_values("alpha")["solver_objective"].values
+        assert (np.diff(obj) >= -1e-4 * np.maximum(obj[:-1], 1e-9)).all()
     rec = recommend_alpha(curve)
     assert rec["alpha"] in alphas and "percentage points" in rec["reason"]
     assert rec["alpha"] in rec["admissible_alphas"]
