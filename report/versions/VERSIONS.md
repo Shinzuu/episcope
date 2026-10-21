@@ -12,3 +12,4 @@ One line per review pass: file, lens, what changed, pages, LaTeX warnings.
 - v8-readability.pdf: pass 8 (readability). Split the longest sentences (drill result, price of equity, PRV-3 rule, k-anonymity scope, Spark UI finding); the enumerated brief in §1 stays one list. 10 pages, 0 warnings.
 - v9-ai-sweep.pdf: pass 9 (ai-sweep). Second sweep: no new tells; cut 'rather than' from eight uses to four, kept where it names a design choice. 10 pages, 0 warnings.
 - v10-final.pdf: pass 10 (final). Final read and layout: every page rendered and checked, matrix caption no longer uses a dash for 'none'; no em dash or '---' in any .tex; 0 warnings. 10 pages, 0 warnings.
+- v11-review.pdf: pass 11 (examiner review fixes, items 2-10 except the LP cap in item 6). Drill numbers, output sizes, rounding, equity finding, two figures and dashboard screenshots, calendar check, brief addressee, footer final. 11 pages, 0 warnings.
