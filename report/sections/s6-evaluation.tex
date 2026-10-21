@@ -8,8 +8,10 @@ before-and-after measurements of the fixes, which say where they come from.
 \texttt{make evaluate} scores every alert against the 35 injected outbreaks in \texttt{ground\_truth/}, the only
 code allowed to read that folder. Consecutive alert weeks merge into one episode. An episode that overlaps no
 outbreak window counts as a false alert. The sweep picks, for each method, the most sensitive setting that keeps
-false alerts at or below two per district-year (conflict C1). Table~\ref{tab:detection} shows the chosen
-operating points.
+false alerts at or below two per district-year (conflict C1, Fig.~\ref{fig:tradeoff}). Table~\ref{tab:detection}
+shows the chosen operating points.
+
+\input{sections/fig-tradeoff}
 
 \begin{table}[htbp]
 \caption{Detection at the chosen operating points}

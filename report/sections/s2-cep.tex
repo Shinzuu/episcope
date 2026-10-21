@@ -34,7 +34,7 @@ there (Section~\ref{sec:alloc}). The ministry can still choose a floor in the wh
 
 \textbf{C4 freshness against cost.} Forecasts and allocations are weekly decisions, so they run in a daily
 batch. Alerts can also run from a Structured Streaming file source that refreshes them as files land
-(Section~\ref{sec:data}); between files it holds almost no memory.
+(Section~\ref{sec:stream}); between files it holds almost no memory.
 
 \textbf{C5 accuracy against interpretability.} The forecast is a negative-binomial GLM with seasonal terms and
 lagged rainfall and temperature: each coefficient can be read as a rate ratio. It beats seasonal naive with a
