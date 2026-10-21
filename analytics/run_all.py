@@ -12,6 +12,7 @@ STAGES = [
     "analytics.forecast.demand",      # AN-6
     "analytics.optimise.run",         # AN-7, AN-8
     "analytics.calendar.stl_calendar",  # AN-9
+    "analytics.scenario.seir",          # AN-10
 ]
 
 

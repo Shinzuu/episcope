@@ -88,6 +88,7 @@ Hive catalog (`make catalog`). Details and the reasons for each choice are in th
 | AN-7 | analytics/optimise/lp.py | §5 |
 | AN-8 | analytics/optimise/curve.py | §6 |
 | AN-9 | analytics/calendar/stl_calendar.py | §5 |
+| AN-10 | analytics/scenario/seir.py | §5, §6 |
 | VIS-1 | dashboard/index.html | §7 |
 | VIS-2 | dashboard/js/views/ | §7 |
 | VIS-3 | dashboard/js/state.js | §7 |
