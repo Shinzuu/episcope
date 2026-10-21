@@ -1,7 +1,7 @@
 """Near-real-time path: Spark Structured Streaming over the encounter file source refreshes the alerts.
 Implements ING-6.
 
-`python -m pipeline.stream [--interval 60] [--once] [--no-export]`
+`python -m pipeline.stream [--interval 30] [--once] [--no-export]`
 
 A file-source stream watches <EPISCOPE_DATA_DIR>/raw/encounters/report_date=*/ for new CSV files (the same
 contract schema as bronze, every field a string). The stream itself only decides *when* to run: each
@@ -17,8 +17,10 @@ paths safe to mix: whichever sees a file first loads it, and the other skips it.
 Latency (file written -> alerts written) is measured for every micro-batch from the newest file's modification
 time and appended to docs/experiments/stream_latency.json; the target is under 5 minutes.
 
-Why a trigger interval and not continuous processing: alerts are computed per epi-week, so a minute of delay
-costs nothing, and between micro-batches the stream holds almost no memory on the 16 GB laptop (conflict C4).
+Why a trigger interval and not continuous processing: alerts are computed per epi-week, so a short wait costs
+nothing, and between micro-batches the stream holds almost no memory on the 16 GB laptop (conflict C4).
+Why 30 s: alerts must refresh within 5 minutes, and at SF=1 with 60 s the trigger wait was most of the miss
+(301.5 s measured; docs/experiments/stream_latency.json).
 The checkpoint lives in <lake>/_stream/checkpoint, so a restarted stream does not replay files it already saw.
 """
 
@@ -36,6 +38,7 @@ from pipeline.bronze import lake
 from pipeline.bronze.ingest import contract_fields
 
 LATENCY_LOG = lake.ROOT / "docs" / "experiments" / "stream_latency.json"
+TRIGGER_SECONDS = 30
 
 
 def _log(entry: dict) -> None:
@@ -80,7 +83,7 @@ def refresh(spark, export: bool = True) -> dict:
     return {"batch_id": res["batch_id"], "rows": res["rows"], "steps": steps}
 
 
-def on_batch(spark, export: bool):
+def on_batch(spark, export: bool, interval: int | None = None):
     def handle(batch_df, epoch_id):
         files = [r[0] for r in batch_df.select("_file").distinct().collect()]
         if not files:
@@ -92,7 +95,8 @@ def on_batch(spark, export: bool):
             print(f"stream epoch {epoch_id}: {len(files)} files, nothing new for bronze", flush=True)
             return
         done = time.time()
-        entry = {"epoch": epoch_id, "files": len(files), "batch_id": out["batch_id"], "steps": out["steps"],
+        entry = {"epoch": epoch_id, "trigger_seconds": interval, "files": len(files), "batch_id": out["batch_id"],
+                 "steps": out["steps"],
                  "latency_seconds": round(done - newest, 1),
                  "finished_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")}
         _log(entry)
@@ -101,7 +105,7 @@ def on_batch(spark, export: bool):
     return handle
 
 
-def start(spark, interval: int = 60, once: bool = False, export: bool = True):
+def start(spark, interval: int = TRIGGER_SECONDS, once: bool = False, export: bool = True):
     from pyspark.sql import functions as F
     from pyspark.sql.types import StringType, StructField, StructType
 
@@ -110,7 +114,7 @@ def start(spark, interval: int = 60, once: bool = False, export: bool = True):
     src = str(lake.data_dir() / "raw" / "encounters")
     stream = (spark.readStream.schema(schema).option("header", "true").option("recursiveFileLookup", "true")
               .csv(src).select(F.col("_metadata.file_path").alias("_file")))
-    w = (stream.writeStream.foreachBatch(on_batch(spark, export))
+    w = (stream.writeStream.foreachBatch(on_batch(spark, export, None if once else interval))
          .option("checkpointLocation", str(lake.lake_dir() / "_stream" / "checkpoint")))
     w = w.trigger(availableNow=True) if once else w.trigger(processingTime=f"{interval} seconds")
     return w.start()
@@ -118,7 +122,7 @@ def start(spark, interval: int = 60, once: bool = False, export: bool = True):
 
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    p.add_argument("--interval", type=int, default=60, help="seconds between checks for new files")
+    p.add_argument("--interval", type=int, default=TRIGGER_SECONDS, help="seconds between checks for new files")
     p.add_argument("--once", action="store_true", help="process what is there now, then stop")
     p.add_argument("--no-export", action="store_true", help="refresh gold.alerts only, not dashboard/data")
     a = p.parse_args(argv)

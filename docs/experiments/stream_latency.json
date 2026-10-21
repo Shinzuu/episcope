@@ -1,6 +1,7 @@
 [
   {
     "epoch": 1,
+    "trigger_seconds": 60,
     "files": 112,
     "batch_id": "20261021T043125123895Z-4a7c44fd",
     "steps": {
@@ -11,6 +12,7 @@
       "export": 22.1
     },
     "latency_seconds": 301.5,
-    "finished_at": "2026-10-21T04:35:28+00:00"
+    "finished_at": "2026-10-21T04:35:28+00:00",
+    "sf": 1.0
   }
 ]
