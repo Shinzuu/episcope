@@ -15,7 +15,7 @@ Big data surveillance, forecasting and response-planning platform (CSE 4345 CEP,
 
 ```bash
 make setup          # Java 17 + Python 3.12 via mise, pinned deps, .env with a random salt
-make all SF=0.25    # reference -> generate -> bronze -> silver -> gold -> analytics -> serve -> catalog
+make all SF=0.25    # DAG with retries (scripts/dag.py): reference -> generate -> bronze -> silver -> gold -> analytics -> serve, catalog
 make evaluate       # detection scored against the injected outbreaks (the only reader of ground_truth/)
 make dashboard      # http://localhost:8000
 make check          # five verification gates (scripts/verify.py)
@@ -91,7 +91,7 @@ Hive catalog (`make catalog`). Details and the reasons for each choice are in th
 | VIS-7 | dashboard/css/style.css | §7 |
 | ENG-1 | Makefile | §3 |
 | ENG-2 | scripts/scaling.sh | §6 |
-| ENG-4 | tests/ | §6 |
+| ENG-4 | tests/, scripts/dag.py (DAG with retries) | §6 |
 
 _Filled in as each requirement lands._
 

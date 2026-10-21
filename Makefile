@@ -24,7 +24,8 @@ setup:
 reference: ; @test -f data/reference/weather_daily.parquet || $(RUN) -m pipeline.reference.build
 reference-rebuild: ; $(RUN) -m pipeline.reference.build
 
-all: reference generate bronze silver gold analytics serve catalog
+# ENG-4: the stages run as a DAG with retries (scripts/dag.py); each stage target below also runs on its own.
+all:        ; $(RUN) scripts/dag.py --sf $(SF) --seed $(SEED)
 
 generate:   ; $(RUN) -m generator.generate --sf $(SF) --seed $(SEED)
 bronze:     ; $(RUN) -m pipeline.bronze.ingest
