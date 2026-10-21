@@ -18,8 +18,6 @@
 \newtcolorbox{teammate}[1]{colback=yellow!12,colframe=orange!70!black,boxrule=0.5pt,arc=1pt,
   title={\footnotesize\bfseries TEAMMATE: #1},fonttitle=\footnotesize,left=3pt,right=3pt,top=1pt,bottom=1pt,
   fontupper=\footnotesize}
-% Numbers from the provisional test runs (SF=0.05 drill of 11 Oct, SF=0.25 build of 20 Oct); replaced by the v1.0 run.
-\newcommand{\prov}{\textsuperscript{\textcolor{orange!70!black}{\scriptsize P}}}
 
 \begin{document}
 \title{EpiScope: A Big Data Platform for Disease Surveillance, Forecasting and Response Planning in Bangladesh}
@@ -33,15 +31,14 @@ Repository: \repo\quad Video: [link added at v1.0]}}
 EpiScope turns routine health, climate and logistics data into district-level early warnings, one to four week
 forecasts, an allocation of a fixed national stock and a seasonal preparedness calendar. It is built as a Spark
 and Delta Lake medallion lakehouse over a synthetic encounter feed of more than 25 million records that takes
-its population, geography and weather from real public data. This draft fills the data engineering sections
-from the code and the evidence that exists on 20 October 2026; results marked \prov{} come from
-provisional test runs (SF=0.05 and SF=0.25) and will be replaced by the tagged v1.0 run.
+its population, geography and weather from real public data. At full scale (34 million encounters) the pipeline
+runs in about 25 minutes on a 16\,GB laptop. On 35 planted outbreaks, EARS C2 detects 33 with a median delay
+of eight days and fewer than two false alerts per district-year; the negative-binomial forecasts beat the
+seasonal-naive baseline with a relative weighted interval score of 0.84; and at half the money needed, the
+allocation meets 68\% of the need against 34\% for a population-based split. Only aggregated, small-cell
+suppressed data reaches the D3.js dashboard.
 \end{abstract}
 
-\begin{teammate}{Samira (report lead)}
-Draft v0.1. Each yellow box names who writes or confirms that part. Every number must come from a file in
-\texttt{docs/experiments/} of the v1.0 run. Page limit: 15 pages plus appendices.
-\end{teammate}
 
 \input{sections/s1-intro}
 \input{sections/s2-cep}

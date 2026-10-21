@@ -29,8 +29,24 @@ Privacy regulator & Line-level data never leaves the lake; only aggregates reach
 \end{tabular}
 \end{table}
 
-\begin{teammate}{Samira}
-Risk register (at least 5 risks): start from \texttt{docs/proposal.md} \S6 and update each risk's status. Known
-updates: risk 2 (SF=1 within 45 minutes) waits on the scaling run; risk 3 (hidden drop) passed the drill;
-risk 7 (uneven commits) has happened.
-\end{teammate}
+\begin{table}[htbp]
+\caption{Risk register from the proposal, with the outcome}
+\label{tab:risks}
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{5.1cm}@{}}
+\toprule
+Risk & Outcome \\
+\midrule
+Generator too slow & Retired: 34.1 million SF=1 encounters in under a minute (Section~\ref{sec:data}) \\
+SF=1 over 45 minutes & Met: 28.3 minutes from a fresh clone (Table~\ref{tab:scaling}) \\
+Hidden drop fails & Retired: the drill on the final code passed every check \\
+Reporting artefact raises false alerts & Mitigated: onset-week counts, silent weeks missing; a test checks it \\
+Small-cell leak through totals & Mitigated: audit finds no leak; a leak by differencing between district
+bundles was found in review and closed \\
+Weather API rate limit & Retired: downloaded once, processed data committed \\
+Uneven commits & Occurred: three members were away in the final phase (Appendix~B) \\
+Allocation never tested on real need (added) & Occurred and fixed: stock and LP faults (Section~\ref{sec:alloc}) \\
+\bottomrule
+\end{tabular}
+\end{table}

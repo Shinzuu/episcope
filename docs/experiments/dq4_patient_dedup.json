@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-11T04:58:51+00:00",
+  "generated_at": "2026-10-21T07:23:26+00:00",
   "rule": "same patient_key, disease, sex and compatible age_band; other facility; onset within 7 days",
-  "flagged_pairs": 441,
-  "true_pairs": 440,
-  "precision": 0.9977324263038548,
-  "injected_pairs_in_window": 3895,
-  "recall_in_window": 0.11296534017971759,
-  "duplicate_encounters": 441,
-  "encounters_checked": 1003058,
+  "flagged_pairs": 8499,
+  "true_pairs": 8493,
+  "precision": 0.9992940345923049,
+  "injected_pairs_in_window": 77404,
+  "recall_in_window": 0.10972301173065992,
+  "duplicate_encounters": 8493,
+  "encounters_checked": 20528399,
   "note": "Truth: the generator reuses a patient_id only within one district and onset month, so a flagged pair across districts or months is an ID collision between different people. Recall is limited by the attribute check: the generator draws age and sex afresh for a repeat visit."
 }

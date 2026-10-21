@@ -1,0 +1,30 @@
+{
+  "what": "clean SF=1 build plus make evaluate from a fresh clone at the final analytics code (allocation fix, backtest partitioning); stage times from the run log (whole seconds)",
+  "commit": "a99339c",
+  "sf": 1.0,
+  "seed": 42,
+  "spark": {
+    "master": "local[4]",
+    "driver_memory": "5g"
+  },
+  "power_profile": "balanced",
+  "start": "2026-10-21 12:52:11",
+  "end": "2026-10-21 13:18:18",
+  "stage_seconds": {
+    "generate": 34.0,
+    "bronze": 258.0,
+    "silver": 668.0,
+    "gold": 213.0,
+    "analytics": 284.0,
+    "evaluate": 52.0,
+    "serve": 58.0
+  },
+  "total_seconds_without_evaluate": 1515.0,
+  "total_seconds": 1567.0,
+  "rows": {
+    "encounters_in": 34136930,
+    "encounters_clean": 32769490,
+    "quarantined": 1367440
+  },
+  "note": "Not produced by scripts/scaling.sh, so it is not an entry in scaling.json; scaling.json keeps the timed runs of commits 89eea98, 01534b6 and f1fc38d."
+}

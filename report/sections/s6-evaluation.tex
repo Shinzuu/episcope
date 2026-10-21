@@ -1,41 +1,46 @@
 \section{Evaluation}\label{sec:eval}
-The detection and backtest numbers come from the SF=0.25 build with real weather (seed 42) of 20
-October\prov{}, in the detection trade-off and backtest metric files under \texttt{docs/experiments}.
+Every number in this section comes from one clean SF=1 build (seed 42, real weather; 34.1 million encounters,
+of which 1.37 million, 4.0\%, were quarantined) from a fresh clone of the final code, with the result files
+in \texttt{docs/experiments}. The scaling runs are the exception and are dated in Table~\ref{tab:scaling}.
 
 \subsection{Detection}
 \texttt{make evaluate} scores every alert against the 35 injected outbreaks in \texttt{ground\_truth/}, the only
 code allowed to read that folder. Consecutive alert weeks merge into one episode; an episode that overlaps no
 outbreak window counts as a false alert. The sweep picks, for each method, the most sensitive setting that keeps
-false alerts at or below two per district-year. Table~\ref{tab:detection} shows the chosen operating points.
+false alerts at or below two per district-year (conflict C1). Table~\ref{tab:detection} shows the chosen
+operating points.
 
 \begin{table}[htbp]
-\caption{Detection at the chosen operating points (SF=0.25)\prov}
+\caption{Detection at the chosen operating points}
 \label{tab:detection}
 \centering\small
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}lrr@{}}
 \toprule
  & EARS C2 & CUSUM \\
 \midrule
-Setting & threshold 4.0 & $k=0.5$, $h=6$ \\
-Outbreaks detected & 34 of 35 & 32 of 35 \\
-Sensitivity & 0.97 & 0.91 \\
-False alerts per district-year & 1.27 & 1.49 \\
-Positive predictive value & 0.22 & 0.28 \\
-Median days to detection & 8 & 9 \\
-Detected within 14 days & 0.91 & 0.83 \\
+Setting & threshold 4.0 & $k=0.5$, $h=6.5$ \\
+Outbreaks detected & 33 of 35 & 32 of 35 \\
+Sensitivity & 0.94 & 0.91 \\
+False alerts per district-year & 1.89 & 1.82 \\
+Positive predictive value & 0.15 & 0.25 \\
+Median days to detection & 8 & 9.5 \\
+Detected within 14 days & 0.91 & 0.77 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-EARS C2 is the better default here: it finds more outbreaks, sooner, with fewer false alerts. We expected CUSUM
-to do better on slow growth, but on the one slow outbreak both methods found it late, EARS C2 after 48 days and
-CUSUM after 69.
+EARS C2 is the default: it finds one outbreak more and finds them sooner, at a similar false-alert rate; CUSUM's
+alerts are more often right (PPV 0.25 against 0.15). By shape, EARS C2 found 31 of 33 fast outbreaks, the slow
+one after 41 days and the nationwide surge after one day; CUSUM found 30 fast ones, the slow one after 69 days
+and the surge after one day. We expected CUSUM to win on slow growth; on our one slow outbreak it did not.
+Both methods missed the same outbreak, \texttt{OB42-017}. At SF=0.25 the same EARS threshold gave fewer false
+alerts (1.27 per district-year), because smaller counts make random spikes rarer; the threshold should be
+re-tuned on real counts.
 
-\begin{teammate}{Samira (AN-2), Rafi (AN-3): confirm}
-Add the C1 trade-off figure from \texttt{detection\_tradeoff.csv} (sensitivity against false alerts per
-district-year, one curve per method, the chosen points marked), results by outbreak shape, and the artefact
-facility with the naive detector and with ours. Replace with the v1.0 numbers.
-\end{teammate}
+The reporting artefact (a facility that goes silent and then back-fills) is checked by a test: a naive detector
+on report-date counts alerts on the back-fill week, while ours, on onset-week counts with silent weeks missing,
+does not.
 
 \subsection{Forecast backtest}
 The backtest refits the per-district NB-GLM at 52 rolling origins (every fourth origin, reused in between) and
@@ -44,7 +49,7 @@ exactly the same district, disease, origin and horizon cells. The weighted inter
 uses eleven central intervals plus the median; relative WIS below 1 means the model beats the baseline.
 
 \begin{table}[htbp]
-\caption{Backtest over 52 origins, model against seasonal naive (SF=0.25)\prov}
+\caption{Backtest over 52 origins, model against seasonal naive}
 \label{tab:backtest}
 \centering\small
 \setlength{\tabcolsep}{4pt}
@@ -52,72 +57,112 @@ uses eleven central intervals plus the median; relative WIS below 1 means the mo
 \toprule
 Disease & $h$ & MAE & MAE base & Cov.\,80\% & Rel.\ WIS \\
 \midrule
-Dengue & 1 & 39.4 & 42.5 & 0.83 & 0.88 \\
- & 4 & 41.4 & 44.9 & 0.82 & 0.89 \\
-Diarrhoea & 1 & 18.5 & 26.3 & 0.80 & 0.70 \\
- & 4 & 19.3 & 26.4 & 0.80 & 0.74 \\
+Dengue & 1 & 155 & 164 & 0.81 & 0.89 \\
+ & 4 & 161 & 174 & 0.79 & 0.90 \\
+Diarrhoea & 1 & 67.5 & 96.2 & 0.80 & 0.70 \\
+ & 4 & 70.5 & 96.3 & 0.79 & 0.74 \\
 \midrule
-All & 1--4 & 29.5 & 35.0 & 0.81 & 0.83 \\
+All & 1--4 & 113 & 133 & 0.79 & 0.84 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 The model beats the baseline at every horizon for both diseases, by more for diarrhoea (relative WIS 0.72)
-than for dengue (0.88). Its 80\% intervals cover 81\% of outcomes overall, against 78\% for the baseline, so
-the bands mean what they say.
+than for dengue (0.89). Its 80\% intervals cover 79\% of outcomes, against 77\% for the baseline, so the bands
+mean what they say. For dengue, 105 of the model's WIS of 130 is underprediction: the model is slow to follow a
+season's rise. That matters for stock, and it is why the plan uses the 90th percentile, not the mean.
 
-\begin{teammate}{Samira (AN-5): confirm}
-Horizons 2 and 3 are in \texttt{backtest\_metrics.csv}. Add the WIS decomposition (for dengue, most of the model's WIS
-is underprediction, which matters for stock planning). Replace with the v1.0 numbers.
-\end{teammate}
+\subsection{Allocation against the population baseline}\label{sec:alloc}
+The first allocation runs were degenerate: generated stock was 3 to 225 times the 4-week demand, so almost
+nothing needed allocating, and the LP sent what little there was to two districts.
+\texttt{allocation\_diagnosis.md} traces three faults: stock that ignored the case load, an objective that
+valued every district equally (so the solver returned a corner: in a test with need everywhere, 21 districts got
+all their beds and 42 got none), and beds counted twice. After the fixes, at SF=0.25 and half of the money
+needed, all 64 districts receive supplies, the five largest receive 22\% of the value instead of 100\%, and the
+Gini of per-capita spend falls from 0.98 to 0.27.
 
-\subsection{Allocation against the population baseline}
-\begin{teammate}{Rafi}
-In the SF=0.25 run the national net need is zero for beds, IV saline, NS1 kits and ORS, and 8.8 courses of
-antimalarials, because the generated stock exceeds the forecast demand. The LP's ``50\% of need met against 1\%
-for the population baseline'' is therefore about antimalarials only. Fix the demand or stock assumptions, then
-report share of need met and the worst-covered district at five budgets, and the efficiency and equity curve.
-\end{teammate}
+At SF=1 the national net need is 43,558 litres of IV saline, 513,721 ORS sachets and 691 antimalarial courses;
+NS1 kits and beds need no top-up, because the data end in December, after the dengue season. Covering all of it
+costs 7.78 million BDT ($B_{\text{ref}}$). Table~\ref{tab:alloc} compares the LP with the population-proportional
+baseline at five budgets.
+
+\begin{table}[htbp]
+\caption{Share of need met, LP ($\alpha=0$) against population split}
+\label{tab:alloc}
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Budget ($\times B_{\text{ref}}$) & 0.25 & 0.5 & 0.75 & 1.0 & 1.5 \\
+\midrule
+LP (\%) & 50.5 & 67.8 & 82.7 & 100 & 100 \\
+Population split (\%) & 17.6 & 34.4 & 50.1 & 63.1 & 70.9 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The LP meets about twice the share of need at every scarce budget. The efficiency and equity curve
+(\texttt{allocation\_curve.csv}) gives the price of equity: at a quarter of $B_{\text{ref}}$ a floor of up to
+$\alpha=0.4$ costs less than two points of need met, at three quarters up to 0.3, but at half the budget any
+floor costs more than two points, so the rule recommends $\alpha=0$. The tranche prices already spread the
+money: at $\alpha=0$ and half the budget the worst-covered district gets half of its need.
+
+\subsection{Epidemic scenarios}
+The SEIR fit to the nationwide respiratory surge (nine weeks from 28 October 2024) gives $R_0=2.04$ with
+$R^2=0.91$; the generator used 1.8. Cutting contacts by 20\% from the first surge week lowers the peak by 46\%
+and the cases over the surge and the following 12 weeks by 18\%; a 40\% cut lowers them by 87\% and 63\%.
+Starting the 40\% cut two weeks late still lowers the peak by 80\% but the cases by only 53\%, which is the
+case for acting on the first alert (\texttt{seir\_scenarios.json}).
 
 \subsection{Scalability and Spark optimisations}
 \texttt{scripts/scaling.sh} builds each scale factor from a fresh clone and times every stage
 (Table~\ref{tab:scaling}). The laptop has an Intel Core i5-8350U (4 cores, 8 threads) and 15.4\,GB of RAM;
-Spark runs as \texttt{local[4]} with a 5\,GB driver. SF=1 finishes in 28.3 minutes, inside the 45-minute
-gate. Silver grows with the row count and is the slowest stage at SF=1; analytics stays near 7 to 8 minutes at
-every scale, because it works on weekly series per district, not on rows. A first SF=1 attempt failed in silver
-when Spark's spill filled the small RAM-backed \texttt{/tmp}; spill now goes to a disk folder.
+Spark runs as \texttt{local[4]} with a 5\,GB driver. The scaling runs (20 and 21 October) predate the
+allocation fix and the second optimisation below; the last column is the final SF=1 build, also from a fresh
+clone (\texttt{sf1\_final\_run.json}). SF=1 finishes in 25 to 28 minutes, inside the 45-minute gate. Silver
+grows with the row count and is the slowest stage; analytics hardly grows, because it works on weekly series
+per district, not on rows. A first SF=1 attempt failed in silver when Spark's spill filled the small
+RAM-backed \texttt{/tmp}; spill now goes to a disk folder.
 
 \begin{table}[htbp]
 \caption{Minutes per stage from a fresh clone}
 \label{tab:scaling}
 \centering\small
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}lrrr@{}}
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}lrrrr@{}}
 \toprule
- & SF=0.25 & SF=0.5 & SF=1 \\
+ & SF=0.25 & SF=0.5 & SF=1 & SF=1 final \\
 \midrule
-Encounter rows (M) & 8.5 & 17.1 & 34.1 \\
-Generate & 0.2 & 0.4 & 0.6 \\
-Bronze & 1.9 & 2.8 & 4.3 \\
-Silver & 3.8 & 6.7 & 11.1 \\
-Gold & 1.8 & 2.3 & 3.5 \\
-Analytics & 6.9 & 7.1 & 8.0 \\
-Serve & 0.7 & 1.1 & 0.9 \\
+Encounter rows (M) & 8.5 & 17.1 & 34.1 & 34.1 \\
+Generate & 0.2 & 0.4 & 0.6 & 0.6 \\
+Bronze & 1.9 & 2.8 & 4.3 & 4.3 \\
+Silver & 3.8 & 6.7 & 11.1 & 11.1 \\
+Gold & 1.8 & 2.3 & 3.5 & 3.6 \\
+Analytics & 6.9 & 7.1 & 8.0 & 4.7 \\
+Serve & 0.7 & 1.1 & 0.9 & 1.0 \\
 \midrule
-Total & 15.4 & 20.4 & 28.3 \\
-Raw / silver (GB) & 1.2 / 0.8 & 2.2 / 1.5 & 4.1 / 2.9 \\
+Total & 15.4 & 20.4 & 28.3 & 25.3 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-One optimisation is measured. The silver job evaluated the 14 encounter quality rules, including the
-duplicate-ID rule that sorts the whole load, once for every output (quarantine, its count, the quality report
-and the clean MERGE). It now evaluates them once and persists the result. At SF=0.25 silver's Spark time fell
-from 325\,s to 214\,s, and every silver table kept the same row count and row hash
-(\texttt{silver\_optimisation.json}).
+Two optimisations were measured, each with its outputs checked unchanged.
+\begin{itemize}
+\item \textbf{Silver evaluates the quality rules once.} The 14 encounter rules, including the duplicate-ID rule
+that sorts the whole load, were evaluated once for every output (quarantine, its count, the quality report and
+the clean MERGE). They are now evaluated once and persisted. At SF=0.25 silver's Spark time fell from 325\,s to
+214\,s, and every silver table kept the same row count and row hash (\texttt{silver\_optimisation.json}).
+\item \textbf{The backtest uses every core.} The Spark UI showed the backtest's model stage running as a single
+task for 5.1 minutes (Fig.~\ref{fig:sparkui}): its input is a few megabytes, so adaptive query execution had
+merged the shuffle into one partition and fitted all 64 districts one after another. Keeping one partition per
+district for that job gives 64 tasks. At SF=0.25 the job fell from 325\,s to 165\,s with identical scores;
+at SF=1 the backtest step fell from 365\,s to 161\,s (\texttt{backtest\_optimisation.json}).
+\end{itemize}
 
-\begin{teammate}{Samira (ENG-3)}
-Spark UI screenshots from the SF=1 event log (kept outside the repository; it holds the padded HMAC key), the
-bottleneck stage, and a second optimisation with before and after numbers (candidates: AQE skew handling or
-salting on the Dhaka load; backtest parallelism, 365\,s at SF=1 on 4 of 8 threads).
-\end{teammate}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\columnwidth]{figures/sparkui-backtest-stage.png}
+\caption{Spark UI, backtest model stage, cropped to three columns: one task for 5.1 minutes before (top), 64
+tasks for 2.4 minutes after (bottom). Full screenshots: \texttt{report/figures/sparkui-backtest-*.png}.}
+\label{fig:sparkui}
+\end{figure}

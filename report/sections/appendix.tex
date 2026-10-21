@@ -1,23 +1,108 @@
 \section{Policy Brief for the Director}
-\begin{teammate}{Samira: two pages, no jargon. A starting outline from the evidence so far}
-\textbf{Current situation.} A working prototype covers all 64 districts and four diseases, on synthetic
-data shaped by real population and weather. \textbf{Recommendations.} (1) Use the weekly alert ranking: in
-testing it caught 34 of 35 planted outbreaks, typically within eight days, with about one false alarm per
-district a year. (2) Plan dengue stock from the forecasts, which beat the ``same week last year'' rule.
-(3) Pre-position supplies three weeks before each division's seasonal onset in the calendar. \textbf{How to
-read the dashboard}, \textbf{confidence and limits} (synthetic data; allocation not yet validated), and
-\textbf{data protection} (no names or IDs leave the secure store; small counts are hidden). Replace every
-number with the v1.0 run.
-\end{teammate}
+\textbf{To:} Director, Disease Surveillance and Resource Planning. \textbf{About:} what the EpiScope prototype
+can do for weekly outbreak warning and supply planning, and what to decide.
+
+\subsection*{Where we are}
+EpiScope is a working prototype that watches all 64 districts every week for four diseases: dengue,
+diarrhoea, influenza-like illness and malaria. It warns when a district's cases rise more than expected,
+forecasts the next four weeks with a likely range, turns those forecasts into the supplies hospitals will need,
+and proposes how to share a fixed budget between districts. It also gives each division a calendar of when to
+prepare for each disease season. It was tested on realistic made-up patient records (34 million visits over
+five years) built on Bangladesh's real population and weather, because no real patient data was used. One
+ordinary laptop processes the whole country in about 25 minutes.
+
+\subsection*{Three recommendations}
+\textbf{1. Act on the weekly warning list.} In testing, the list caught 33 of 35 planted outbreaks, half of
+them within eight days. The price is false alarms: about two a year in each district. Each district should
+expect to check a couple of warnings a year that turn out to be nothing, and should check every one, because a
+missed outbreak costs far more. For a fast-spreading respiratory virus, acting on the first warning matters
+most: in our model, cutting contacts by 40\% from the first warning prevents about 63\% of cases, against 53\%
+if the same step comes two weeks later.
+
+\textbf{2. Send supplies where the need is, not by population.} When there is only half of the money needed,
+sharing supplies by the measured shortfall in each district covers 68\% of the shortfall; sharing the same
+money by population covers 34\%. The dashboard lets you set a minimum share for every district (the equity
+floor). When money is very short, a modest floor costs little; at half the money it costs more than two points
+of the shortfall covered. This is a policy choice, and the dashboard shows its cost before you make it.
+
+\textbf{3. Prepare before each season, not during it.} The calendar gives each division a week to have supplies
+in place and a week to start prevention work. For dengue in Dhaka division, supplies should be in place by
+mid-July and the prevention campaign should start in late June, three and six weeks before the season usually
+begins in early August.
+
+\subsection*{How to read the dashboard}
+Choose a disease at the top. The map shades each district by cases per 100,000 people, and a triangle marks a
+warning. Click a district to see its weekly cases, its forecast for the next four weeks with a shaded band (the
+real number will usually fall inside it), and its position in the warning list. The allocation panel shows how
+the chosen budget is shared; move the sliders to see what a larger budget or a higher minimum share would do.
+District officers open a view of their own district, with the rest of the country shown only as division
+totals.
+
+\subsection*{How far to trust it}
+The test data were made up, so these results show that the methods work on realistic patterns, not that they
+will match real outbreaks to the day. The forecasts tend to fall short when dengue is rising fast, so stock is
+planned on the high end of the range, not the middle. Supply costs and the amount used per patient are our
+estimates and should be replaced with ministry figures. A warning is a reason to investigate, not proof of an
+outbreak.
+
+\subsection*{How patient data are protected}
+Names and ID numbers never leave the secure store: each patient is replaced by a code that cannot be turned
+back into the number, and ages become age groups. Only totals reach the dashboard, and any count from one to
+four is hidden, together with any other number that could reveal it. A district officer sees their own district
+in detail and the rest only as division totals.
 
 \section{Contribution Matrix}
-\begin{teammate}{All, agreed and signed}
-Work areas from Appendix B of the brief, one column per member (L, S or none), agreed share $\sigma_i$ (total
-100), commits and lines from \texttt{git shortlog -sn}, signatures. Ask the instructor to confirm that the
-moderation factor uses $N=4$.
+Roles follow the proposal: Shezan led data engineering, Tahsin Ahmed Rafi analytics, Rimjhim Dey
+visualisation, and Samira platform and evaluation. Tahsin Ahmed Rafi, Rimjhim Dey and Samira were away during
+the final phase of the project, and Shezan implemented the remaining parts of their areas.
+
+\begin{table}[htbp]
+\caption{Contribution matrix (L lead, S support, -- none)}
+\label{tab:contrib}
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.3cm}cccc@{}}
+\toprule
+Work area & Shezan & Rafi & Rimjhim & Samira \\
+\midrule
+Problem analysis, proposal, conflicts & S & S & S & L \\
+Generator and public data & L & & & \\
+Ingestion, lakehouse, incremental loads & L & & & \\
+Data quality, lineage, privacy controls & L & & S & S \\
+Outbreak detection and evaluation & S & L & & S \\
+Forecasting, backtest, demand & S & L & & S \\
+Optimisation and calendar & S & L & & \\
+Serving layer and D3 dashboard & S & & L & \\
+Scalability and Spark optimisations & S & & & L \\
+Report and policy brief & S & & & L \\
+Video production & & & & \\
+\midrule
+Agreed share $\sigma_i$ (\%) & & & & \\
+Commits / lines changed & & & & \\
+Signature & & & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{teammate}{All: agree and sign}
+Fill the empty cells: each member's support (S) outside their lead area, the video row, the agreed shares
+(total 100), the commit and line counts from \texttt{git shortlog -sn} at the final tag, and signatures.
 \end{teammate}
 
 \section{Individual Reflections}
-\begin{teammate}{Each member writes their own half page}
-Shezan, Tahsin Ahmed Rafi, Rimjhim Dey, Samira.
+\subsection*{Shezan}
+\begin{teammate}{Shezan}
+Half a page in your own words.
+\end{teammate}
+\subsection*{Tahsin Ahmed Rafi}
+\begin{teammate}{Tahsin Ahmed Rafi}
+Half a page in your own words.
+\end{teammate}
+\subsection*{Rimjhim Dey}
+\begin{teammate}{Rimjhim Dey}
+Half a page in your own words.
+\end{teammate}
+\subsection*{Samira}
+\begin{teammate}{Samira}
+Half a page in your own words.
 \end{teammate}

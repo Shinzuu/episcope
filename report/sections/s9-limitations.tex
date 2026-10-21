@@ -2,6 +2,16 @@
 The data is synthetic, so detection and forecast scores measure how well the methods recover patterns we
 planted, not real-world accuracy. The storage layer runs on the local filesystem, not HDFS or an object store
 (ING-5). Patient de-duplication is precise but misses most repeats whose age or sex was recorded differently.
-\begin{teammate}{All}
-Add each area's main limitation and one concrete next step.
-\end{teammate}
+\begin{itemize}
+\item \textbf{Data.} Synthetic stock follows a simple min/max policy; real stock records would change the
+allocation. Next: load a real stock feed through the same S6 contract.
+\item \textbf{Detection.} The threshold was tuned on outbreaks we planted. Next: re-tune on reported outbreaks
+from DGHS bulletins.
+\item \textbf{Forecasting.} The intervals ignore parameter uncertainty, and dengue forecasts tend to fall short
+in a surge. Next: a bootstrap over the fit and a growth term.
+\item \textbf{Allocation.} Costs and units per case are rough assumptions, and the LP plans one four-week round.
+Next: real prices and a rolling plan that carries stock forward.
+\item \textbf{Dashboard and access.} Role bundles are not enforced by the static server. Next: a login with a
+path per role.
+\item \textbf{Scenarios.} The SEIR model is deterministic and national. Next: per-division fits with a range.
+\end{itemize}

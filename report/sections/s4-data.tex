@@ -18,7 +18,7 @@ in October in 2022 and 2024, later than ``follows the monsoon'' suggests. Dengue
 temperature four to eight weeks earlier, diarrhoea spikes after extreme rainfall, malaria is concentrated in
 the three Hill Tracts districts and Cox's Bazar, and every count has negative-binomial noise. Reporting delay is
 a discretised negative binomial with mean 3 days truncated at 21, and 65\% of Friday and Saturday reports move
-to Sunday (Bangladesh's weekend). The SF=0.05 run injected 35 outbreaks\prov{} of different shape and size,
+to Sunday (Bangladesh's weekend). Each run injects 35 outbreaks of different shape and size,
 including a slow-growing one and a nationwide novel respiratory surge, and two reporting artefacts: a facility
 that goes silent for three weeks and then back-fills. They are written only to \texttt{ground\_truth/}, which
 the detection code never reads (a test fails if it does).
@@ -48,7 +48,7 @@ six rules:
 The rest cover nulls, types, long delays, future dates and outcome values. Spark~4 runs in ANSI mode, where a plain cast of a bad
 string throws, so every rule reads values through \texttt{try\_cast} and an unparseable value is a defect of
 its own. A failing row goes to \texttt{silver.quarantine} once, with the list of every code it broke. In the
-first SF=0.05 load, 66,979 of 1,681,896 encounter rows (4.0\%)\prov{} were quarantined. Each load writes one
+SF=1 load, 1,367,440 of 34,136,930 encounter rows (4.0\%) were quarantined. Each load writes one
 row of rule pass rates to \texttt{gold.dq\_report}, which the dashboard shows (DQ-2).
 
 Before a clean row is stored, \texttt{patient\_id} becomes an HMAC-SHA256 under a key held only in
@@ -76,12 +76,12 @@ uses to treat silent weeks as missing (AN-3). Each row carries the sorted bronze
 counts, which link through the ingest log to file names and checksums (DQ-3).
 
 Cross-facility patient de-duplication (DQ-4) flags a record as a repeat when the same patient key, disease,
-sex and compatible age band appear at another facility within seven days. On SF=0.05 it flagged 441 pairs, of
-which 440 were true repeats (precision 0.998)\prov{}. Recall within the window was only 0.11\prov{}, because the
+sex and compatible age band appear at another facility within seven days. At SF=1 it flagged 8,499 pairs, of
+which 8,493 were true repeats (precision 0.999). Recall within the window was only 0.11, because the
 generator draws age and sex afresh for a repeat visit, so most planted repeats fail the attribute check. We
 kept the strict rule: a false merge would hide a real case.
 
-\subsection{Time travel and the near-real-time path}
+\subsection{Time travel and the near-real-time path}\label{sec:stream}
 Every gold build appends one row to \texttt{gold.\_snapshots}: the Delta version of the weekly case table it
 wrote and the latest report date that version contains. The \texttt{asof} module answers ``what did we
 know on date $t$'' by reading the newest version whose data ends on or before $t$ with Delta's
