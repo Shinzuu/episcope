@@ -80,7 +80,7 @@ entry = {
                              text=True).stdout.strip(),
 }
 p = pathlib.Path(out)
-runs = [r for r in (json.loads(p.read_text()) if p.exists() else []) if r["sf"] != float(sf)]
+runs = [r for r in (json.loads(p.read_text()) if p.exists() else []) if r["sf"] != float(sf) or r.get("timing_valid") is False]
 runs = sorted(runs + [entry], key=lambda r: r["sf"])
 p.write_text(json.dumps(runs, indent=2) + "\n")
 print(f"SF={sf}: {status}, total {entry['total_seconds'] / 60:.1f} min, stages {stages}")

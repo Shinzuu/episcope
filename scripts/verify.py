@@ -94,7 +94,7 @@ def gate_performance():
     log = ROOT / "docs/experiments/scaling.json"
     if not log.exists():
         return "PENDING", "no SF=1 run logged yet (ENG-2)"
-    runs = {r["sf"]: r for r in json.loads(log.read_text())}
+    runs = {r["sf"]: r for r in json.loads(log.read_text()) if r.get("timing_valid", True)}  # skip suspended runs
     if 1 not in runs and 1.0 not in runs:
         return "PENDING", f"logged SF {sorted(runs)}; SF=1 missing"
     mins = runs.get(1, runs.get(1.0))["total_seconds"] / 60

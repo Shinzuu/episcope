@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 10:30)
+# Handoff (2026-10-21 10:35)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -79,6 +79,11 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   the padded key: never copy into the repo; delete after her screenshots).
 - SF=0.5 re-timed: 20.4 min. All three points balanced mode, after the silver fix (commits 89eea98, 01534b6,
   f1fc38d differ only in docs and the spill-folder option). scaling.json committed.
+
+## 10:35 SF=1 recorded (Lilith/shinzuu: no further SF=1 run)
+- scaling.json holds both SF=1 runs: the 22:34 run with timing_valid=false and the suspend note, and the
+  09:35-10:03 run (MX1zs5) with timing_valid=true, 28.3 min. verify.py gate 5 skips invalid runs: PASS.
+  scaling.sh keeps invalid entries when it replaces an SF. Ask shinzuu before any new SF=1 run.
 
 ## Next, in order
 1. ING-6 latency running in the kept SF=1 workspace (task b3adhlwoo, script in the session scratchpad):
