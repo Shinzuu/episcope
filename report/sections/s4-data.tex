@@ -11,7 +11,7 @@ The generator (\texttt{generator/}) writes the three synthetic sources: encounte
 report date, a register of 736 facilities (S5) and daily stock snapshots (S6) as JSON. It is vectorised numpy,
 seeded per (seed, stream, district, year), so the same arguments give byte-identical output whatever the number
 of worker processes. Rates are per head of population, so the row count follows the census rather than a
-constant: SF=1 gives about 6.2 million encounters a year, or about 31 million for 2021--2025.
+constant: SF=1 gives 34.1 million encounter rows for 2021--2025, planted defects included.
 
 Each disease has its own annual cycle. Dengue peaks in early October, because OpenDengue's national counts peak
 in October in 2022 and 2024, later than ``follows the monsoon'' suggests. Dengue responds to rainfall and
@@ -19,7 +19,7 @@ temperature four to eight weeks earlier, diarrhoea spikes after extreme rainfall
 the three Hill Tracts districts and Cox's Bazar, and every count has negative-binomial noise. Reporting delay is
 a discretised negative binomial with mean 3 days truncated at 21, and 65\% of Friday and Saturday reports move
 to Sunday (Bangladesh's weekend). Each run injects 35 outbreaks of different shape and size,
-including a slow-growing one and a nationwide novel respiratory surge, and two reporting artefacts: a facility
+including a slow-growing one and a nationwide novel respiratory surge, and two reporting artefacts, each a facility
 that goes silent for three weeks and then back-fills. They are written only to \texttt{ground\_truth/}, which
 the detection code never reads (a test fails if it does).
 
