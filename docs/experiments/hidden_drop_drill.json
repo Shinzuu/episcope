@@ -1,7 +1,7 @@
 {
   "ok": true,
-  "summary": "PASS: clean clone, SF=0.05 seed 42, then a 14-day drop with seed 9608 ingested unmodified: +8292 silver rows, data through 2025-12-31 -> 2026-01-14, 0 duplicates after re-run, export 9.64 MB with no 1-4 counts, 22 min",
-  "rows_added": 8292,
+  "summary": "PASS: clean clone, SF=0.05 seed 42, then a 14-day drop with seed 3006 ingested unmodified: +8741 silver rows, data through 2025-12-31 -> 2026-01-14, 0 duplicates after re-run, export 9.78 MB with no 1-4 counts, 38 min",
+  "rows_added": 8741,
   "duplicates_after_rerun": 0,
   "checks": {
     "drop_ingested_as_new_batch": true,
@@ -14,40 +14,40 @@
   },
   "sf": 0.05,
   "seed": 42,
-  "drop_seed": 9608,
+  "drop_seed": 3006,
   "setup": "make",
-  "seconds": 1361,
+  "seconds": 2287,
   "before": {
-    "silver_rows": 1614917,
+    "silver_rows": 1636674,
     "silver_duplicate_ids": 0,
     "gold_rows": 67400,
     "gold_duplicate_keys": 0,
     "max_report_date": "2025-12-31",
     "bronze_batches": 1,
-    "quarantined": 66979
+    "quarantined": 68195
   },
   "after": {
-    "silver_rows": 1623209,
+    "silver_rows": 1645415,
     "silver_duplicate_ids": 0,
     "gold_rows": 67912,
     "gold_duplicate_keys": 0,
     "max_report_date": "2026-01-14",
     "bronze_batches": 2,
-    "quarantined": 67298
+    "quarantined": 68533
   },
   "rerun": {
-    "silver_rows": 1623209,
+    "silver_rows": 1645415,
     "silver_duplicate_ids": 0,
     "gold_rows": 67912,
     "gold_duplicate_keys": 0,
     "max_report_date": "2026-01-14",
     "bronze_batches": 2,
-    "quarantined": 67298
+    "quarantined": 68533
   },
   "export": {
     "small_counts": 0,
-    "bytes": 9644053,
-    "weeks": 137,
+    "bytes": 9779195,
+    "weeks": 109,
     "last_week": "2026-01-12"
   },
   "inputs_not_from_readme": [
