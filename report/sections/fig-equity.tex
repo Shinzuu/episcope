@@ -1,0 +1,26 @@
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.6cm}, width=0.46\textwidth, height=4.4cm,
+  xmin=0, xmax=1, ymin=0, ymax=102, grid=major, grid style={gray!20}, xlabel={Minimum share per district ($\alpha$)},
+  tick label style={font=\footnotesize}, label style={font=\footnotesize}, title style={font=\footnotesize}]
+\nextgroupplot[ylabel={Need met (\%)}, title={Share of need met},
+  legend style={font=\scriptsize, at={(0.02,0.02)}, anchor=south west}, legend cell align=left]
+\addplot[blue!80!black, mark=*, mark size=0.9pt] coordinates {(0,50.455) (0.1,50.227) (0.2,49.949) (0.3,49.459) (0.4,48.759) (0.5,47.779) (0.6,46.274) (0.7,38.910) (0.8,35.461) (0.9,25.741) (1,21.174)};
+\addplot[orange!85!black, mark=*, mark size=0.9pt] coordinates {(0,67.782) (0.1,64.956) (0.2,64.530) (0.3,64.032) (0.4,63.400) (0.5,62.591) (0.6,61.846) (0.7,60.336) (0.8,52.259) (0.9,42.724) (1,36.353)};
+\addplot[green!50!black, mark=*, mark size=0.9pt] coordinates {(0,82.673) (0.1,82.184) (0.2,81.660) (0.3,81.065) (0.4,80.334) (0.5,79.427) (0.6,78.187) (0.7,76.353) (0.8,73.207) (0.9,61.902) (1,51.104)};
+\addplot[red!70!black, mark=*, mark size=0.9pt] coordinates {(0,100.000) (0.1,99.413) (0.2,98.791) (0.3,98.097) (0.4,97.268) (0.5,96.262) (0.6,94.833) (0.7,92.730) (0.8,87.552) (0.9,77.339) (1,58.154)};
+\addplot[gray, mark=*, mark size=0.9pt] coordinates {(0,100.000) (0.1,100.000) (0.2,100.000) (0.3,100.000) (0.4,100.000) (0.5,100.000) (0.6,100.000) (0.7,100.000) (0.8,100.000) (0.9,100.000) (1,72.979)};
+\legend{$0.25\,B_{\text{ref}}$, $0.5\,B_{\text{ref}}$, $0.75\,B_{\text{ref}}$, $1.0\,B_{\text{ref}}$, $1.5\,B_{\text{ref}}$}
+\nextgroupplot[ylabel={Coverage (\%)}, title={Worst-covered district}]
+\addplot[blue!80!black, mark=*, mark size=0.9pt] coordinates {(0,25.000) (0.1,25.019) (0.2,12.500) (0.3,12.500) (0.4,12.500) (0.5,12.500) (0.6,12.500) (0.7,12.500) (0.8,12.500) (0.9,12.500) (1,16.556)};
+\addplot[orange!85!black, mark=*, mark size=0.9pt] coordinates {(0,50.000) (0.1,37.500) (0.2,37.500) (0.3,37.500) (0.4,37.500) (0.5,37.500) (0.6,37.500) (0.7,37.500) (0.8,37.500) (0.9,31.990) (1,26.708)};
+\addplot[green!50!black, mark=*, mark size=0.9pt] coordinates {(0,75.000) (0.1,62.500) (0.2,62.500) (0.3,62.500) (0.4,62.500) (0.5,62.500) (0.6,62.500) (0.7,62.500) (0.8,50.000) (0.9,40.173) (1,37.489)};
+\addplot[red!70!black, mark=*, mark size=0.9pt] coordinates {(0,100.000) (0.1,87.500) (0.2,87.500) (0.3,87.500) (0.4,87.500) (0.5,87.500) (0.6,87.500) (0.7,87.500) (0.8,75.000) (0.9,62.500) (1,42.965)};
+\addplot[gray, mark=*, mark size=0.9pt] coordinates {(0,100.000) (0.1,100.000) (0.2,100.000) (0.3,100.000) (0.4,100.000) (0.5,100.000) (0.6,100.000) (0.7,100.000) (0.8,100.000) (0.9,100.000) (1,55.848)};
+\end{groupplot}
+\end{tikzpicture}
+\caption{Efficiency and equity curve (AN-8) from \texttt{allocation\_curve.csv}: share of need met and the
+worst-covered district's share of its own need against the equity floor $\alpha$, one line per budget.}
+\label{fig:equity}
+\end{figure*}
