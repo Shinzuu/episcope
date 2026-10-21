@@ -4,7 +4,8 @@
 /* global d3 */
 import { loadAll } from "./data.js";
 import { state, setState, bus } from "./state.js";
-import { fmtShort, debounce } from "./util.js";
+import { fmtShort, debounce, methodLabel } from "./util.js";
+import { isAlert } from "./data.js";
 import { renderMap } from "./views/map.js";
 import { renderTimeseries } from "./views/timeseries.js";
 import { renderHeatmap } from "./views/heatmap.js";
@@ -24,7 +25,7 @@ function fillControls(D, defaultRange) {
     .attr("value", (d) => d.code).text((d) => d.name);
 
   d3.select("#method-select").on("change", function () { setState({ method: this.value }, "controls"); })
-    .selectAll("option").data(D.methods).join("option").attr("value", (m) => m).text((m) => m.replace("_", " ").toUpperCase());
+    .selectAll("option").data(D.methods).join("option").attr("value", (m) => m).text((m) => methodLabel(m));
 
   d3.select("#range-reset").on("click", () => setState({ t0: defaultRange[0], t1: defaultRange[1] }, "controls"));
 
@@ -43,6 +44,20 @@ function roleBanner(D) {
   const own = D.districtByCode.get(D.role.district)?.name || D.role.district;
   el.textContent = `District view: ${own} in detail; other areas as division totals only.`;
   el.hidden = false;
+}
+
+// "Who is on alert now?" across every disease, for the last complete week (persona walkthroughs: the map and
+// table count alerts over the whole range). Follows the alert method and level the user picked.
+function nowSummary(D) {
+  const el = document.getElementById("now-summary");
+  const i = D.lastComplete;
+  const parts = D.diseases.map((dz) => {
+    const on = D.districts.filter((d) => isAlert(D.getAlerts(d.code, dz, state.method)[i], state.thrMult));
+    const names = on.slice(0, 3).map((d) => d.name).join(", ") + (on.length > 3 ? ` and ${on.length - 3} more` : "");
+    return on.length ? `${dz}: ${names}` : null;
+  }).filter(Boolean);
+  el.textContent = `On alert in the last full week (week of ${fmtShort(D.weeks[i])}, ${methodLabel(state.method)}): `
+    + (parts.length ? parts.join("; ") : "none") + ".";
 }
 
 function freshness(D) {
@@ -70,11 +85,14 @@ async function init() {
   const disease = D.diseases.includes("dengue") ? "dengue" : D.diseases[0];
   Object.assign(state, {
     disease,
-    method: D.methods[0],
+    method: D.methods.includes("ears_c2") ? "ears_c2" : D.methods[0],  // the recommended detector (report §6)
     t0: defaultRange[0],
     t1: defaultRange[1],
-    budget: D.budgets[Math.floor(D.budgets.length / 2)],
-    alpha: D.alphas[Math.min(D.alphas.length - 1, Math.round(D.alphas.length * 0.2))],
+    // Open on half of the money needed and the recommended floor, the scenario the report and brief discuss.
+    budget: D.bRef ? D.budgets[d3.minIndex(D.budgets, (b) => Math.abs(b - 0.5 * D.bRef))]
+      : D.budgets[Math.floor(D.budgets.length / 2)],
+    alpha: D.alphas.includes(D.recommendedAlpha) ? D.recommendedAlpha
+      : D.alphas[Math.min(D.alphas.length - 1, Math.round(D.alphas.length * 0.2))],
     resource: defaultResource(D, disease),
   });
   state.district = D.role?.district || rankDistricts(D)[0]?.code || D.districts[0].code;
@@ -83,6 +101,7 @@ async function init() {
   buildWhatIf(D);
   freshness(D);
   roleBanner(D);
+  nowSummary(D);
 
   const views = {
     map: () => renderMap(D),
@@ -103,6 +122,7 @@ async function init() {
 
   bus.on("change.main", ({ changed }) => {
     syncControls();
+    if (changed.includes("method") || changed.includes("thrMult")) nowSummary(D);
     for (const [name, keys] of Object.entries(deps)) {
       if (keys.some((k) => changed.includes(k))) views[name]();
     }

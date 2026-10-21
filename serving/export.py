@@ -105,8 +105,18 @@ def allocation_json(spark) -> dict:
              "unmet": _num(r["unmet"], 1), "demand": _num(demand.get((r["district_code"], r["resource"]), 0.0), 1),
              "stock": int(stock.get((r["district_code"], r["resource"]), 0) or 0)}
             for r in alloc.orderBy("scenario_id", "resource", "district_code").collect()]
-    return {"scenarios": [{"id": r["scenario_id"], "budget": _num(r["budget"], 4), "alpha": _num(r["alpha"], 4)}
-                          for r in sc], "rows": rows}
+    out = {"scenarios": [{"id": r["scenario_id"], "budget": _num(r["budget"], 4), "alpha": _num(r["alpha"], 4)}
+                         for r in sc], "rows": rows}
+    # B_ref (cost of meeting all need) and the recommended alpha, so the dashboard can say "half of the money
+    # needed" and open on the recommended floor (analytics/optimise/run.py writes them).
+    from analytics.forecast.io import results_dir
+
+    summary = results_dir() / "allocation_summary.json"
+    if summary.exists():
+        s = json.loads(summary.read_text())
+        out["b_ref"] = _num(s.get("b_ref_bdt"), 1)
+        out["recommended_alpha"] = _num((s.get("recommended") or {}).get("alpha"), 2)
+    return out
 
 
 def calendar_json(spark) -> list:

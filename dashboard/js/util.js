@@ -70,7 +70,7 @@ export function legendKey(container, kind, label, opts = {}) {
   } else if (kind === "symbol") {
     s.append("path").attr("transform", "translate(11,6)")
       .attr("d", d3.symbol(opts.symbol || d3.symbolTriangle, opts.size || 50)())
-      .attr("fill", opts.color).attr("stroke", "#fff");
+      .attr("fill", opts.color).attr("stroke", opts.stroke || "#fff");
   } else {
     s.append("rect").attr("y", 1).attr("width", 22).attr("height", 10).attr("fill", opts.color).attr("stroke", opts.stroke || "none");
   }
@@ -94,3 +94,12 @@ export function rampLegend(container, scale, label, width = 220) {
 export const inRange = (date, t0, t1) => date >= t0 && date <= t1;
 export const debounce = (fn, ms) => { let h; return (...a) => { clearTimeout(h); h = setTimeout(() => fn(...a), ms); }; };
 export const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+// Plain-language names (persona walkthroughs: method codes and statistics terms were not understood).
+export const METHOD_LABEL = { ears_c2: "EARS C2 (fast rises)", cusum: "CUSUM (slow build-ups)" };
+export const methodLabel = (m) => METHOD_LABEL[m] || m;
+export const RESOURCE_UNIT = {
+  beds: "beds", iv_saline: "1-litre bags of IV saline", ns1_kits: "dengue test kits (NS1)",
+  ors: "ORS sachets", antimalarials: "antimalarial treatment courses",
+};
+export const resourceLabel = (r) => RESOURCE_UNIT[r] || r.replace(/_/g, " ");

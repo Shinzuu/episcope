@@ -24,7 +24,8 @@ export function districtStats(D, dz, t0, t1, method, mult) {
       }
       if (isAlert(al[i], mult)) { alerts += 1; lastAlert = w; }
     });
-    out.set(d.code, { mean: n ? sum / n : null, n, supp, cases, alerts, lastAlert });
+    out.set(d.code, { mean: n ? sum / n : null, n, supp, cases, alerts, lastAlert,
+      alertNow: isAlert(al[D.lastComplete], mult) });
   }
   return out;
 }
@@ -61,12 +62,12 @@ export function renderMap(D) {
     const d = D.districtByCode.get(code);
     const s = stats.get(code);
     if (!d || !s) return esc(code);
-    const meanTxt = s.n ? `${fmtNum(s.mean, 2)} per 100k / week` : "suppressed (<5) in every week";
+    const meanTxt = s.n ? `${fmtNum(s.mean, 2)} weekly cases per 100,000 people` : "fewer than 5 cases (hidden) in every week";
     const head = code !== raw ? `<b>${esc(d.name)}</b> (aggregate; district detail not shared)` : `<b>${esc(d.name)}</b>`;
     return `${head}<br>${meanTxt}`
       + `<br>${fmtNum(s.cases)} visible cases in range`
-      + (s.supp ? `<br>${s.supp} suppressed week(s) (<5 each) not in the mean` : "")
-      + `<br>${s.alerts} ${esc(method)} alert week(s)`;
+      + (s.supp ? `<br>${s.supp} week(s) with fewer than 5 cases hidden, not in the average` : "")
+      + `<br>${s.alerts} alert week(s) in range${s.alertNow ? ", <b>on alert in the last full week</b>" : ""}`;
   };
   const select = (code) => setState({ district: viewCode(code) }, "map");
 
@@ -123,8 +124,11 @@ export function renderMap(D) {
 
   // Alert markers: districts with at least one alert week in range.
   const flagged = D.districts.filter((d) => stats.get(d.code)?.alerts > 0);
+  // Solid: on alert in the last full week. Outline: alerts earlier in the range only.
   g.selectAll("path.alert-marker").data(flagged).join("path").attr("class", "alert-marker")
     .attr("transform", (d) => `translate(${centroids.get(d.code)})`)
+    .attr("fill", (d) => (stats.get(d.code).alertNow ? null : "none"))
+    .attr("stroke", (d) => (stats.get(d.code).alertNow ? null : C.alert)).attr("stroke-width", 1.2)
     .attr("d", (d) => d3.symbol(d3.symbolTriangle, 30 + 18 * Math.min(stats.get(d.code).alerts, 6))());
 
   const zoom = d3.zoom().scaleExtent([1, 8]).translateExtent([[0, 0], [width, height]])
@@ -138,14 +142,15 @@ export function renderMap(D) {
   svg.call(zoom).call(zoom.transform, zoomTransform).style("touch-action", "pan-x pan-y");
 
   const sub = document.getElementById("map-sub");
-  sub.textContent = `${dz}: mean weekly cases per 100k, ${D.weeks.filter((w) => inRange(w, t0, t1)).length} weeks in range. `
-    + "Ctrl+scroll or pinch to zoom.";
+  sub.textContent = `${dz}: average weekly cases per 100,000 people over ${D.weeks.filter((w) => inRange(w, t0, t1)).length} `
+    + "weeks. Ctrl+scroll or pinch to zoom.";
 
   const lg = d3.select("#map-legend");
   lg.selectAll("*").remove();
-  rampLegend(lg, color, "mean weekly cases per 100k");
-  legendKey(lg, "hatch", "suppressed (<5)");
+  rampLegend(lg, color, "weekly cases per 100,000 people");
+  legendKey(lg, "hatch", "fewer than 5 (hidden)");
   legendKey(lg, "rect", "no data", { color: C.nodata, stroke: "#ccc" });
-  legendKey(lg, "symbol", `${method} alert in range`, { color: C.alert });
+  legendKey(lg, "symbol", "on alert in the last full week", { color: C.alert });
+  legendKey(lg, "symbol", "alert earlier in the range", { color: "none", stroke: C.alert });
   if (D.role) legendKey(lg, "rect", "lighter: division aggregate", { color: "#bbb", stroke: "#ccc" });
 }

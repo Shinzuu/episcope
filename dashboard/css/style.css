@@ -124,3 +124,12 @@ td .pi { white-space: nowrap; }
 
 /* PRV-3 district view banner */
 .role-banner { margin: 2px 0 0; padding: 2px 8px; border-radius: 4px; background: #fff3cd; color: #5c4400; font-size: 0.85rem; }
+
+/* "On alert now" line and the forecast table (persona walkthroughs) */
+.now-summary { width: 100%; margin: 4px 0 0; font-size: 0.9rem; font-weight: 600; }
+.fc-table { border-collapse: collapse; margin-top: 6px; font-size: 0.85rem; }
+.fc-table caption { text-align: left; font-weight: 600; padding-bottom: 2px; }
+.fc-table th, .fc-table td { padding: 2px 10px 2px 0; text-align: right; }
+.fc-table th:first-child, .fc-table td:first-child { text-align: left; }
+.fc-table tr.total td { border-top: 1px solid #ccc; font-weight: 600; }
+.whatif .hint { grid-column: 1 / -1; margin: 4px 0 0; font-size: 0.8rem; color: var(--muted); }

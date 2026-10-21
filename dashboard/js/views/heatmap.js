@@ -40,7 +40,7 @@ export function renderHeatmap(D) {
     .attr("stroke", (c) => (inRange(c.w, t0, t1) ? "#000" : "none")).attr("stroke-width", 1)
     .style("cursor", "pointer")
     .on("mousemove", (event, c) => {
-      const val = !c.v ? "no report" : c.v.s ? "suppressed (<5)" : `${fmtNum(c.v.c)} cases, ${fmtNum(c.v.inc, 2)} per 100k`;
+      const val = !c.v ? "no report" : c.v.s ? "fewer than 5 (hidden)" : `${fmtNum(c.v.c)} cases, ${fmtNum(c.v.inc, 2)} per 100,000 people`;
       showTip(`<b>${c.yr} W${c.wk}</b> (${fmtDate(c.w)})<br>${esc(val)}`, event);
     })
     .on("mouseleave", hideTip)
@@ -65,8 +65,8 @@ export function renderHeatmap(D) {
 
   const lg = d3.select("#heat-legend");
   lg.selectAll("*").remove();
-  rampLegend(lg, color, "weekly cases per 100k");
-  legendKey(lg, "hatch", "suppressed (<5)");
+  rampLegend(lg, color, "weekly cases per 100,000 people");
+  legendKey(lg, "hatch", "fewer than 5 (hidden)");
   legendKey(lg, "symbol", "pre-position supplies", { color: C.preposition, symbol: d3.symbolTriangle });
   legendKey(lg, "symbol", "start campaign", { color: C.campaign, symbol: d3.symbolCircle });
   legendKey(lg, "rect", "selected range", { color: "#fff", stroke: "#000" });

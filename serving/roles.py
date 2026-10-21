@@ -102,7 +102,7 @@ def _alloc_rows(allocation, own):
     for a in agg.values():
         for f in ("alloc", "unmet", "demand"):
             a[f] = round(a[f], 1)
-    return {"scenarios": allocation["scenarios"], "rows": keep + list(agg.values())}
+    return {**{k: v for k, v in allocation.items() if k != "rows"}, "rows": keep + list(agg.values())}
 
 
 def write_role_bundles(spark, root: pathlib.Path, national: dict, pop: dict, meta: dict, dumps) -> dict:

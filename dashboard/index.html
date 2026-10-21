@@ -40,12 +40,13 @@
       <button id="range-reset" type="button" class="link">reset</button>
     </div>
   </div>
+  <p id="now-summary" class="now-summary" role="status"></p>
   <p class="fresh global" data-fresh></p>
 </header>
 
 <main class="grid">
   <section class="panel p-map" aria-labelledby="map-title">
-    <h2 id="map-title">Incidence per 100k</h2>
+    <h2 id="map-title">Cases per 100,000 people</h2>
     <p class="hint" id="map-sub"></p>
     <div class="chart" id="map"></div>
     <div class="legend" id="map-legend"></div>
@@ -64,6 +65,7 @@
     <p class="hint">Drag on the lower strip to choose a time range; every view follows it.</p>
     <div class="chart" id="ts"></div>
     <div class="legend" id="ts-legend"></div>
+    <div id="ts-forecast"></div>
     <p class="fresh" data-fresh></p>
   </section>
 

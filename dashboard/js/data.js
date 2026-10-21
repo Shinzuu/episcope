@@ -132,8 +132,16 @@ function build(raw) {
   const districts = codes.map((code) => ({ code, name: aggNames[code] || nameOf.get(code) || code, div: code.slice(0, 4),
     aggregate: code in aggNames }));
 
+  // A week is complete once all seven days are inside the data (week_start + 6 <= data_through). The newest
+  // week is usually partial: its low count must not be read as a fall (persona walkthroughs).
+  const through = parseDay(meta.data_through);
+  const complete = (w) => !through || +w + 6 * 864e5 <= +through;
+  let lastComplete = weeks.length - 1;
+  while (lastComplete > 0 && !complete(weeks[lastComplete])) lastComplete -= 1;
+
   return {
-    meta, role: meta.role || null, threshold, weeks, weekStrs, wIdx, diseases, series, methods, alertIdx, fc,
+    meta, role: meta.role || null, threshold, weeks, lastComplete, complete,
+    bRef: allocation.b_ref ?? null, recommendedAlpha: allocation.recommended_alpha ?? null, weekStrs, wIdx, diseases, series, methods, alertIdx, fc,
     scenarios, budgets, alphas, resources, allocIdx, cal, dq, geo, districts,
     districtByCode: new Map(districts.map((d) => [d.code, d])),
     getSeries: (d, dz) => series.get(key(d, dz)) || new Array(weeks.length).fill(null),
