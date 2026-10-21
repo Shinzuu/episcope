@@ -93,8 +93,11 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
    checkpoint, next 14-day drop). Report BOTH runs in the report and stream_latency.json, as measured.
 2. Final hidden-drop drill on HEAD running (task bhbxccww1, DRILL_WORKTREE=0, SF=0.05, make setup); log
    /var/tmp/episcope-runs/drill-head.log. Report build (latexmk) also waits on the lock.
-3. Report edits uncommitted: s4 latency sentence (update for both runs), s6 scaling table and silver fix.
-4. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
+3. Names (shinzuu): Tahsin Ahmed Rafi and Rimjhim Dey in formal places (report title block, appendix
+   reflections line, status PDF header and member headings, 00-README team line); short names in task lists.
+   Edits made; the group-pack PDFs refresh with the next report build (queued under flock, task bp6eu4i4g).
+4. Report edits uncommitted: s4 latency sentence (update for both runs), s6 scaling table and silver fix.
+5. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
 
 ## Decisions
 - ENG-3, ENG-4 left for Samira. AN-7 degenerate allocation is Rafi's (net need 0 except antimalarials).

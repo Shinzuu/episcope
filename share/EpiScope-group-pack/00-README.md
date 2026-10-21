@@ -1,6 +1,6 @@
 # EpiScope group pack
 
-Draft v0.1, 20 Oct 2026. From Shezan, for Rafi, Rimjhim and Samira.
+Draft v0.1, 20 Oct 2026. From Shezan, for Tahsin Ahmed Rafi, Rimjhim Dey and Samira.
 
 ## What is in the pack
 
