@@ -33,7 +33,7 @@ carries records with onsets up to 21 days before the drop.
 SHA-256 and skips any file whose checksum is already in the ingest log, so a re-run reads nothing and a new
 drop loads only its own files. Every value of the contract fields is kept as a string, exactly as written, and
 each row gets the source, its file, the checksum, the batch ID and the load time (ING-1). One run is one batch;
-batch IDs start with a UTC timestamp, so they sort in load order.
+batch IDs start with a UTC timestamp and therefore sort in load order.
 
 \subsection{Silver: rules, quarantine and de-identification}
 The rule catalogue (\texttt{pipeline/quality/rules.py}) has 14 rules for encounters and 7 each for facilities
@@ -62,7 +62,7 @@ Clean rows are merged into \texttt{silver.encounters} with a Delta MERGE on \tex
 row is replaced only when the incoming \texttt{report\_date} is later. That one condition gives both required
 properties: re-running a batch matches every row with an equal date and changes nothing, and a resubmitted or
 late record replaces the old copy and moves to its own onset week. The MERGE is limited to the epi-years in the
-batch (plus one either side), so partition pruning keeps it from scanning the whole table.
+batch (plus one either side); partition pruning then keeps it from scanning the whole table.
 
 Silver records the weeks each batch changed: the onset weeks of new and replaced rows and the old weeks of
 replaced rows. Gold rebuilds only those weeks, plus the week after each, with a Delta \texttt{replaceWhere}.
@@ -78,7 +78,7 @@ counts, which link through the ingest log to file names and checksums (DQ-3).
 Cross-facility patient de-duplication (DQ-4) flags a record as a repeat when the same patient key, disease,
 sex and compatible age band appear at another facility within seven days. At SF=1 it flagged 8,499 pairs, of
 which 8,493 were true repeats (precision 0.999). Recall within the window was only 0.11, because the
-generator draws age and sex afresh for a repeat visit, so most planted repeats fail the attribute check. We
+generator draws age and sex afresh for a repeat visit. Most planted repeats fail the attribute check. We
 kept the strict rule: a false merge would hide a real case.
 
 \subsection{Time travel and the near-real-time path}\label{sec:stream}
@@ -90,7 +90,7 @@ that arrived 21 days late. A backtest origin must not see such a record either.
 
 \texttt{pipeline/stream.py} (ING-6) is a Structured Streaming query over the encounter file source. Each
 micro-batch with new files runs the same incremental chain as the daily batch (bronze, silver MERGE, gold
-rebuild of the changed weeks, detection, export) in one Spark session, so a streamed record passes the same
+rebuild of the changed weeks, detection, export) in one Spark session. A streamed record therefore passes the same
 rules and keeps the same lineage. The bronze checksum log makes the stream and the batch safe to mix: whichever
 sees a file first loads it. We measured the time from the newest file of a 14-day drop to refreshed alerts
 twice at SF=1. With a 60\,s trigger it was 301.5\,s for 112 files (bronze 32\,s, silver 118\,s, gold 54\,s,
