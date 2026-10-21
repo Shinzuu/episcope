@@ -86,7 +86,7 @@ Every gold build appends one row to \texttt{gold.\_snapshots}: the Delta version
 wrote and the latest report date that version contains. The \texttt{asof} module answers ``what did we
 know on date $t$'' by reading the newest version whose data ends on or before $t$ with Delta's
 \texttt{versionAsOf} (ING-7). A test checks that the answer for a date between two loads leaves out a record
-that arrived 21 days late, which is exactly what a backtest origin should not see.
+that arrived 21 days late. A backtest origin must not see such a record either.
 
 \texttt{pipeline/stream.py} (ING-6) is a Structured Streaming query over the encounter file source. Each
 micro-batch with new files runs the same incremental chain as the daily batch (bronze, silver MERGE, gold

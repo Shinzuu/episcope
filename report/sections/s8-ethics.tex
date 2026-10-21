@@ -16,7 +16,7 @@ public release only; ministry users keep exact counts with suppression.
 \textbf{Role-based access (PRV-3).} A district user receives a bundle with their own district in detail and
 every other area only as a division total. A division total is published only if every district count under
 it is visible in the national view, so subtracting one published number from another can never reveal a hidden
-count; an automated security review of the first version found exactly that leak, and this rule closes it. The
+count; an automated security review of the first version found that leak, and this rule closes it. The
 bundles decide what each role is sent, but a static web server cannot stop a district user from requesting the
 national files: a real deployment needs a login and a separate path per role.
 

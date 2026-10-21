@@ -46,7 +46,7 @@ does not.
 \subsection{Forecast backtest}
 The backtest refits the per-district NB-GLM at 52 rolling origins (every fourth origin, reused in between) and
 forecasts one to four weeks ahead using only data up to each origin. The seasonal-naive baseline is scored on
-exactly the same district, disease, origin and horizon cells. The weighted interval score~\cite{bracher2021wis}
+the same district, disease, origin and horizon cells. The weighted interval score~\cite{bracher2021wis}
 uses eleven central intervals plus the median; relative WIS below 1 means the model beats the baseline.
 
 \begin{table}[htbp]
