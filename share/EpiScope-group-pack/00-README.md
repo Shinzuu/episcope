@@ -31,7 +31,7 @@ file is in `docs/FINAL-NUMBERS.md`:
 4. **Allocation:** fixed. At half the money needed it meets 68% of the need against 34% for a population split.
 5. **Other:** quarantine 4.0%; patient de-duplication precision 0.999; streaming refresh in 219 s; hidden-drop drill passed on the final code; district-user view (PRV-3); SEIR scenarios (AN-10).
 6. **Usability:** two rounds of *simulated* persona walkthroughs run with AI agents (not real users; the report says so), with the problems they found fixed.
-7. **Report:** every section written from the SF=1 run, ten review passes, 10 pages, 0 warnings.
+7. **Report:** every section written from the SF=1 run, ten review passes and an examiner review, 11 pages, 0 warnings.
 
 Every requirement (ING, DQ, PRV, AN, VIS, ENG) is done, except ING-5, which is skipped on purpose (local filesystem to save RAM; the report says why).
 
