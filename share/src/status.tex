@@ -1,120 +1,101 @@
-\titleblock{Status and tasks}{\members}
+\titleblock{Status and tasks, 21 October 2026}{\members}
 
 \section*{Where we are}
-The pipeline runs end to end and passes 141 automated tests. The hidden-drop drill passed from a clean clone
-on 11 Oct at SF=0.05: a new 14-day drop added 8,292 rows, a re-run added no duplicates, and the dashboard data
-was 9.64\,MB with no counts from 1 to 4. What is missing is mostly evidence and writing: the scaling study,
-the Spark optimisation measurements, the detection and backtest result files, the usability test, the report
-and the video. All 14 commits so far are Shezan's and fall on one day; R9 grades each person's own Git share,
-so \textbf{everyone must commit their own work from now on}.
+The code, the result files and the report draft are finished. What is left is personal: each of us writes a
+half-page reflection, reads their own part of the video script, and records their segment. A few team items
+(group number, IDs, contribution matrix, tag) close it off.
 
-The deadline has not been announced. Plan as if it is a few days away.
+\textbf{Checks on the final code} (\texttt{make check}, commit \texttt{9c8fa53}):
+all five gates pass: 156 unit tests, brief coverage (all 23 Must requirements traced), hidden-drop drill, limits and privacy, and performance (SF=1 in 28.3 minutes against a 45-minute limit).
+
+\section*{Headline results}
+All from the final clean SF=1 build (34.1 million encounters, seed 42, real weather); every number and its
+source file is listed in \nolinkurl{docs/FINAL-NUMBERS.md}.
+\begin{itemize}
+\item \textbf{Speed:} the full pipeline runs in 25.3 minutes at SF=1 on the laptop (gate 5 timing run: 28.3
+minutes, limit 45). Two Spark optimisations were measured with unchanged outputs: silver 325\,s to 214\,s and
+the backtest 325\,s to 165\,s at SF=0.25, with Spark UI screenshots.
+\item \textbf{Detection:} EARS C2 finds 33 of 35 planted outbreaks, median 8 days, 1.89 false alerts per
+district-year; CUSUM finds 32.
+\item \textbf{Forecasts:} relative WIS 0.84 against the seasonal-naive baseline (dengue 0.89, diarrhoea 0.72).
+\item \textbf{Allocation:} fixed (stock now follows the case load; the LP no longer gives everything to a few
+districts). At half the money needed it meets 68\% of the need against 34\% for a population split.
+\item \textbf{Other:} quarantine 4.0\%; patient de-duplication precision 0.999; streaming refresh in 219\,s;
+hidden-drop drill passed on the final code; district-user view (PRV-3); SEIR scenarios (AN-10).
+\item \textbf{Usability:} two rounds of \emph{simulated} persona walkthroughs run with AI agents (not real
+users; the report says so), with the problems they found fixed.
+\item \textbf{Report:} every section written from the SF=1 run, ten review passes, 10 pages, 0 warnings.
+\end{itemize}
 
 \section*{Every requirement}
 \small
 \begin{longtable}{@{}l l l l >{\raggedright\arraybackslash}p{7.2cm}@{}}
 \toprule
-\textbf{ID} & \textbf{Pri} & \textbf{Owner} & \textbf{Status} & \textbf{Evidence or gap} \\
+\textbf{ID} & \textbf{Pri} & \textbf{Lead} & \textbf{Status} & \textbf{Evidence} \\
 \midrule
 \endhead
-ING-1 & M & Shezan & done & generator plus bronze with checksum, batch ID, load time; path bug fixed 20 Oct \\
-ING-2 & M & Shezan & done & every heavy transform in Spark \\
-ING-3 & M & Shezan & done & Delta by \texttt{epi\_year}; Hive catalog step added 20 Oct (\texttt{make catalog}) \\
-ING-4 & M & Shezan & done & Delta MERGE keeps the latest report; tests and drill show no duplicates \\
-ING-5 & S & Shezan & missing & skipped on purpose (RAM); the report says why \\
-ING-6 & S & Shezan & missing & streaming path promised in the proposal, not built yet \\
-ING-7 & C & Shezan & missing & Delta history exists; ``as of date $t$'' reader not built yet \\
-DQ-1 & M & Shezan & done & 14 encounter, 7 facility, 7 stock rules; quarantine with reason codes \\
-DQ-2 & M & Shezan & done & \texttt{gold.dq\_report} and \texttt{dq.json} on the dashboard \\
-DQ-3 & M & Shezan & done & \texttt{batch\_ids} on every gold row; lineage test \\
-DQ-4 & S & Shezan & done & precision 0.998 on 441 flagged pairs; recall 0.11 (stated honestly) \\
-PRV-1 & M & Samira & done & HMAC-SHA256 from Spark \texttt{sha2}; key only in \texttt{.env} \\
-PRV-2 & M & Rimjhim & done & complementary suppression with a leak audit in every export \\
-PRV-3 & S & Rimjhim & missing & no role-based (national or district) view \\
-PRV-4 & C & Samira & partial & k-anonymity check exists; differential-privacy text still to write \\
-AN-1 & M & Rafi & done & EARS C2 (window functions) and CUSUM (\texttt{applyInPandas}) \\
-AN-2 & M & Samira & partial & evaluation code and tests; no result file committed \\
-AN-3 & S & Rafi & done & onset-week counting and completeness; numbers wait for the evaluation run \\
-AN-4 & M & Rafi & done & per-district NB-GLM with lagged weather \\
-AN-5 & M & Samira & partial & backtest code; no result file committed \\
-AN-6 & M & Rafi & done & demand conversion with stated assumptions \\
-AN-7 & M & Rafi & partial & LP works, but the only run so far had almost no net need (see Rafi) \\
-AN-8 & S & Rafi & partial & curve over 5 budgets and 11 values of $\alpha$; recommends $\alpha=0$ everywhere \\
-AN-9 & M & Rafi & done & STL calendar per division and disease \\
-AN-10 & C & Rafi & missing & SEIR only inside the generator \\
-VIS-1--7 & M/S/C & Rimjhim & done & D3 v7 only, five linked views, what-if panel, mobile layout \\
-Usability & M & Rimjhim & missing & test with at least two non-CS users \\
-ENG-1 & M & Samira & partial & \texttt{make setup \&\& make all} works; README lacks prerequisites, drop steps, architecture \\
-ENG-2 & M & Samira & missing & scaling at SF 0.25, 0.5, 1; harness \nolinkurl{scripts/scaling.sh} ready \\
-ENG-3 & M & Samira & missing & two optimisations with before and after Spark UI screenshots \\
-ENG-4 & S & Samira & partial & 141 tests; no DAG with retries \\
-Report & & all & draft & skeleton in \nolinkurl{report/} (02 in this pack) \\
-Video & & all & elsewhere & slides and script built separately; links coming \\
+ING-1--4 & M & Shezan & done & generator, bronze with checksums, Delta by \texttt{epi\_year} and Hive catalog, MERGE without duplicates \\
+ING-5 & S & Shezan & skipped & local filesystem on purpose (RAM); the report says why \\
+ING-6 & S & Shezan & done & Structured Streaming refresh, 219\,s at SF=1 with the 30\,s trigger \\
+ING-7 & C & Shezan & done & ``what did we know on date $t$'' from Delta history (\texttt{make asof}) \\
+DQ-1--4 & M/S & Shezan & done & 28 rules, quarantine, \texttt{dq\_report}, lineage, patient de-duplication \\
+PRV-1, 4 & M/C & Samira & done & keyed hash; k-anonymity check and the differential-privacy discussion \\
+PRV-2, 3 & M/S & Rimjhim & done & suppression with a leak audit; district-user bundles safe against differencing \\
+AN-1, 3--9 & M/S & Rafi & done & detection, forecasts, demand, allocation (fixed), equity curve, calendar \\
+AN-10 & C & Rafi & done & SEIR scenarios calibrated on the respiratory surge \\
+AN-2, 5 & M & Samira & done & evaluation and backtest result files from the SF=1 run \\
+VIS-1--7 & M/S/C & Rimjhim & done & D3 v7 dashboard, five linked views, what-if, phone layout \\
+Usability & M & Rimjhim & done & simulated persona walkthroughs (AI agents), two rounds, \nolinkurl{docs/usability/} \\
+ENG-1--4 & M/S & Samira & done & one-command build, scaling study, two optimisations, DAG with retries \\
+Report & & Samira & draft & complete except the team items below (02 in this pack) \\
+Video & & all & to record & slides and script ready; each member records their own segment \\
 \bottomrule
 \end{longtable}
 \normalsize
 
-\section*{Shezan (Data Engineer)}
-\begin{tabularx}{\linewidth}{@{}Y l F@{}}
-\toprule
-\textbf{Task} & \textbf{Effort} & \textbf{Files} \\
-\midrule
-Run the scaling harness at SF 0.25, 0.5 and 1 (feeds Samira's ENG-2 and gate 5) & 2 h of runs & \nolinkurl{scripts/scaling.sh} \\
-ING-6 streaming path that refreshes alerts within 5 minutes & 2 h & \nolinkurl{pipeline/stream.py} (new) \\
-ING-7 ``what did we know on date $t$'' reader on Delta history & 45 min & \nolinkurl{pipeline/bronze/lake.py} \\
-README: prerequisites, hidden-drop steps, architecture summary & 30 min & \texttt{README.md} \\
-Final hidden-drop drill on the last commit & 30 min & \nolinkurl{scripts/hidden_drop_drill.sh} \\
-Report \S4 (data generation, quality, lineage), own reflection & 2 h & \nolinkurl{report/sections/} \\
-\bottomrule
-\end{tabularx}
+\section*{What each of us still has to do}
+The script assigns each of us a segment of at least four minutes on our lead area, in our own voice and with
+our name on screen (brief H3).
 
-\section*{Tahsin Ahmed Rafi (Analytics)}
-\begin{tabularx}{\linewidth}{@{}Y l F@{}}
-\toprule
-\textbf{Task} & \textbf{Effort} & \textbf{Files} \\
-\midrule
-Check the allocation: in the SF=0.05 run the national net need was 0 for beds, saline, NS1 kits and ORS
-(stock exceeded demand), so the LP had nothing to allocate. Recheck on the final data; consider planning over
-the season peak or a lower starting stock & 1--2 h & \nolinkurl{analytics/optimise/}, \nolinkurl{analytics/forecast/demand.py} \\
-AN-8: the recommender picks $\alpha=0$ at every budget; make sure the curve supports a real choice & 1 h & \nolinkurl{analytics/optimise/curve.py} \\
-AN-3 figure: naive detector against ours on the artefact facility & 1 h & \nolinkurl{analytics/evaluation/} \\
-AN-10 SEIR module (bonus, optional) & 2 h & \nolinkurl{analytics/scenario/} (new) \\
-Report \S5 and the analytics part of \S6, own reflection & 3 h & \nolinkurl{report/sections/} \\
-\bottomrule
-\end{tabularx}
+\subsection*{Shezan}
+\begin{checklist}
+\item Write your half-page reflection (report Appendix C).
+\item Read your part of the script (data engineering) and mark anything to change.
+\item Record your segment.
+\end{checklist}
 
-\section*{Rimjhim Dey (Visualisation)}
-\begin{tabularx}{\linewidth}{@{}Y l F@{}}
-\toprule
-\textbf{Task} & \textbf{Effort} & \textbf{Files} \\
-\midrule
-Usability test with at least two non-CS users: tasks, what they did, what we changed & 1 h plus fixes & \nolinkurl{docs/usability.md} (new) \\
-PRV-3 role-based view: national sees all; a district user sees their own district in detail & 2 h & \nolinkurl{dashboard/js/state.js}, \nolinkurl{serving/export.py} \\
-Dashboard screenshots for the report (all five views, what-if, suppressed cells) & 30 min & \nolinkurl{report/figures/} \\
-Report \S7, own reflection & 2 h & \nolinkurl{report/sections/} \\
-\bottomrule
-\end{tabularx}
+\subsection*{Rafi}
+\begin{checklist}
+\item Write your half-page reflection (report Appendix C).
+\item Read your part of the script (analytics) and mark anything to change.
+\item Record your segment.
+\end{checklist}
 
-\section*{Samira (Platform \& Evaluation, report lead)}
-\begin{tabularx}{\linewidth}{@{}Y l F@{}}
-\toprule
-\textbf{Task} & \textbf{Effort} & \textbf{Files} \\
-\midrule
-ENG-2 write-up: runtime per stage, sizes, bottleneck from the Spark UI (runs from Shezan's harness) & 1 h & \nolinkurl{docs/experiments/scaling.json} \\
-ENG-3: two optimisations with before and after numbers and Spark UI screenshots (for example broadcast of the
-register, partition pruning on \texttt{epi\_year}, AQE skew on Dhaka) & 2 h & \nolinkurl{docs/experiments/eng3/} (new) \\
-ENG-4: DAG with retries (the proposal promised it) & 1 h & \nolinkurl{orchestration/} \\
-AN-2 and AN-5: run \texttt{make evaluate} and the backtest on the final data and commit the result files & 1 h plus run time & \nolinkurl{analytics/evaluation/}, \nolinkurl{analytics/forecast/backtest.py} \\
-Report lead: \S1, \S2, \S3, \S6 (scaling), \S8, \S9, policy brief (Appendix A), contribution matrix & 5 h & \nolinkurl{report/} \\
-\bottomrule
-\end{tabularx}
+\subsection*{Rimjhim}
+\begin{checklist}
+\item Write your half-page reflection (report Appendix C).
+\item Read your part of the script (dashboard and privacy) and mark anything to change.
+\item Record your segment.
+\end{checklist}
+
+\subsection*{Samira}
+\begin{checklist}
+\item Write your half-page reflection (report Appendix C).
+\item Read your part of the script (platform, evaluation and scaling) and mark anything to change.
+\item Record your segment.
+\end{checklist}
+
+\subsection*{Together}
+\begin{checklist}
+\item Add the group number and student IDs to the report's title block.
+\item Agree the contribution matrix (Appendix B): support cells, the video row, shares totalling 100, and sign.
+\item Add the video link to the report and the README once it is uploaded.
+\item Tag \texttt{v1.0} and push only when everyone agrees the code is frozen.
+\end{checklist}
 
 \section*{Rules for everyone}
 \begin{itemize}
-\item Commit your own work under your own Git identity, in small commits that start with the requirement ID,
-for example \texttt{AN-8: ...}. Nobody commits in someone else's name.
-\item Never commit \texttt{.env}, a salt or a key. Data stays out of Git (\nolinkurl{data/} and \nolinkurl{lake/} are ignored).
-\item Every number in the report and the video comes from a file in \nolinkurl{docs/experiments/} of the final run.
-\item Nobody tags \texttt{v1.0} or records the video until the group agrees the code is frozen.
-\item Write your own half-page reflection (Appendix C) and agree the contribution matrix (Appendix B) together.
+\item Every number you say in the video comes from \nolinkurl{docs/FINAL-NUMBERS.md}.
+\item Say ``simulated persona walkthroughs run with AI agents'' for the usability check; never call them user tests.
+\item Never commit \texttt{.env}, a salt or a key.
 \end{itemize}

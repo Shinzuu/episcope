@@ -1,32 +1,52 @@
 # EpiScope group pack
 
-Draft v0.1, 20 Oct 2026. From Shezan, for Tahsin Ahmed Rafi, Rimjhim Dey and Samira.
+Status, 21 Oct 2026. From Shezan, for Tahsin Ahmed Rafi, Rimjhim Dey and Samira.
 
 ## What is in the pack
 
 | File | What it is |
 |---|---|
-| `01-Status-and-tasks.pdf` | Every requirement with its status, then one section per member with open tasks, effort and the files to touch |
-| `02-Report-draft.pdf` | The report skeleton in IEEE format with every required section. Data engineering is filled in; yellow boxes mark what each of you writes |
+| `01-Status-and-tasks.pdf` | Where we are, the headline results, every requirement with its status, and what each of us still has to do |
+| `02-Report-draft.pdf` | The report in IEEE format, written from the final SF=1 run. Yellow boxes mark the team items |
 
 Slides and script:
 
 - Slides: https://shinzuu.github.io/episcope-video/
 - Script: https://shinzuu.github.io/episcope-video/script.html
 
-## Where the project stands
+## Where we are
 
-1. The pipeline runs end to end with one command (`make setup && make all`) and passes 141 automated tests.
-2. The hidden-drop drill passed from a clean clone (SF=0.05): new 14-day drop ingested unchanged, no duplicates on a re-run, export 9.64 MB.
-3. Missing evidence: the scaling study (SF 0.25, 0.5, 1), Spark optimisation before and after, detection and backtest result files, the usability test.
-4. Missing writing: most of the report, the policy brief, the contribution matrix and the reflections.
-5. Every commit so far is Shezan's, all on one day. R9 grades your own Git share, so please commit your own work from now on.
+The code, the result files and the report draft are finished. What is left is personal: each of us writes a
+half-page reflection, reads their own part of the video script, and records their segment. A few team items
+close it off.
 
-## What we need from each of you
+Checks on the final code (`make check`, commit 9c8fa53): all five gates pass: 156 unit tests, brief coverage (all 23 Must requirements traced), hidden-drop drill, limits and privacy, and performance (SF=1 in 28.3 minutes against a 45-minute limit).
 
-- **Rafi:** check the allocation (in the test run the LP had almost no need to allocate), the equity curve's recommendation, the artefact figure; report §5 and the analytics results.
-- **Rimjhim:** usability test with two non-CS users, the role-based view (PRV-3), dashboard screenshots; report §7.
-- **Samira:** scaling write-up, two Spark optimisations with Spark UI screenshots, a DAG with retries, the detection and backtest result files; report lead, policy brief, contribution matrix.
-- **Everyone:** your own half-page reflection, small commits under your own name with the requirement ID first (`AN-8: ...`), and no `.env`, salts or keys in Git.
+Headline results, all from the final clean SF=1 build (34.1 million encounters); every number and its source
+file is in `docs/FINAL-NUMBERS.md`:
 
-The deadline has not been announced yet. Please plan as if it is a few days away.
+1. **Speed:** the full pipeline runs in 25.3 minutes at SF=1 (gate 5 timing run: 28.3 minutes, limit 45). Two Spark optimisations were measured with unchanged outputs: silver 325 s to 214 s and the backtest 325 s to 165 s at SF=0.25.
+2. **Detection:** EARS C2 finds 33 of 35 planted outbreaks, median 8 days, 1.89 false alerts per district-year; CUSUM finds 32.
+3. **Forecasts:** relative WIS 0.84 against the seasonal-naive baseline (dengue 0.89, diarrhoea 0.72).
+4. **Allocation:** fixed. At half the money needed it meets 68% of the need against 34% for a population split.
+5. **Other:** quarantine 4.0%; patient de-duplication precision 0.999; streaming refresh in 219 s; hidden-drop drill passed on the final code; district-user view (PRV-3); SEIR scenarios (AN-10).
+6. **Usability:** two rounds of *simulated* persona walkthroughs run with AI agents (not real users; the report says so), with the problems they found fixed.
+7. **Report:** every section written from the SF=1 run, ten review passes, 10 pages, 0 warnings.
+
+Every requirement (ING, DQ, PRV, AN, VIS, ENG) is done, except ING-5, which is skipped on purpose (local filesystem to save RAM; the report says why).
+
+## What each of us still has to do
+
+The script gives each of us a segment of at least four minutes on our lead area, in our own voice and with our name on screen (brief H3).
+
+- **Shezan:** write your half-page reflection (report Appendix C); read your part of the script (data engineering); record your segment.
+- **Rafi:** write your half-page reflection; read your part of the script (analytics); record your segment.
+- **Rimjhim:** write your half-page reflection; read your part of the script (dashboard and privacy); record your segment.
+- **Samira:** write your half-page reflection; read your part of the script (platform, evaluation and scaling); record your segment.
+- **Together:** add the group number and student IDs to the report's title block; agree and sign the contribution matrix (Appendix B), including the video row and shares totalling 100; add the video link to the report and README once it is uploaded; tag `v1.0` and push only when everyone agrees the code is frozen.
+
+## Rules for everyone
+
+- Every number you say in the video comes from `docs/FINAL-NUMBERS.md`.
+- Say "simulated persona walkthroughs run with AI agents" for the usability check; never call them user tests.
+- Never commit `.env`, a salt or a key.
