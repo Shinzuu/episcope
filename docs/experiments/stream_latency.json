@@ -14,5 +14,21 @@
     "latency_seconds": 301.5,
     "finished_at": "2026-10-21T04:35:28+00:00",
     "sf": 1.0
+  },
+  {
+    "epoch": 1,
+    "trigger_seconds": 30,
+    "files": 80,
+    "batch_id": "20261021T053224010238Z-08c5acf9",
+    "steps": {
+      "bronze": 29.1,
+      "silver": 96.1,
+      "gold": 41.1,
+      "alerts": 25.3,
+      "export": 17.8
+    },
+    "latency_seconds": 219.2,
+    "finished_at": "2026-10-21T05:35:38+00:00",
+    "sf": 1.0
   }
 ]

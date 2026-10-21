@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 11:25)
+# Handoff (2026-10-21 11:45)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -89,14 +89,16 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
 1. ING-6 measured at SF=1 (kept workspace, main checkout untouched): drop written 10:30:27, alerts refreshed
    10:35:28, latency 301.5 s (bronze 32.2, silver 117.6, gold 53.6, alerts 32.2, export 22.1 s; the rest is
    the 60 s trigger wait). Target under 5 min missed by 1.5 s. Lilith: default trigger now 30 s (f3dcb33);
-   second SF=1 run with 30 s queued under flock after the drill (task bmm6k6e7n, same procedure, fresh stream
-   checkpoint, next 14-day drop). Report BOTH runs in the report and stream_latency.json, as measured.
+   second SF=1 run with 30 s: 80 files, 219.2 s (bronze 29.1, silver 96.1, gold 41.1, alerts 25.3, export
+   17.8 s), under 5 min. Both runs in stream_latency.json and report §4.
 2. Drill on HEAD (4cddbb9, DRILL_WORKTREE=0, SF=0.05, make setup) PASS: drop seed 3006, +8,741 silver rows,
    through 2026-01-14, 0 duplicates after re-run, export 9.78 MB, 38 min. Committed (d612084); report §4 updated.
 3. Names (shinzuu): Tahsin Ahmed Rafi and Rimjhim Dey in formal places (report title block, appendix
    reflections line, status PDF header and member headings, 00-README team line); short names in task lists.
-   Edits made; the group-pack PDFs refresh with the next report build (queued under flock, task bp6eu4i4g).
-4. Report edits uncommitted: s4 latency sentence (update for both runs), s6 scaling table and silver fix.
+   Edits made; PDFs rebuilt 11:45 and checked (full names in title block, status header and member headings,
+   README team line; short names in task rows and teammate boxes; no old spellings).
+   Report 6 pages, 0 warnings (s1 table ragged columns, two long paths reworded, \raggedbottom).
+4. Report §4 (latency, drill) and §6 (scaling table, silver fix) committed.
 5. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
 
 ## Decisions

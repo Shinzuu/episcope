@@ -82,8 +82,8 @@ generator draws age and sex afresh for a repeat visit, so most planted repeats f
 kept the strict rule: a false merge would hide a real case.
 
 \subsection{Time travel and the near-real-time path}
-Every gold build appends one row to \texttt{gold.\_snapshots}: the Delta version of \texttt{cases\_weekly} it
-wrote and the latest report date that version contains. \texttt{pipeline/gold/asof.py} answers ``what did we
+Every gold build appends one row to \texttt{gold.\_snapshots}: the Delta version of the weekly case table it
+wrote and the latest report date that version contains. The \texttt{asof} module answers ``what did we
 know on date $t$'' by reading the newest version whose data ends on or before $t$ with Delta's
 \texttt{versionAsOf} (ING-7). A test checks that the answer for a date between two loads leaves out a record
 that arrived 21 days late, which is exactly what a backtest origin should not see.
@@ -92,12 +92,16 @@ that arrived 21 days late, which is exactly what a backtest origin should not se
 micro-batch with new files runs the same incremental chain as the daily batch (bronze, silver MERGE, gold
 rebuild of the changed weeks, detection, export) in one Spark session, so a streamed record passes the same
 rules and keeps the same lineage. The bronze checksum log makes the stream and the batch safe to mix: whichever
-sees a file first loads it. [LATENCY: measured after the scaling runs]
+sees a file first loads it. We measured the time from the newest file of a 14-day drop to refreshed alerts
+twice at SF=1. With a 60\,s trigger it was 301.5\,s for 112 files (bronze 32\,s, silver 118\,s, gold 54\,s,
+detection 32\,s, export 22\,s, the rest waiting for the trigger), 1.5\,s over the 5-minute target. Since most
+of the miss was trigger wait, the default is now 30\,s; the next drop of 80 files took 219.2\,s (bronze 29\,s,
+silver 96\,s, gold 41\,s, detection 25\,s, export 18\,s).
 
 \subsection{Hidden-drop drill}
 \texttt{scripts/hidden\_drop\_drill.sh} rehearses the instructor's test: clone, \texttt{make setup},
 \texttt{make all}, a new 14-day drop with an unseen seed, the incremental steps, then the same steps again. On
-11 October at SF=0.05 it passed every check\prov{}: the drop was one new bronze batch, silver gained 8,292 rows,
-the data moved from 31 December 2025 to 14 January 2026, the re-run changed nothing and left zero duplicate IDs
-and zero duplicate gold keys, and the export was 9.64\,MB with no count from 1 to 4. It took 22 minutes,
-including setup.
+21 October, on the current code at SF=0.05, it passed every check: the drop (seed 3006) became one new bronze
+batch, silver gained 8,741 rows, the data moved from 31 December 2025 to 14 January 2026, the re-run changed
+nothing and left zero duplicate IDs and zero duplicate gold keys, and the export was 9.78\,MB with no count from
+1 to 4. It took 38 minutes, including \texttt{make setup}.

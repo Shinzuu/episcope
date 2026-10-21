@@ -1,6 +1,6 @@
 \section{Evaluation}\label{sec:eval}
-All numbers in this section come from the SF=0.25 build with real weather (seed 42) of 20 October\prov{}:
-\texttt{docs/experiments/detection\_tradeoff.json} and \texttt{backtest\_metrics.csv}.
+The detection and backtest numbers come from the SF=0.25 build with real weather (seed 42) of 20
+October\prov{}, in the detection trade-off and backtest metric files under \texttt{docs/experiments}.
 
 \subsection{Detection}
 \texttt{make evaluate} scores every alert against the 35 injected outbreaks in \texttt{ground\_truth/}, the only
@@ -80,8 +80,44 @@ report share of need met and the worst-covered district at five budgets, and the
 \end{teammate}
 
 \subsection{Scalability and Spark optimisations}
-\begin{teammate}{Samira (ENG-2, ENG-3)}
-Runtime per stage and output sizes at SF 0.25, 0.5 and 1 from \texttt{scaling.json} (run by Shezan's harness,
-in progress), with the hardware; the bottleneck stage from the Spark UI; two optimisations with before and
-after numbers and screenshots.
+\texttt{scripts/scaling.sh} builds each scale factor from a fresh clone and times every stage
+(Table~\ref{tab:scaling}). The laptop has an Intel Core i5-8350U (4 cores, 8 threads) and 15.4\,GB of RAM;
+Spark runs as \texttt{local[4]} with a 5\,GB driver. SF=1 finishes in 28.3 minutes, inside the 45-minute
+gate. Silver grows with the row count and is the slowest stage at SF=1; analytics stays near 7 to 8 minutes at
+every scale, because it works on weekly series per district, not on rows. A first SF=1 attempt failed in silver
+when Spark's spill filled the small RAM-backed \texttt{/tmp}; spill now goes to a disk folder.
+
+\begin{table}[htbp]
+\caption{Minutes per stage from a fresh clone}
+\label{tab:scaling}
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+ & SF=0.25 & SF=0.5 & SF=1 \\
+\midrule
+Encounter rows (M) & 8.5 & 17.1 & 34.1 \\
+Generate & 0.2 & 0.4 & 0.6 \\
+Bronze & 1.9 & 2.8 & 4.3 \\
+Silver & 3.8 & 6.7 & 11.1 \\
+Gold & 1.8 & 2.3 & 3.5 \\
+Analytics & 6.9 & 7.1 & 8.0 \\
+Serve & 0.7 & 1.1 & 0.9 \\
+\midrule
+Total & 15.4 & 20.4 & 28.3 \\
+Raw / silver (GB) & 1.2 / 0.8 & 2.2 / 1.5 & 4.1 / 2.9 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+One optimisation is measured. The silver job evaluated the 14 encounter quality rules, including the
+duplicate-ID rule that sorts the whole load, once for every output (quarantine, its count, the quality report
+and the clean MERGE). It now evaluates them once and persists the result. At SF=0.25 silver's Spark time fell
+from 325\,s to 214\,s, and every silver table kept the same row count and row hash
+(\texttt{silver\_optimisation.json}).
+
+\begin{teammate}{Samira (ENG-3)}
+Spark UI screenshots from the SF=1 event log (kept outside the repository; it holds the padded HMAC key), the
+bottleneck stage, and a second optimisation with before and after numbers (candidates: AQE skew handling or
+salting on the Dhaka load; backtest parallelism, 365\,s at SF=1 on 4 of 8 threads).
 \end{teammate}
