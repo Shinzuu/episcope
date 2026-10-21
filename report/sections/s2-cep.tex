@@ -36,8 +36,8 @@ there (Section~\ref{sec:alloc}). The ministry can still choose a floor in the wh
 batch. Alerts can also run from a Structured Streaming file source that refreshes them as files land
 (Section~\ref{sec:stream}); between files it holds almost no memory.
 
-\textbf{C5 accuracy against interpretability.} The forecast is a negative-binomial GLM with seasonal terms and
-lagged rainfall and temperature: each coefficient can be read as a rate ratio. It beats seasonal naive with a
+\textbf{C5 accuracy against interpretability.} The forecast is a negative-binomial GLM (NB-GLM) with seasonal terms and
+lagged rainfall and temperature: each coefficient can be read as a rate ratio. It beats the seasonal-naive baseline with a
 relative WIS of 0.84.
 We did not try a more complex model, such as gradient boosting or a hierarchical Bayesian model: the GLM already
 beats the baseline at every horizon, and a district officer can check its sign and size against what they see.

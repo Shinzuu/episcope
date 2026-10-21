@@ -44,7 +44,7 @@ Chosen & Rejected & Reason \\
 \midrule
 Python DAG behind \texttt{make} & Airflow, Prefect & Airflow needs 4--8\,GB of RAM; Prefect is a new dependency for eight stages \\
 Delta Lake & Iceberg, plain Parquet & MERGE and time travel with documented Spark~4.0.1 support; Parquet has neither \\
-Batch, plus a streaming refresh & Streaming only & Decisions are weekly; the stream (\S\ref{sec:stream}) reuses the batch code for alerts \\
+Batch, plus a streaming refresh & Streaming only & Decisions are weekly; the stream (Section~\ref{sec:stream}) reuses the batch code for alerts \\
 Local filesystem & HDFS, MinIO & 1--2\,GB of RAM saved on a 16\,GB laptop \\
 Static JSON & An API server & Under 10\,MB of aggregates; nothing to run or secure \\
 \bottomrule

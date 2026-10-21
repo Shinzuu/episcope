@@ -22,7 +22,7 @@ For dengue and diarrhoea, one model per district and horizon $h=1,\dots,4$:
 + \beta_T\,\text{temp}_{t-\ell} + \beta_y \log(1+\text{level}_{t-h})
 \end{multline}
 with lags $\ell$ of four to eight weeks and $\text{Var}(y)=\mu+\alpha\mu^2$ (NB2~\cite{hilbe2011nb}), fitted with
-statsmodels. The baseline is the seasonal naive forecast, the value of the same week a year earlier~\cite{hyndman2021fpp3}.
+statsmodels. The baseline is the seasonal-naive forecast, the value of the same week a year earlier~\cite{hyndman2021fpp3}.
 Because every weather lag is at least as long as the horizon, no weather forecast is needed. Districts are
 fitted in parallel through a cogrouped \texttt{applyInPandas}. Predictive quantiles are the plug-in NB
 quantiles, which ignore parameter uncertainty.
@@ -37,7 +37,7 @@ for each resource is divided by its national net need, so a bed and a test kit a
 objective. Second, each district's unmet need is priced in four equal slices with weights 1, 2, 3 and 4, so the
 last quarter of a shortfall costs most. With a single flat price every unit of a resource is worth the same in
 every district; the LP is then indifferent between districts and returns a corner, with some districts fully
-supplied and the rest given nothing (Section~\ref{sec:alloc}). Net need is the 4-week q90 demand minus current
+supplied and the rest given nothing (Section~\ref{sec:alloc}). Net need is the four-week 90th-percentile demand minus current
 stock; for beds the patients already admitted are counted as holding a bed, so they are not counted twice. With
 $\alpha=0$ the LP is pure efficiency; with $\alpha=1$ every resource is split by population. The model is
 feasible for every $\alpha$ because $x=0$ satisfies every constraint.

@@ -8,3 +8,4 @@ One line per review pass: file, lens, what changed, pages, LaTeX warnings.
 - v4-examiner.pdf: pass 4 (examiner). Checked every H2 section and appendix against the brief; added the C1 trade-off figure from detection_tradeoff.csv; C4 now points to the streaming subsection. 10 pages, 0 warnings.
 - v5-proofread.pdf: pass 5 (proofread). No doubled words or US spellings; defined CEP, MoH, LP, STL and MAE at first use; footer now Draft v0.2, 21 Oct 2026. 10 pages, 0 warnings.
 - v6-punctuation.pdf: pass 6 (punctuation). No em dashes anywhere; the only en dash outside a range (Okabe--Ito) is now a hyphen; TikZ path operators are not dashes. 10 pages, 0 warnings.
+- v7-style.pdf: pass 7 (style). One name per thing: seasonal-naive baseline, NB-GLM defined once, four-week as the adjective, 90th percentile in place of q90 in prose, Section rather than the section sign. 10 pages, 0 warnings.

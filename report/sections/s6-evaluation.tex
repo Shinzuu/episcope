@@ -53,7 +53,7 @@ uses eleven central intervals plus the median; relative WIS below 1 means the mo
 the mean absolute error of the median forecast.
 
 \begin{table}[htbp]
-\caption{Backtest over 52 origins, model against seasonal naive}
+\caption{Backtest over 52 origins, model against the seasonal-naive baseline}
 \label{tab:backtest}
 \centering\small
 \setlength{\tabcolsep}{4pt}
@@ -77,7 +77,7 @@ mean what they say. For dengue, 105 of the model's WIS of 130 is underprediction
 season's rise. That matters for stock, and it is why the plan uses the 90th percentile, not the mean.
 
 \subsection{Allocation against the population baseline}\label{sec:alloc}
-The first allocation runs were degenerate: generated stock was 3 to 225 times the 4-week demand, so almost
+The first allocation runs were degenerate: generated stock was 3 to 225 times the four-week demand, so almost
 nothing needed allocating, and the LP sent what little there was to two districts.
 \texttt{allocation\_diagnosis.md} traces three faults: stock that ignored the case load, an objective that
 valued every district equally (so the solver returned a corner: in a test with need everywhere, 21 districts got
