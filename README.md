@@ -102,6 +102,7 @@ Hive catalog (`make catalog`). Details and the reasons for each choice are in th
 | VIS-7 | dashboard/css/style.css | §7 |
 | ENG-1 | Makefile | §3 |
 | ENG-2 | scripts/scaling.sh | §6 |
+| ENG-3 | pipeline/quality/engine.py, analytics/forecast/backtest.py, docs/experiments/silver_optimisation.json, docs/experiments/backtest_optimisation.json | §6 |
 | ENG-4 | tests/, scripts/dag.py (DAG with retries) | §6 |
 
 _Filled in as each requirement lands._
