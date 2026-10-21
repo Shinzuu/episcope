@@ -272,6 +272,19 @@ def test_district_bundles_show_own_district_and_aggregates_only(spark, env, late
     assert "other districts" in meta["role"]["aggregates"][own[:4]]
     for name in ("alerts.json", "forecasts.json"):
         assert {r["d"] for r in json.loads((b / name).read_text())} <= {own}
+    # no differencing: every visible aggregate is the sum of visible national cells, and is hidden otherwise
+    nat = {(r["d"], r["dz"], r["w"]): r for r in national}
+    for bundle in roles.iterdir():
+        o = bundle.name
+        for r in json.loads((bundle / "weekly.json").read_text()):
+            if r["d"] == o:
+                continue
+            members = [d for d in districts if d[:4] == r["d"] and not (d[:4] == o[:4] and d == o)]
+            parts = [nat[(d, r["dz"], r["w"])] for d in members if (d, r["dz"], r["w"]) in nat]
+            if any(p["s"] for p in parts):
+                assert r["s"] and r["c"] is None
+            else:
+                assert r["c"] == sum(p["c"] for p in parts)
 
 
 def test_catalog_registers_every_table(spark, env, late_load):

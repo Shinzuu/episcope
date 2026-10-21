@@ -237,7 +237,7 @@ def export(spark, out: pathlib.Path, max_bytes: int, role_root: pathlib.Path | N
 
         national = {"weekly": weekly, "alerts": alerts, "forecasts": fixed["forecasts.json"],
                     "allocation": fixed["allocation.json"], "calendar": fixed["calendar.json"], "dq": fixed["dq.json"]}
-        roles = write_role_bundles(spark, role_root, since, national, pop, meta, dumps)
+        roles = write_role_bundles(spark, role_root, national, pop, meta, dumps)
         if roles["max_bundle_bytes"] > max_bytes:
             raise RuntimeError(f"a district bundle is {roles['max_bundle_bytes'] / 1e6:.2f} MB, over the budget")
     return {"roles": roles, "weeks_exported": n, "weeks_available": len(weeks), "first_week": _clean(weeks[-n]),

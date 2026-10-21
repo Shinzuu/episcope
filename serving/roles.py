@@ -12,8 +12,9 @@ district to dashboard/roles/<district_code>/, in the same file shapes, so the da
   to the own district would let a hidden own-district cell be recovered by subtraction;
 - calendar (per division) and the data-quality report are national aggregates and are copied as they are.
 
-The aggregate cells go through the same suppression (counts 1 to 4 hidden, complementary cells across diseases
-and weeks) and the same audit as the national export; a failed audit stops the export.
+An aggregate cell is published only if every district cell under it is visible in the national bundle
+(aggregate_cells); it is therefore a sum of counts the national bundle already shows, and no difference of
+published numbers, within one bundle or across bundles, gives back a hidden district cell.
 
 This shapes what each role is sent. Keeping a district user from fetching the national files is the web
 server's job (authentication and a per-role path); a static `make dashboard` server does not do that.
@@ -23,11 +24,7 @@ from __future__ import annotations
 
 import pathlib
 
-from pyspark.sql import functions as F
-
 from pipeline.bronze import lake
-from pipeline.privacy import audit_suppression, suppress
-from pipeline.silver.transform import DISEASES
 
 THRESHOLD = 5
 REST = "~"  # agg_id of "division k without district d" is "<k>~<d>"
@@ -45,27 +42,38 @@ def division_names(spark) -> dict:
     return {}
 
 
-def aggregate_cells(spark, since):
-    """Suppressed aggregate cells: one table per division (all its districts) and one per (division minus one
-    district). Columns: agg_id, disease, week_start, cases, suppressed."""
-    cases = lake.read(spark, "gold", "cases_weekly").where(F.col("disease").isin(*DISEASES))
-    if since is not None:
-        cases = cases.where(F.col("week_start") >= F.lit(since))
-    c = cases.select("district_code", "disease", "week_start", F.col("cases").cast("long").alias("cases")) \
-        .withColumn("div", F.substring("district_code", 1, 4))
-    div_tot = c.groupBy("div", "disease", "week_start").agg(F.sum("cases").alias("cases"))
-    rest = (c.alias("o").join(div_tot.alias("t"), ["div", "disease", "week_start"])
-            .select(F.concat(F.col("div"), F.lit(REST), F.col("district_code")).alias("agg_id"), "disease",
-                    "week_start", (F.col("t.cases") - F.col("o.cases")).alias("cases")))
-    cells = div_tot.select(F.col("div").alias("agg_id"), "disease", "week_start", "cases").unionByName(rest)
-    sup = suppress(cells, "cases", ["disease", "week_start"], THRESHOLD, table_cols=["agg_id"]).localCheckpoint()
-    audit = audit_suppression(sup, "cases", ["disease", "week_start"], THRESHOLD, table_cols=["agg_id"])
-    if audit["small_visible"] or audit["single_suppression_lines"]:
-        raise RuntimeError(f"role export: suppression audit failed: {audit}")
+def aggregate_cells(national_weekly, districts):
+    """Aggregate cells keyed by agg_id: each division over all its districts, and each division without one
+    district ("<k>~<d>"). Rows: {disease, week_start, cases, suppressed}.
+
+    Disclosure rule: an aggregate cell is published only if every district cell under it is visible in the
+    national bundle; otherwise it is hidden. Every published aggregate is then a sum of counts the national
+    bundle already shows, so no combination of bundles (an aggregate minus another, or minus visible district
+    cells) can give back a hidden district cell. Visible district counts are 0 or at least 5, so a visible
+    aggregate is too."""
+    cell = {(r["d"], r["dz"], r["w"]): r for r in national_weekly}
+    keys = sorted({(r["dz"], r["w"]) for r in national_weekly})
+    by_div = {}
+    for d in districts:
+        by_div.setdefault(division_of(d), []).append(d)
+    groups = {k: ds for k, ds in by_div.items()}
+    for k, ds in by_div.items():
+        for d in ds:
+            groups[f"{k}{REST}{d}"] = [x for x in ds if x != d]
     out = {}
-    for r in sup.collect():
-        out.setdefault(r["agg_id"], []).append(r)
-    return out, audit
+    for agg, members in groups.items():
+        rows = []
+        for dz, w in keys:
+            parts = [cell.get((m, dz, w)) for m in members]
+            hidden = any(p is not None and p["s"] for p in parts)
+            total = sum(p["c"] for p in parts if p is not None and not p["s"])
+            rows.append({"disease": dz, "week_start": w, "cases": None if hidden else total, "suppressed": hidden})
+        out[agg] = rows
+    small = sum(1 for rows in out.values() for r in rows if r["cases"] is not None and 1 <= r["cases"] < THRESHOLD)
+    if small:
+        raise RuntimeError(f"role export: {small} visible aggregate counts between 1 and {THRESHOLD - 1}")
+    return out, {"small_visible": small, "hidden_aggregate_cells": sum(r["suppressed"] for rows in out.values()
+                                                                        for r in rows)}
 
 
 def _weekly_rows(code, rows, pop):
@@ -73,7 +81,7 @@ def _weekly_rows(code, rows, pop):
     for r in sorted(rows, key=lambda r: (r["disease"], r["week_start"])):
         s = bool(r["suppressed"])
         c = None if s else int(r["cases"])
-        out.append({"d": code, "dz": r["disease"], "w": r["week_start"].isoformat()[:10], "c": c, "s": s,
+        out.append({"d": code, "dz": r["disease"], "w": r["week_start"], "c": c, "s": s,
                     "inc": None if (s or not pop) else round(c / pop * 1e5, 3)})
     return out
 
@@ -97,12 +105,12 @@ def _alloc_rows(allocation, own):
     return {"scenarios": allocation["scenarios"], "rows": keep + list(agg.values())}
 
 
-def write_role_bundles(spark, root: pathlib.Path, since, national: dict, pop: dict, meta: dict, dumps) -> dict:
+def write_role_bundles(spark, root: pathlib.Path, national: dict, pop: dict, meta: dict, dumps) -> dict:
     """national: the parsed national objects (weekly, alerts, forecasts, allocation, calendar, dq)."""
-    cells, audit = aggregate_cells(spark, since)
+    districts = sorted({r["d"] for r in national["weekly"]})
+    cells, audit = aggregate_cells(national["weekly"], districts)
     names = division_names(spark)
     divisions = sorted(k for k in cells if REST not in k)
-    districts = sorted({r["d"] for r in national["weekly"]})
     div_pop = {}
     for d, p in pop.items():
         div_pop[division_of(d)] = div_pop.get(division_of(d), 0.0) + p
