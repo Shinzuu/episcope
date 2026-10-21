@@ -119,3 +119,12 @@ At half of B_ref the LP meets 73.6% of need at the recommended alpha = 0.1, agai
 population-proportional baseline (`allocation_summary.json` of that build). The recommendation is no longer
 pinned to 0: floors up to 0.4 cost under 2 points of efficiency, and 0.1 gives the best worst-off district.
 These are SF=0.25 numbers; the report uses the clean SF=1 run.
+
+## Addendum: allocation capped at need (2026-10-21, commit 1acb5e1)
+
+The examiner review found that at the largest budget with alpha = 1 the plan sent 9,237 antimalarial courses
+against a national shortfall of 684: a full population split forces a supply needed in a few districts onto
+every district. Now x[d,r] <= need[d,r], and the floor is min(alpha p_d sum_e x[e,r], need[d,r]) (a small MILP:
+one binary per district and resource). On the clean SF=1 run no scenario sends more than need (`excess_cost`
+0 throughout); the headline is unchanged (67.8% of need met against 34.4% at half of B_ref, alpha = 0
+recommended).

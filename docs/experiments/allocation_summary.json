@@ -24,43 +24,44 @@
     "alpha": 0.0,
     "tolerance_pp": 2.0,
     "admissible_alphas": [
-      0.0
+      0.0,
+      1.0
     ],
     "per_budget_max_alpha": {
-      "0.25": 0.4,
-      "0.5": 0.0,
-      "0.75": 0.3
+      "0.25": 1.0,
+      "0.5": 1.0,
+      "0.75": 1.0
     },
-    "reason": "alpha = 0.0: of the equity floors that keep the share of need met within 2 percentage points of pure efficiency at every scarce budget (alpha <= 0.0 qualifies), it gives the best-covered worst-off district on average (mean lowest district coverage 0.50 vs 0.50 at alpha = 0.0). At 0.5xB_ref it meets 67.8% of need (vs 67.8% at alpha = 0, 34.4% for the population-proportional baseline); the worst-covered district gets 0.50 of its need (vs 0.50 at alpha = 0).",
+    "reason": "alpha = 0.0: of the equity floors that keep the share of need met within 2 percentage points of pure efficiency at every scarce budget (alpha <= 1.0 qualifies), it gives the best-covered worst-off district on average (mean lowest district coverage 0.46 vs 0.46 at alpha = 0.0). At 0.5xB_ref it meets 67.8% of need (vs 67.8% at alpha = 0, 34.4% for the population-proportional baseline); the worst-covered district gets 0.50 of its need (vs 0.50 at alpha = 0).",
     "reference_budget_level": 0.5,
-    "pct_need_met_alpha0": 67.78184416298907,
-    "pct_need_met_recommended": 67.78184416298907,
+    "pct_need_met_alpha0": 67.78184415533651,
+    "pct_need_met_recommended": 67.78184415533651,
     "min_district_coverage_alpha0": 0.4999999948819663,
     "min_district_coverage_recommended": 0.4999999948819663,
-    "gini_alpha0": 0.2618919894572679,
-    "gini_recommended": 0.2618919894572679,
+    "gini_alpha0": 0.26055164534912845,
+    "gini_recommended": 0.26055164534912845,
     "pct_need_met_population_baseline": 34.44032752505725
   },
   "lp_vs_population_baseline_at_recommended_alpha": [
     {
       "budget_level": 0.25,
-      "lp_pct_need_met": 50.45456842323068,
+      "lp_pct_need_met": 50.4545684232307,
       "baseline_pct_need_met": 17.561217477140755,
       "lp_objective": 1.4863629473030793,
       "baseline_objective": 2.4731634756857774
     },
     {
       "budget_level": 0.5,
-      "lp_pct_need_met": 67.78184416298907,
+      "lp_pct_need_met": 67.78184415533651,
       "baseline_pct_need_met": 34.44032752505725,
-      "lp_objective": 0.9665446751103273,
+      "lp_objective": 0.9665446753399046,
       "baseline_objective": 1.9667901742482825
     },
     {
       "budget_level": 0.75,
-      "lp_pct_need_met": 82.67272422718075,
+      "lp_pct_need_met": 82.67272421187558,
       "baseline_pct_need_met": 50.12529466277456,
-      "lp_objective": 0.5198182731845777,
+      "lp_objective": 0.5198182736437325,
       "baseline_objective": 1.4962411601167633
     },
     {
