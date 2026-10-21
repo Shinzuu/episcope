@@ -133,3 +133,7 @@ td .pi { white-space: nowrap; }
 .fc-table th:first-child, .fc-table td:first-child { text-align: left; }
 .fc-table tr.total td { border-top: 1px solid #ccc; font-weight: 600; }
 .whatif .hint { grid-column: 1 / -1; margin: 4px 0 0; font-size: 0.8rem; color: var(--muted); }
+
+/* Ranking table fits its panel: headers wrap instead of pushing the last column out of view */
+#table th { white-space: normal; vertical-align: bottom; }
+#table td, #table th { padding-left: 5px; padding-right: 5px; }

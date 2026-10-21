@@ -66,12 +66,13 @@ export function renderTable(D) {
 
   tr.append("td").text((r, i) => i + 1);
   tr.append("td").text((r) => r.name);
-  tr.append("td").html((r) => (r.alertNow ? '<span class="badge on">ALERT</span>' : "no"));
+  // Division totals in a district user's view are not run through the detectors.
+  tr.append("td").html((r) => (r.aggregate ? "–" : r.alertNow ? '<span class="badge on">ALERT</span>' : "no"));
   tr.append("td").attr("title", (r) => `strongest signal ${fmtNum(r.peak, 2)} × alert level`)
     .html((r) => `${r.alerts}<span class="score-bar" style="width:${Math.round(24 * r.peak / maxPeak)}px"></span>`);
   tr.append("td").attr("class", (r) => (r.latest?.s ? "supp" : null))
-    .attr("title", (r) => (r.latest?.s ? "fewer than 5 (hidden)" : null))
-    .text((r) => (!r.latest ? "–" : r.latest.s ? `<${thr}` : fmtNum(r.latest.c)));
+    .attr("title", (r) => (r.latest?.s ? "hidden for privacy: a count under 5, or a cell that would reveal one" : null))
+    .text((r) => (!r.latest ? "–" : r.latest.s ? "hidden" : fmtNum(r.latest.c)));
   tr.append("td").attr("class", (r) => `col-wide${r.n === 0 && r.supp ? " supp" : ""}`)
     .text((r) => (r.mean == null ? (r.supp ? "supp." : "–") : fmtNum(r.mean, 2)));
   tr.append("td").html((r) => (r.f1

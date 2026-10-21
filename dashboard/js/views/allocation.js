@@ -45,7 +45,7 @@ export function buildWhatIf(D) {
   };
   slider("sl-budget", "Budget for all supplies", D.budgets, state.budget, (v) => budgetText(D, v), (v) => setState({ budget: v }, "whatif"));
   slider("sl-alpha", "Minimum share for every district (equity floor α)", D.alphas, state.alpha,
-    (v) => `${fmtNum(v, 1)}${v === D.recommendedAlpha ? " (recommended)" : ""}`, (v) => setState({ alpha: v }, "whatif"));
+    (v) => `${fmtNum(v, 1)}${v === D.recommendedAlpha ? " (the plan's suggestion)" : ""}`, (v) => setState({ alpha: v }, "whatif"));
   const mults = d3.range(5, 21).map((v) => v / 10);
   slider("sl-thr", "Alert level (higher means fewer alerts)", mults, state.thrMult, (v) => `× ${v.toFixed(1)}`, (v) => setState({ thrMult: v }, "whatif"));
   const l = box.append("label");
@@ -58,7 +58,8 @@ export function buildWhatIf(D) {
     "The plan shares one budget across all supplies for the next four weeks. A floor of 0 sends supplies only "
     + "where there is a shortfall; 1 shares them by population alone; in between, every district first gets that "
     + "fraction of its population share. Because the plan balances all supplies at once, raising the floor can "
-    + "lower one supply for a district and raise another, and can send a district more than its own shortfall.");
+    + "lower one supply for a district and raise another, and can send a district more than its own shortfall. At "
+    + "1, a supply that only a few districts need must be shared by population, so far more is sent than is short.");
 }
 
 export function renderAllocation(D) {
@@ -83,6 +84,18 @@ export function renderAllocation(D) {
     + `${fmtNum(tot("stock"))}, shortfall ${fmtNum(need)}; this plan sends <b>${fmtNum(tot("alloc"))}</b>`
     + (need > 0 ? ` and covers ${fmtNum(100 * (1 - tot("unmet") / need), 0)}% of the shortfall.` : "; nothing is short."),
   );
+  // All supplies together: the average share of each supply's shortfall covered (the figure the report and the
+  // policy brief quote), so a single supply is not mistaken for the whole plan.
+  const covered = D.resources.map((r) => {
+    const rr = D.getAlloc(sc.id, r);
+    const n = shortfall(rr);
+    return n > 0 ? 1 - d3.sum(rr, (x) => x.unmet) / n : null;
+  }).filter((v) => v != null);
+  if (covered.length) {
+    el.append("p").attr("class", "summary").html(`<b>All supplies</b>: this plan covers `
+      + `<b>${fmtNum(100 * d3.mean(covered), 0)}%</b> of the shortfall on average over the ${covered.length} supplies `
+      + "that are short. It sends new supplies only; it does not move stock between districts.");
+  }
   if (sel) {
     const short = Math.max(sel.demand - sel.stock, 0);
     const why = short === 0 && sel.alloc > 0.5 ? " Its stock already covers its need; it receives supplies only because of the minimum share."

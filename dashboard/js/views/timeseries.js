@@ -75,7 +75,7 @@ export function renderTimeseries(D, defaultRange) {
     const bw = Math.max(1, x(new Date(+x0 + 7 * 864e5)) - x(x0));
 
     plot.selectAll("rect.supp").data(vis.filter((p) => p.s)).join("rect").attr("class", "supp")
-      .attr("x", (p) => x(p.w) - bw / 2).attr("width", bw).attr("y", y(D.threshold)).attr("height", y(0) - y(D.threshold))
+      .attr("x", (p) => x(p.w) - bw / 2).attr("width", bw).attr("y", 0).attr("height", fh).attr("opacity", 0.6)
       .attr("fill", hatch);
     if (visF.length) {
       plot.append("path").datum(fcPts).attr("fill", C.forecast).attr("opacity", 0.22)
@@ -109,7 +109,7 @@ export function renderTimeseries(D, defaultRange) {
         const f = fcPts.find((q) => +q.t === +w && !q.anchor);
         let html = `<b>Week of ${fmtDate(w)}</b>`;
         if (p) {
-          html += `<br>Cases: ${p.s ? "fewer than 5 (hidden)" : p.missing ? "no report" : fmtNum(p.c)}`
+          html += `<br>Cases: ${p.s ? "hidden for privacy" : p.missing ? "no report" : fmtNum(p.c)}`
             + (p.partial ? " (week not complete yet)" : "");
           if (p.a) html += `<br>Alert (${esc(methodLabel(method))}): ${p.alert ? "<b>yes</b>" : "no"}`;
         }
@@ -159,7 +159,7 @@ export function renderTimeseries(D, defaultRange) {
   legendKey(lg, "line", "cases (open dot: week not complete)", { color: C.observed });
   legendKey(lg, "band", fc ? "forecast and likely range (8 weeks in 10 fall inside)" : "no forecast", { color: C.forecast });
   legendKey(lg, "symbol", `alert, ${methodLabel(method)}`, { color: C.alert });
-  legendKey(lg, "hatch", "fewer than 5 (hidden)");
+  legendKey(lg, "hatch", "hidden for privacy (small count, or a cell that would reveal one)");
 
   // The four forecast weeks as numbers: on a season-scale axis the band can be too flat to read.
   const tb = d3.select("#ts-forecast");
@@ -179,6 +179,8 @@ export function renderTimeseries(D, defaultRange) {
     const tot = body.append("tr").attr("class", "total");
     tot.append("td").text("Next 4 weeks");
     tot.append("td").text(fmtNum(d3.sum(fc.rows, (r) => r.mean)));
-    tot.append("td").text("");
+    // Adding each week's upper value is a cautious ceiling for planning (it assumes every week runs high).
+    tot.append("td").attr("title", "sum of each week's upper value: a cautious figure for ordering")
+      .text(`up to ${fmtNum(d3.sum(fc.rows, (r) => r.q90))} (plan on this)`);
   }
 }
