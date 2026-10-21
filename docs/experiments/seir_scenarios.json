@@ -1,0 +1,62 @@
+{
+  "surge": {
+    "first_week": "2024-10-28",
+    "last_week": "2024-12-23",
+    "weeks": 9,
+    "peak_week": "2024-12-09",
+    "peak_excess": 46909.0,
+    "total_excess": 231510.5
+  },
+  "fit": {
+    "r0": 2.043095019993928,
+    "seed_infections": 847705.1898193386,
+    "reporting_share": 0.0018477967822544527,
+    "r2": 0.9079089165573133,
+    "latent_days": 3.0,
+    "infectious_days": 5.0,
+    "population": 165650475.0
+  },
+  "scenarios": [
+    {
+      "scenario": "no intervention",
+      "contact_reduction": 0.0,
+      "start_delay_weeks": 0,
+      "peak_weekly_cases": 46522.03786599651,
+      "peak_week": "2024-12-02",
+      "total_cases": 248553.84275156472,
+      "peak_change_pct": 0.0,
+      "total_change_pct": 0.0
+    },
+    {
+      "scenario": "20% fewer contacts from detection",
+      "contact_reduction": 0.2,
+      "start_delay_weeks": 0,
+      "peak_weekly_cases": 25118.309055110687,
+      "peak_week": "2024-12-16",
+      "total_cases": 202823.59203543837,
+      "peak_change_pct": -46.00771976614132,
+      "total_change_pct": -18.398528950459557
+    },
+    {
+      "scenario": "40% fewer contacts from detection",
+      "contact_reduction": 0.4,
+      "start_delay_weeks": 0,
+      "peak_weekly_cases": 6054.651381253642,
+      "peak_week": "2025-01-20",
+      "total_cases": 92231.31792461989,
+      "peak_change_pct": -86.98541237876628,
+      "total_change_pct": -62.89282156992954
+    },
+    {
+      "scenario": "40% fewer contacts, 2 weeks late",
+      "contact_reduction": 0.4,
+      "start_delay_weeks": 2,
+      "peak_weekly_cases": 9398.412679466663,
+      "peak_week": "2024-12-09",
+      "total_cases": 117919.42311876095,
+      "peak_change_pct": -79.79793424669371,
+      "total_change_pct": -52.5577951990772
+    }
+  ],
+  "note": "Scenarios start at the first surge week (excess above 10% of its peak), i.e. when detection could first have flagged it. Deterministic model: no uncertainty band, and contacts are cut uniformly."
+}
