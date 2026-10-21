@@ -106,9 +106,9 @@ Population split (\%) & 17.6 & 34.4 & 50.1 & 63.1 & 70.9 \\
 \end{table}
 
 The LP meets about twice the share of need at every scarce budget. The efficiency and equity curve
-(\texttt{allocation\_curve.csv}) gives the price of equity: at a quarter of $B_{\text{ref}}$ a floor of up to
-$\alpha=0.4$ costs less than two points of need met, at three quarters up to 0.3, but at half the budget any
-floor costs more than two points, so the rule recommends $\alpha=0$. The tranche prices already spread the
+(\texttt{allocation\_curve.csv}) gives the price of equity. At a quarter of $B_{\text{ref}}$ a floor of up to
+$\alpha=0.4$ costs less than two points of need met, and at three quarters a floor up to 0.3 does. At half the
+budget any floor costs more than two points, so the rule recommends $\alpha=0$. The tranche prices already spread the
 money: at $\alpha=0$ and half the budget the worst-covered district gets half of its need.
 
 \subsection{Epidemic scenarios}
@@ -157,8 +157,8 @@ that sorts the whole load, were evaluated once for every output (quarantine, its
 the clean MERGE). They are now evaluated once and persisted. At SF=0.25 silver's Spark time fell from 325\,s to
 214\,s, and every silver table kept the same row count and row hash (\texttt{silver\_optimisation.json}).
 \item \textbf{The backtest uses every core.} The Spark UI showed the backtest's model stage running as a single
-task for 5.1 minutes (Fig.~\ref{fig:sparkui}): its input is a few megabytes, so adaptive query execution had
-merged the shuffle into one partition and fitted all 64 districts one after another. Keeping one partition per
+task for 5.1 minutes (Fig.~\ref{fig:sparkui}). Its input is only a few megabytes, so adaptive query execution
+had merged the shuffle into one partition and fitted all 64 districts one after another. Keeping one partition per
 district for that job gives 64 tasks. At SF=0.25 the job fell from 325\,s to 165\,s with identical scores;
 at SF=1 the backtest step fell from 365\,s to 161\,s (\texttt{backtest\_optimisation.json}).
 \end{itemize}
