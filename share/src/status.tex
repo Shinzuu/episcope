@@ -12,14 +12,14 @@ all five gates pass: 156 unit tests, brief coverage (all 23 Must requirements tr
 All from the final clean SF=1 build (34.1 million encounters, seed 42, real weather); every number and its
 source file is listed in \nolinkurl{docs/FINAL-NUMBERS.md}.
 \begin{itemize}
-\item \textbf{Speed:} the full pipeline runs in 25.3 minutes at SF=1 on the laptop (gate 5 timing run: 28.3
+\item \textbf{Speed:} the full pipeline runs in 25.0 minutes at SF=1 on the laptop (gate 5 timing run: 28.3
 minutes, limit 45). Two Spark optimisations were measured with unchanged outputs: silver 325\,s to 214\,s and
 the backtest 325\,s to 165\,s at SF=0.25, with Spark UI screenshots.
 \item \textbf{Detection:} EARS C2 finds 33 of 35 planted outbreaks, median 8 days, 1.89 false alerts per
 district-year; CUSUM finds 32.
 \item \textbf{Forecasts:} relative WIS 0.84 against the seasonal-naive baseline (dengue 0.89, diarrhoea 0.72).
 \item \textbf{Allocation:} fixed (stock now follows the case load; the LP no longer gives everything to a few
-districts). At half the money needed it meets 68\% of the need against 34\% for a population split.
+districts). At half the money needed it meets 68\% of the need against 34\% for a population split, and no district is ever sent more than it needs.
 \item \textbf{Other:} quarantine 4.0\%; patient de-duplication precision 0.999; streaming refresh in 219\,s;
 hidden-drop drill passed on the final code; district-user view (PRV-3); SEIR scenarios (AN-10).
 \item \textbf{Usability:} two rounds of \emph{simulated} persona walkthroughs run with AI agents (not real

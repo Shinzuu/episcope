@@ -32,15 +32,19 @@ Forecast cases become demand for beds, IV saline, NS1 kits, ORS and antimalarial
 estimated from the data, lengths of stay and units per case or admission, all in
 \texttt{demand\_assumptions.py} and marked as our assumptions. The LP plans against the 90th percentile.
 
-The allocation is the brief's LP solved with PuLP~3.3.2 and CBC, with two changes of ours. First, unmet need
+The allocation is the brief's programme solved with PuLP~3.3.2 and CBC, with three changes of ours. First, unmet need
 for each resource is divided by its national net need, so a bed and a test kit are not worth the same in one
 objective. Second, each district's unmet need is priced in four equal slices with weights 1, 2, 3 and 4, so the
 last quarter of a shortfall costs most. With a single flat price every unit of a resource is worth the same in
 every district; the LP is then indifferent between districts and returns a corner, with some districts fully
 supplied and the rest given nothing (Section~\ref{sec:alloc}). Net need is the four-week 90th-percentile demand minus current
-stock; for beds the patients already admitted are counted as holding a bed, so they are not counted twice. With
-$\alpha=0$ the LP is pure efficiency; with $\alpha=1$ every resource is split by population. The model is
-feasible for every $\alpha$ because $x=0$ satisfies every constraint.
+stock; for beds the patients already admitted are counted as holding a bed, so they are not counted twice. Third, no
+district receives more of a resource than its net need ($x_{d,r}\le \text{need}_{d,r}$), and the equity floor is
+$x_{d,r}\ge\min(\alpha\,p_d\sum_e x_{e,r},\ \text{need}_{d,r})$, where $p_d$ is the district's population
+share. The minimum needs one binary variable per district and resource (need met in full, or the population
+floor binds), so the model is a small mixed-integer programme. $\alpha=0$ is pure efficiency; $\alpha=1$ means
+each district gets its population share of what is sent, but never more than it needs. The model is feasible
+for every $\alpha$ because $x=0$ satisfies every constraint.
 
 The preparedness calendar fits a seasonal-trend decomposition by loess (STL)~\cite{cleveland1990stl} to each division and disease, inside \texttt{applyInPandas}. Onset is the first week
 after the trough where the seasonal index passes 25\% of the trough-to-peak range; supplies are pre-positioned

@@ -25,11 +25,11 @@ alerts per district-year (Section~\ref{sec:eval}).
 \textbf{C2 granularity against privacy.} We publish district by week, not upazila. Every count from 1 to 4 is
 hidden, and a second cell is hidden in any row or column with only one hidden cell, so no total reveals it.
 
-\textbf{C3 efficiency against equity.} The LP's equity floor $\alpha$ gives every district a share of each
-resource in proportion to its population.
-The price is measured, not assumed: at a quarter of the money needed a floor of $\alpha=0.4$ costs under
-two points of need met, but at half the money any floor costs more, so the stated rule recommends $\alpha=0$
-there (Section~\ref{sec:alloc}). The ministry can still choose a floor in the what-if panel and see its cost.
+\textbf{C3 efficiency against equity.} The equity floor $\alpha$ gives every district at least $\alpha$ times
+its population share of each resource sent, capped at its own need, so $\alpha=1$ is a population split that never
+sends a district more than it needs. The price is measured, not assumed: at a quarter or three quarters of the
+money needed a floor costs under one point of need met, but at half the money it costs 1.5 to 2.5 points, so the
+stated rule recommends $\alpha=0$ (Section~\ref{sec:alloc}). The ministry can still choose a floor in the what-if panel and see its cost.
 
 \textbf{C4 freshness against cost.} Forecasts and allocations are weekly decisions, so they run in a daily
 batch. Alerts can also run from a Structured Streaming file source that refreshes them as files land

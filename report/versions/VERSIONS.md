@@ -13,3 +13,4 @@ One line per review pass: file, lens, what changed, pages, LaTeX warnings.
 - v9-ai-sweep.pdf: pass 9 (ai-sweep). Second sweep: no new tells; cut 'rather than' from eight uses to four, kept where it names a design choice. 10 pages, 0 warnings.
 - v10-final.pdf: pass 10 (final). Final read and layout: every page rendered and checked, matrix caption no longer uses a dash for 'none'; no em dash or '---' in any .tex; 0 warnings. 10 pages, 0 warnings.
 - v11-review.pdf: pass 11 (examiner review fixes, items 2-10 except the LP cap in item 6). Drill numbers, output sizes, rounding, equity finding, two figures and dashboard screenshots, calendar check, brief addressee, footer final. 11 pages, 0 warnings.
+- v12-capped.pdf: allocation capped at need (Lilith's decision on review item 6): §1, §2 C3, §5, §6 equity paragraph and figure, §7, policy brief, final-run column. 11 pages, 0 warnings.

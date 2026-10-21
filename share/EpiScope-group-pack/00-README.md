@@ -25,10 +25,10 @@ Checks on the final code (`make check`, commit 9c8fa53): all five gates pass: 15
 Headline results, all from the final clean SF=1 build (34.1 million encounters); every number and its source
 file is in `docs/FINAL-NUMBERS.md`:
 
-1. **Speed:** the full pipeline runs in 25.3 minutes at SF=1 (gate 5 timing run: 28.3 minutes, limit 45). Two Spark optimisations were measured with unchanged outputs: silver 325 s to 214 s and the backtest 325 s to 165 s at SF=0.25.
+1. **Speed:** the full pipeline runs in 25.0 minutes at SF=1 (gate 5 timing run: 28.3 minutes, limit 45). Two Spark optimisations were measured with unchanged outputs: silver 325 s to 214 s and the backtest 325 s to 165 s at SF=0.25.
 2. **Detection:** EARS C2 finds 33 of 35 planted outbreaks, median 8 days, 1.89 false alerts per district-year; CUSUM finds 32.
 3. **Forecasts:** relative WIS 0.84 against the seasonal-naive baseline (dengue 0.89, diarrhoea 0.72).
-4. **Allocation:** fixed. At half the money needed it meets 68% of the need against 34% for a population split.
+4. **Allocation:** fixed. At half the money needed it meets 68% of the need against 34% for a population split, and no district is ever sent more than it needs.
 5. **Other:** quarantine 4.0%; patient de-duplication precision 0.999; streaming refresh in 219 s; hidden-drop drill passed on the final code; district-user view (PRV-3); SEIR scenarios (AN-10).
 6. **Usability:** two rounds of *simulated* persona walkthroughs run with AI agents (not real users; the report says so), with the problems they found fixed.
 7. **Report:** every section written from the SF=1 run, ten review passes and an examiner review, 11 pages, 0 warnings.

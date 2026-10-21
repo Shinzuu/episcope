@@ -107,18 +107,18 @@ Population split (\%) & 17.6 & 34.4 & 50.1 & 63.1 & 70.9 \\
 The LP meets about twice the share of need at every scarce budget. The efficiency and equity curve
 (Fig.~\ref{fig:equity}) gives the price of equity.
 
-\input{sections/fig-equity} At a quarter of $B_{\text{ref}}$ a floor of up to
-$\alpha=0.4$ costs less than two points of need met, and at three quarters a floor up to 0.3 does. At half the
-budget any floor costs more than two points, so the rule recommends $\alpha=0$. The tranche prices already spread the
-money: at $\alpha=0$ and half the budget the worst-covered district gets half of its need. The floor does not
-improve on that. At half the budget, $\alpha=0.1$ lowers the worst-covered district from 0.50 to 0.375 of its
-need and moves the Gini of per-capita spend from 0.262 to 0.271, and at no budget does any $\alpha$ raise the
-worst-covered district by more than 0.001 over its $\alpha=0$ level (\texttt{allocation\_curve.csv}). For policy, the floor in this model buys a population-based
-guarantee, not better coverage for the worst-off; a ministry that wants the latter should raise the weight of
-the deepest shortfall instead. A high floor also sends supplies where there is no shortfall: a supply needed in
-a few districts must still be split by population. At $\alpha=0.5$ and half the budget, 0.36 million BDT of
-the 3.89 million goes beyond some district's need; at $\alpha=1$ and 1.5 times $B_{\text{ref}}$ it is 5.2
-million of 11.7 million (\texttt{excess\_cost} in \texttt{allocation\_curve.csv}).
+\input{sections/fig-equity} The floor is capped at need: a district gets at least
+$\min(\alpha\,p_d\sum_e x_{e,r},\ \text{need}_{d,r})$ and never more than its need, so $\alpha=1$ means a
+population share of what is sent, but never more than a district needs. No scenario now sends any district
+more than its need (\texttt{excess\_cost} is 0 throughout). At a quarter and three quarters of $B_{\text{ref}}$
+every floor costs less than one point of need met. At half the budget a floor from 0.1 to 0.9 costs 2.5 points
+(65.3\% against 67.8\%) and $\alpha=1$ costs 1.5, so the rule recommends $\alpha=0$. The tranche prices already
+spread the money: at $\alpha=0$ and half the budget the worst-covered district gets half of its need. The floor
+does not improve on that. At half the budget, $\alpha=0.1$ lowers the worst-covered district from 0.50 to 0.375
+of its need and moves the Gini of per-capita spend from 0.261 to 0.271, and at no budget does any $\alpha$
+raise the worst-covered district by more than 0.003 over its $\alpha=0$ level (\texttt{allocation\_curve.csv}).
+For policy, the floor in this model buys a population-based guarantee, not better coverage for the worst-off; a
+ministry that wants the latter should raise the weight of the deepest shortfall instead.
 
 \subsection{Epidemic scenarios}
 The SEIR fit to the nationwide respiratory surge (nine weeks from 28 October 2024) gives $R_0=2.04$ with
@@ -157,12 +157,12 @@ RAM-backed \texttt{/tmp}; spill now goes to a disk folder.
 Encounter rows (M) & 8.5 & 17.1 & 34.1 & 34.1 \\
 Generate & 0.2 & 0.4 & 0.6 & 0.6 \\
 Bronze & 1.9 & 2.8 & 4.3 & 4.3 \\
-Silver & 3.8 & 6.7 & 11.1 & 11.1 \\
-Gold & 1.8 & 2.3 & 3.5 & 3.6 \\
-Analytics & 6.9 & 7.1 & 8.0 & 4.7 \\
-Serve & 0.7 & 1.1 & 0.9 & 1.0 \\
+Silver & 3.8 & 6.7 & 11.1 & 11.0 \\
+Gold & 1.8 & 2.3 & 3.5 & 3.3 \\
+Analytics & 6.9 & 7.1 & 8.0 & 4.9 \\
+Serve & 0.7 & 1.1 & 0.9 & 0.9 \\
 \midrule
-Total & 15.4 & 20.4 & 28.3 & 25.3 \\
+Total & 15.4 & 20.4 & 28.3 & 25.0 \\
 \midrule
 Raw data (GB) & 1.19 & 2.16 & 4.09 & \\
 Bronze (GB) & 0.19 & 0.35 & 0.67 & \\
