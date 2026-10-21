@@ -101,7 +101,10 @@ silver 96\,s, gold 41\,s, detection 25\,s, export 18\,s).
 \subsection{Hidden-drop drill}
 \texttt{scripts/hidden\_drop\_drill.sh} rehearses the instructor's test: clone, \texttt{make setup},
 \texttt{make all}, a new 14-day drop with an unseen seed, the incremental steps, then the same steps again. On
-21 October, at SF=0.05, it passed every check. The drop (seed 3006) became one new bronze batch, silver gained
-8,741 rows, and the data moved from 31 December 2025 to 14 January 2026. The re-run changed nothing and left no
-duplicate IDs or gold keys. The export was 9.78\,MB with no count from 1 to 4. The whole drill took 38
-minutes, including \texttt{make setup}.
+the final code (21 October, SF=0.05) it passed every check. The drop (seed 4675) became one new bronze batch,
+silver gained 8,888 rows, and the data moved from 31 December 2025 to 14 January 2026. The re-run changed
+nothing and left no duplicate IDs or gold keys. The export was 9.76\,MB with no count from 1 to 4. The whole
+drill took 1,717\,s (28.6 minutes), including \texttt{make setup}. Two inputs do not come from the clone's
+own steps: the drill copies \nolinkurl{data/reference} from the working checkout and writes a random salt into
+\texttt{.env}. Both repeat what the README path already gives, because the processed reference data is
+committed and \texttt{make setup} writes a random salt.
