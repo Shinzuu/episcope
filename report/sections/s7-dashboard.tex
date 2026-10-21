@@ -17,4 +17,39 @@ Below 560\,px the views stack in one column for a phone.
 district's bundle: its own series, alerts, forecast and allocation in full, and the rest of the country drawn
 lighter as division totals.
 
-% PERSONA: simulated persona walkthroughs (step 4)
+\textbf{Simulated persona walkthroughs.} We had no access to non-CS users in the final phase, so the
+usability check was run as \emph{simulated persona walkthroughs with AI agents}: three AI agents, each briefed
+as one persona, used the real dashboard of the final SF=1 build through a scripted headless browser. They are
+not human participants, and their findings are a design review, not user evidence. The personas were a
+district health officer in Cox's Bazar using the district view, a hospital store-keeper in Chattogram, and a
+senior ministry official. Each did five tasks: find this week's alerts, read a forecast with its range, explain
+an allocation, use the what-if panel, and read the policy brief (protocol and records in
+\texttt{docs/usability/}).
+
+\begin{table}[htbp]
+\caption{Tasks completed by each simulated persona (of five)}
+\label{tab:usability}
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Done / partly / not done & Officer & Store-keeper & Ministry \\
+\midrule
+Round 1 & 0 / 5 / 0 & 0 / 5 / 0 & 0 / 4 / 1 \\
+Round 2 & 4 / 1 / 0 & 5 / 0 / 0 & 4 / 1 / 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Round 1 found 48 problems. The most serious: nothing showed who was on alert \emph{now} (the map and table
+counted alerts over six months); the newest, still incomplete week looked like a sudden fall; the four-week
+forecast was a flat line with no numbers; a threshold line drawn on the case axis contradicted the alerts; and
+the allocation used codes such as q90 and $\alpha$, had no units or currency, and opened on a supply with
+nothing to allocate. We added a line naming the districts on alert in the last full week, marked the partial
+week, added a forecast table with a cautious four-week total, removed the threshold line, renamed every label
+in plain words, and added a sentence explaining each district's allocation. In the confirm round the agents
+rated 26 of the 48 problems fixed, 20 partly fixed and 2 not fixed (Table~\ref{tab:usability}). What remains is
+mostly the equity floor: the agents found its effect on a single supply hard to predict, because the plan
+balances all supplies at once. Round 2 also caught two new faults, which we then fixed without a further round:
+the hollow alert markers were drawn solid, and a cell hidden only to protect another small count was labelled
+``fewer than 5''.
