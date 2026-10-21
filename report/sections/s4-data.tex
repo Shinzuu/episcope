@@ -10,7 +10,7 @@ processed reference files (0.6\,MB) are committed. A clean clone therefore skips
 The generator (\texttt{generator/}) writes the three synthetic sources: encounters (S4) as one CSV folder per
 report date, a register of 736 facilities (S5) and daily stock snapshots (S6) as JSON. It is vectorised numpy,
 seeded per (seed, stream, district, year), so the same arguments give byte-identical output whatever the number
-of worker processes. Rates are per head of population, so the row count follows the census rather than a
+of worker processes. Rates are per head of population, so the row count follows the census, not a
 constant: SF=1 gives 34.1 million encounter rows for 2021--2025, planted defects included.
 
 Each disease has its own annual cycle. Dengue peaks in early October, because OpenDengue's national counts peak
@@ -71,7 +71,7 @@ replaced rows. Gold rebuilds only those weeks, plus the week after each, with a 
 \texttt{gold.cases\_weekly} counts cases, admissions, deaths and lab confirmations per district, disease and
 ISO week of \emph{onset}. Counting by onset rather than report date is what keeps the back-filled weeks of the
 silent facility from looking like an outbreak. Every district-week with at least one reporting facility gets a
-row for all four diseases, so a missing row means ``nothing reported'' rather than zero, which the detector
+row for all four diseases, so a missing row means ``nothing reported'', not zero, which the detector
 uses to treat silent weeks as missing (AN-3). Each row carries the sorted bronze batch IDs of the records it
 counts, which link through the ingest log to file names and checksums (DQ-3).
 

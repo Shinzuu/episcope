@@ -10,3 +10,4 @@ One line per review pass: file, lens, what changed, pages, LaTeX warnings.
 - v6-punctuation.pdf: pass 6 (punctuation). No em dashes anywhere; the only en dash outside a range (Okabe--Ito) is now a hyphen; TikZ path operators are not dashes. 10 pages, 0 warnings.
 - v7-style.pdf: pass 7 (style). One name per thing: seasonal-naive baseline, NB-GLM defined once, four-week as the adjective, 90th percentile in place of q90 in prose, Section rather than the section sign. 10 pages, 0 warnings.
 - v8-readability.pdf: pass 8 (readability). Split the longest sentences (drill result, price of equity, PRV-3 rule, k-anonymity scope, Spark UI finding); the enumerated brief in §1 stays one list. 10 pages, 0 warnings.
+- v9-ai-sweep.pdf: pass 9 (ai-sweep). Second sweep: no new tells; cut 'rather than' from eight uses to four, kept where it names a design choice. 10 pages, 0 warnings.
