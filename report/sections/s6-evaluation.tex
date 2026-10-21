@@ -105,10 +105,20 @@ Population split (\%) & 17.6 & 34.4 & 50.1 & 63.1 & 70.9 \\
 \end{table}
 
 The LP meets about twice the share of need at every scarce budget. The efficiency and equity curve
-(\texttt{allocation\_curve.csv}) gives the price of equity. At a quarter of $B_{\text{ref}}$ a floor of up to
+(Fig.~\ref{fig:equity}) gives the price of equity.
+
+\input{sections/fig-equity} At a quarter of $B_{\text{ref}}$ a floor of up to
 $\alpha=0.4$ costs less than two points of need met, and at three quarters a floor up to 0.3 does. At half the
 budget any floor costs more than two points, so the rule recommends $\alpha=0$. The tranche prices already spread the
-money: at $\alpha=0$ and half the budget the worst-covered district gets half of its need.
+money: at $\alpha=0$ and half the budget the worst-covered district gets half of its need. The floor does not
+improve on that. At half the budget, $\alpha=0.1$ lowers the worst-covered district from 0.50 to 0.375 of its
+need and moves the Gini of per-capita spend from 0.262 to 0.271, and at no budget does any $\alpha$ raise the
+worst-covered district by more than 0.001 over its $\alpha=0$ level (\texttt{allocation\_curve.csv}). For policy, the floor in this model buys a population-based
+guarantee, not better coverage for the worst-off; a ministry that wants the latter should raise the weight of
+the deepest shortfall instead. A high floor also sends supplies where there is no shortfall: a supply needed in
+a few districts must still be split by population. At $\alpha=0.5$ and half the budget, 0.36 million BDT of
+the 3.89 million goes beyond some district's need; at $\alpha=1$ and 1.5 times $B_{\text{ref}}$ it is 5.2
+million of 11.7 million (\texttt{excess\_cost} in \texttt{allocation\_curve.csv}).
 
 \subsection{Epidemic scenarios}
 The SEIR fit to the nationwide respiratory surge (nine weeks from 28 October 2024) gives $R_0=2.04$ with
@@ -116,6 +126,14 @@ $R^2=0.91$; the generator used 1.8. Cutting contacts by 20\% from the first surg
 and the cases over the surge and the following 12 weeks by 18\%; a 40\% cut lowers them by 87\% and 63\%.
 Starting the 40\% cut two weeks late still lowers the peak by 80\% but the cases by only 53\%, which is the
 case for acting on the first alert (\texttt{seir\_scenarios.json}).
+
+\subsection{Preparedness calendar}
+To check the calendar (AN-9) against what happened, we applied its onset rule to each year's observed weekly
+cases per division (three-week moving average) and compared the year's onset with the calendar's. For dengue
+the median difference is 0 weeks and 39 of 40 division-years fall within two weeks; for diarrhoea and malaria
+the median difference is one week, with 85\% and 87\% within two weeks (\texttt{calendar\_check.json}, run on
+the SF=0.25 build with the same seed, so the same seasonal timing). We did not publish an ILI calendar check:
+its yearly onset spreads widely between years (standard deviation 4.6 to 16.5 weeks by division), which the nationwide surge distorts.
 
 \subsection{Scalability and Spark optimisations}
 \texttt{scripts/scaling.sh} builds each scale factor from a fresh clone and times every stage
@@ -160,7 +178,8 @@ Two optimisations were measured, each with its outputs checked unchanged.
 \item \textbf{Silver evaluates the quality rules once.} The 14 encounter rules, including the duplicate-ID rule
 that sorts the whole load, were evaluated once for every output (quarantine, its count, the quality report and
 the clean MERGE). They are now evaluated once and persisted. At SF=0.25 silver's Spark time fell from 325\,s to
-214\,s, and every silver table kept the same row count and row hash (\texttt{silver\_optimisation.json}).
+214\,s, and every silver table kept the same row count and row hash (\texttt{silver\_optimisation.json}). A fresh run for
+the Spark UI gave the same ratio: 6.3 minutes before, 4.2 after (Fig.~\ref{fig:sparkui}, top).
 \item \textbf{The backtest uses every core.} The Spark UI showed the backtest's model stage running as a single
 task for 5.1 minutes (Fig.~\ref{fig:sparkui}). Its input is only a few megabytes, so adaptive query execution
 had merged the shuffle into one partition and fitted all 64 districts one after another. Keeping one partition per
@@ -170,8 +189,10 @@ district for that job gives 64 tasks. At SF=0.25 the job fell from 325\,s to 165
 
 \begin{figure}[htbp]
 \centering
+\includegraphics[width=\columnwidth]{figures/sparkui-silver.png}\\[4pt]
 \includegraphics[width=0.8\columnwidth]{figures/sparkui-backtest-stage.png}
-\caption{Spark UI, backtest model stage, cropped to three columns: one task for 5.1 minutes before (top), 64
-tasks for 2.4 minutes after (bottom). Full screenshots: \texttt{report/figures/sparkui-backtest-*.png}.}
+\caption{Spark UI evidence. Top: the silver job before (left) and after (right) evaluating the rules once.
+Bottom: the backtest model stage, one task for 5.1 minutes before and 64 tasks for 2.4 minutes after. Full
+screenshots: \texttt{report/figures/}.}
 \label{fig:sparkui}
 \end{figure}

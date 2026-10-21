@@ -1,7 +1,7 @@
 \section{Dashboard Design and Usability}
 The dashboard (\texttt{dashboard/}) uses only D3.js v7 and the TopoJSON client, both vendored with
 subresource-integrity hashes. It loads only the aggregated JSON exports, which must stay under 10\,MB: the
-export keeps the most recent weeks that fit. Five views are linked: a district choropleth of incidence per
+export keeps the most recent weeks that fit. Five views are linked (Fig.~\ref{fig:dashboard}): a district choropleth of incidence per
 100,000 with alert markers, a weekly time series with a brush, forecast and bands, a seasonal heatmap, an
 allocation view with a what-if panel, and a ranked early-warning table. Suppressed cells are hatched and every
 view shows the data-freshness time.
@@ -12,6 +12,21 @@ cases on the time series, which is what a store-keeper plans with. Suppressed ce
 left blank, so ``hidden'' never reads as ``zero''. Every forecast carries its 80\% band. District by week is
 the finest level shown: it is what an officer acts on and the coarsest level that still locates an outbreak.
 Below 560\,px the views stack in one column for a phone.
+
+\textbf{What-if panel (VIS-5).} Three sliders recompute the views in the browser from precomputed results. The
+budget and the minimum share per district pick one of the 55 allocation scenarios; the alert-level slider
+multiplies each method's threshold from 0.5 to 2.0, so an officer sees how many alerts a stricter or looser
+level would give before anyone changes the detector.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.62\textwidth]{figures/dashboard-overview.png}\hfill
+\includegraphics[width=0.36\textwidth]{figures/dashboard-allocation.png}
+\caption{The dashboard on the final SF=1 data. Left: the ``on alert now'' line, the map (solid triangle: alert in
+the last full week), the weekly series with its forecast table, and the seasonal heatmap. Right: the
+allocation panel with the what-if sliders and the cost of a minimum share.}
+\label{fig:dashboard}
+\end{figure*}
 
 \textbf{District view (PRV-3).} Opening the dashboard with \texttt{?district=} and a district code loads that
 district's bundle: its own series, alerts, forecast and allocation in full, and the rest of the country drawn
@@ -48,8 +63,11 @@ used codes such as q90 and $\alpha$, gave no units or currency, and opened on a 
 allocate. We added a line naming the districts on alert in the last full week, marked the partial
 week, added a forecast table with a cautious four-week total, removed the threshold line, renamed every label
 in plain words, and added a sentence explaining each district's allocation. In the confirm round the agents
-rated 26 of the 48 problems fixed, 20 partly fixed and 2 not fixed (Table~\ref{tab:usability}). What remains is
-mostly the equity floor: the agents found its effect on a single supply hard to predict, because the plan
-balances all supplies at once. Round 2 also caught two new faults, which we then fixed without a further round:
-the hollow alert markers were drawn solid, and a cell hidden only to protect another small count was labelled
-``fewer than 5''.
+rated 26 of the 48 problems fixed, 20 partly fixed and 2 not fixed (Table~\ref{tab:usability}). Round 2 logged 17 new problems, 13 of them distinct, two of high severity: the hollow alert markers were drawn
+solid, and at the largest budget with $\alpha=1$ the plan sent 9,237 antimalarial courses against a national
+shortfall of 684, because a full population split forces supplies to every district. We then fixed the
+markers, called a cell hidden to protect another cell ``hidden'' instead of ``fewer than 5'', made the ranking
+fit its panel, added a cautious four-week total and an all-supplies line, and said on screen that the plan does
+not move stock between districts. These fixes were not tested in a third round. Still open: the
+over-allocation at $\alpha=1$ (Section~\ref{sec:alloc}), unlabelled budget lines in the equity chart, no
+delivery week, and method names that remain partly technical.
