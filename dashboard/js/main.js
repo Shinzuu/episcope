@@ -1,5 +1,6 @@
 // EpiScope dashboard entry point. Implements VIS-1 (D3 v7 dashboard), VIS-2 (five views), VIS-3 (one shared
-// state + dispatch bus), VIS-5 (what-if panel), VIS-6 (freshness stamp on every view), VIS-7 (phone layout).
+// state + dispatch bus), VIS-5 (what-if panel), VIS-6 (freshness stamp on every view), VIS-7 (phone layout),
+// PRV-3 (?district=<code> opens a district user's bundle).
 /* global d3 */
 import { loadAll } from "./data.js";
 import { state, setState, bus } from "./state.js";
@@ -35,6 +36,15 @@ function fillControls(D, defaultRange) {
   };
 }
 
+// PRV-3: say which view this is, so a district user knows the other areas are aggregates.
+function roleBanner(D) {
+  const el = document.getElementById("role-banner");
+  if (!D.role) return;
+  const own = D.districtByCode.get(D.role.district)?.name || D.role.district;
+  el.textContent = `District view: ${own} in detail; other areas as division totals only.`;
+  el.hidden = false;
+}
+
 function freshness(D) {
   const gen = new Date(D.meta.generated_at);
   const genTxt = Number.isNaN(+gen) ? D.meta.generated_at : d3.utcFormat("%d %b %Y %H:%M UTC")(gen);
@@ -67,11 +77,12 @@ async function init() {
     alpha: D.alphas[Math.min(D.alphas.length - 1, Math.round(D.alphas.length * 0.2))],
     resource: defaultResource(D, disease),
   });
-  state.district = rankDistricts(D)[0]?.code || D.districts[0].code;
+  state.district = D.role?.district || rankDistricts(D)[0]?.code || D.districts[0].code;
 
   const syncControls = fillControls(D, defaultRange);
   buildWhatIf(D);
   freshness(D);
+  roleBanner(D);
 
   const views = {
     map: () => renderMap(D),

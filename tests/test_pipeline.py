@@ -250,6 +250,30 @@ def test_export_has_no_small_counts(spark, env, late_load):
     assert meta["suppression_threshold"] == 5 and meta["data_through"] == "2024-03-20"
 
 
+def test_district_bundles_show_own_district_and_aggregates_only(spark, env, late_load):
+    """PRV-3: a district user's bundle has its own district in detail, other districts only as division
+    totals, its own division without itself (no subtraction back to a hidden own cell), and no count 1-4."""
+    from serving.export import export
+
+    out, roles = env["base"] / "dash2", env["base"] / "roles"
+    res = export(spark, out, 10 * 1024 * 1024, roles)
+    assert res["roles"]["bundles"] >= 2 and res["roles"]["audit"]["small_visible"] == 0
+    national = json.loads((out / "weekly.json").read_text())
+    districts = sorted({r["d"] for r in national})
+    own = districts[0]
+    b = roles / own
+    meta = json.loads((b / "meta.json").read_text())
+    weekly = json.loads((b / "weekly.json").read_text())
+    shown = {r["d"] for r in weekly}
+    assert own in shown and not (shown - {own}) & set(districts)          # no other district by name
+    assert shown - {own} == set(meta["role"]["aggregates"])               # the rest are division aggregates
+    assert [r for r in weekly if r["d"] == own] == [r for r in national if r["d"] == own]
+    assert not [r for r in weekly if r["c"] is not None and 1 <= r["c"] <= 4]
+    assert "other districts" in meta["role"]["aggregates"][own[:4]]
+    for name in ("alerts.json", "forecasts.json"):
+        assert {r["d"] for r in json.loads((b / name).read_text())} <= {own}
+
+
 def test_catalog_registers_every_table(spark, env, late_load):
     """ING-3: every lake table is queryable by name from a Hive-catalog session (own process: Derby is
     single-user and this module's SparkSession has no Hive support)."""

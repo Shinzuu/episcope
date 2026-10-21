@@ -20,6 +20,8 @@ runs on exactly the exported window, because its lines are the published cells.
 
 If the evaluation trade-off file (detection_tradeoff.json, written by `make evaluate`) exists, it is copied in
 too. Nothing here hard-codes a date or a row count.
+
+PRV-3: serving/roles.py then writes one bundle per district user to dashboard/roles/<district_code>/.
 """
 
 from __future__ import annotations
@@ -176,7 +178,7 @@ def alerts_json(spark, sup, since) -> list:
 
 # ------------------------------------------------------------------------------------------------ driver
 
-def export(spark, out: pathlib.Path, max_bytes: int) -> dict:
+def export(spark, out: pathlib.Path, max_bytes: int, role_root: pathlib.Path | None = None) -> dict:
     if not lake.exists("gold", "cases_weekly"):
         raise SystemExit("gold.cases_weekly is missing: run `make gold` first")
     out.mkdir(parents=True, exist_ok=True)
@@ -229,7 +231,16 @@ def export(spark, out: pathlib.Path, max_bytes: int) -> dict:
     total = sum(f.stat().st_size for f in out.iterdir() if f.is_file())
     if total > max_bytes:
         raise RuntimeError(f"dashboard data is {total / 1e6:.2f} MB, over the {max_bytes / 1e6:.0f} MB budget")
-    return {"weeks_exported": n, "weeks_available": len(weeks), "first_week": _clean(weeks[-n]),
+    roles = None
+    if role_root is not None:  # PRV-3: one bundle per district user (serving/roles.py)
+        from serving.roles import write_role_bundles
+
+        national = {"weekly": weekly, "alerts": alerts, "forecasts": fixed["forecasts.json"],
+                    "allocation": fixed["allocation.json"], "calendar": fixed["calendar.json"], "dq": fixed["dq.json"]}
+        roles = write_role_bundles(spark, role_root, since, national, pop, meta, dumps)
+        if roles["max_bundle_bytes"] > max_bytes:
+            raise RuntimeError(f"a district bundle is {roles['max_bundle_bytes'] / 1e6:.2f} MB, over the budget")
+    return {"roles": roles, "weeks_exported": n, "weeks_available": len(weeks), "first_week": _clean(weeks[-n]),
             "bytes_total": total, "suppressed_cells": sum(1 for r in weekly if r["s"]), "cells": len(weekly),
             "audit": audit, "copied": [p.name for p in copies]}
 
@@ -238,16 +249,21 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--out", type=pathlib.Path, default=ROOT / "dashboard" / "data")
     p.add_argument("--max-mb", type=float, default=10.0, help="total size budget of the output folder (MB)")
+    p.add_argument("--roles", type=pathlib.Path, default=ROOT / "dashboard" / "roles",
+                   help="folder for the per-district bundles (PRV-3); '-' skips them")
     a = p.parse_args(argv)
     lake.load_env()
     spark = lake.spark_session("serving_export")
     try:
-        res = export(spark, a.out, int(a.max_mb * 1024 * 1024))
+        res = export(spark, a.out, int(a.max_mb * 1024 * 1024), None if str(a.roles) == "-" else a.roles)
     finally:
         spark.stop()
     print(f"serving: {res['weeks_exported']}/{res['weeks_available']} weeks from {res['first_week']}, "
           f"{res['bytes_total'] / 1e6:.2f} MB, {res['suppressed_cells']}/{res['cells']} cells suppressed, "
           f"audit {res['audit']}, copied {res['copied']}")
+    if res["roles"]:
+        print(f"serving: {res['roles']['bundles']} district bundles in dashboard/roles, largest "
+              f"{res['roles']['max_bundle_bytes'] / 1e6:.2f} MB, audit {res['roles']['audit']}")
     return res
 
 

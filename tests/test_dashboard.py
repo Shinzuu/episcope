@@ -127,4 +127,7 @@ def test_module_imports_resolve_and_ids_cited():
 def test_dashboard_reads_only_data_dir():
     for p in (DASH / "js").rglob("*.js"):
         for url in re.findall(r'(?:d3\.json|fetch)\(\s*[`"]([^`"]+)', p.read_text()):
-            assert url.startswith("data/"), f"{p} fetches {url}"
+            # data/ is the national bundle, roles/<district>/ a district user's bundle (PRV-3); both are serving output
+            ok = url.startswith(("data/", "roles/")) or (url.startswith("${base}/")
+                                                         and 'const base = role ? `roles/${role}` : "data";' in p.read_text())
+            assert ok, f"{p} fetches {url}"

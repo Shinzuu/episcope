@@ -46,23 +46,29 @@ export function renderMap(D) {
   const hatch = addHatch(svg, "hatch-map");
   const g = svg.append("g");
 
-  const fillFor = (code) => {
+  // PRV-3 district view: a district outside the user's own has no data of its own; it takes its division's
+  // aggregate and is drawn lighter, so it reads as "part of an aggregate", not as that district's value.
+  const viewCode = (code) => (D.role && !stats.has(code) && stats.has(code.slice(0, 4)) ? code.slice(0, 4) : code);
+  const fillFor = (raw) => {
+    const code = viewCode(raw);
     const s = stats.get(code);
     if (!s || (s.n === 0 && s.supp === 0)) return C.nodata;
     if (s.n === 0) return hatch;
     return color(s.mean);
   };
-  const tipHtml = (code) => {
+  const tipHtml = (raw) => {
+    const code = viewCode(raw);
     const d = D.districtByCode.get(code);
     const s = stats.get(code);
     if (!d || !s) return esc(code);
     const meanTxt = s.n ? `${fmtNum(s.mean, 2)} per 100k / week` : "suppressed (<5) in every week";
-    return `<b>${esc(d.name)}</b><br>${meanTxt}`
+    const head = code !== raw ? `<b>${esc(d.name)}</b> (aggregate; district detail not shared)` : `<b>${esc(d.name)}</b>`;
+    return `${head}<br>${meanTxt}`
       + `<br>${fmtNum(s.cases)} visible cases in range`
       + (s.supp ? `<br>${s.supp} suppressed week(s) (<5 each) not in the mean` : "")
       + `<br>${s.alerts} ${esc(method)} alert week(s)`;
   };
-  const select = (code) => setState({ district: code }, "map");
+  const select = (code) => setState({ district: viewCode(code) }, "map");
 
   const centroids = new Map();
   if (D.geo) {
@@ -73,7 +79,8 @@ export function renderMap(D) {
       .attr("class", (f) => `district${f.properties.district_code === state.district ? " selected" : ""}`)
       .attr("data-code", (f) => f.properties.district_code)
       .attr("d", path)
-      .attr("fill", (f) => fillFor(f.properties.district_code));
+      .attr("fill", (f) => fillFor(f.properties.district_code))
+      .attr("fill-opacity", (f) => (viewCode(f.properties.district_code) !== f.properties.district_code ? 0.55 : 1));
     D.geo.fc.features.forEach((f) => centroids.set(f.properties.district_code, path.centroid(f)));
   } else {
     const layout = gridLayout(D.districts.map((d) => d.code));
@@ -140,4 +147,5 @@ export function renderMap(D) {
   legendKey(lg, "hatch", "suppressed (<5)");
   legendKey(lg, "rect", "no data", { color: C.nodata, stroke: "#ccc" });
   legendKey(lg, "symbol", `${method} alert in range`, { color: C.alert });
+  if (D.role) legendKey(lg, "rect", "lighter: division aggregate", { color: "#bbb", stroke: "#ccc" });
 }

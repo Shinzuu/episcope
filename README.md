@@ -37,6 +37,11 @@ drop. Running it twice changes nothing. To rehearse with a drop of our own: `mak
 fresh 14-day drop after the last date in `data/raw/`; `scripts/hidden_drop_drill.sh` does the whole test from a
 clean clone and writes `docs/experiments/hidden_drop_drill.json`.
 
+District view (PRV-3): `make serve` also writes one bundle per district to `dashboard/roles/<code>/`; open
+`http://localhost:8000/?district=BD1004` to see Barguna in detail and every other area only as a division total.
+The bundles decide what each role is sent; stopping a district user from fetching `data/` needs server-side
+access control, which a static server does not have.
+
 Other entry points: `make stream` keeps a Structured Streaming job running that refreshes the alerts when new
 encounter files land (ING-6); `make asof DATE=2025-06-30` shows gold as it was known on that date (ING-7).
 
@@ -72,6 +77,7 @@ Hive catalog (`make catalog`). Details and the reasons for each choice are in th
 | DQ-4 | pipeline/silver/dedup.py | §4 |
 | PRV-1 | pipeline/privacy/deid.py | §4 |
 | PRV-2 | pipeline/privacy/suppression.py | §4 |
+| PRV-3 | serving/roles.py, dashboard/js/data.js (`?district=`) | §7, §8 |
 | PRV-4 | pipeline/privacy/kanon.py | §4, §8 |
 | AN-1 | analytics/detection/methods.py | §5 |
 | AN-2 | analytics/evaluation/run.py | §6 |

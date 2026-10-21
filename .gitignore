@@ -14,3 +14,4 @@ ground_truth/
 dashboard/data/*.json
 !dashboard/data/bd_districts.topo.json
 !/data/reference/*.parquet
+dashboard/roles/

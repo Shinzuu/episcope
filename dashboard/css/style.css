@@ -121,3 +121,6 @@ td .pi { color: var(--muted); font-size: .7rem; }
 td:last-child { white-space: normal; text-align: right; line-height: 1.2; }
 td .pi { white-space: nowrap; }
 .p-table th, .p-table td { padding-left: 5px; padding-right: 5px; }
+
+/* PRV-3 district view banner */
+.role-banner { margin: 2px 0 0; padding: 2px 8px; border-radius: 4px; background: #fff3cd; color: #5c4400; font-size: 0.85rem; }

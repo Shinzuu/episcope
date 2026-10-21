@@ -43,10 +43,19 @@ function rewind(g) {
   else if (g.type === "MultiPolygon") g.coordinates.forEach(rev);
 }
 
+// PRV-3: ?district=<P-code> opens that district user's bundle (serving/roles.py): the own district in detail,
+// every other division only as an aggregate. Without it the national bundle in data/ is used.
+export function roleDistrict() {
+  const d = new URLSearchParams(window.location.search).get("district");
+  return d && /^[A-Za-z0-9]+$/.test(d) ? d : null;
+}
+
 export async function loadAll() {
   const names = ["meta", "weekly", "alerts", "forecasts", "allocation", "calendar", "dq"];
+  const role = roleDistrict();
+  const base = role ? `roles/${role}` : "data";
   const [meta, weekly, alerts, forecasts, allocation, calendar, dq] = await Promise.all(
-    names.map((n) => d3.json(`data/${n}.json`)),
+    names.map((n) => d3.json(`${base}/${n}.json`)),
   );
   const geo = await loadTopo();
   return build({ meta, weekly, alerts, forecasts, allocation, calendar, dq, geo });
@@ -119,10 +128,12 @@ function build(raw) {
   }
   const codes = Array.from(new Set(weekly.map((r) => r.d))).sort();
   // Division = first four characters of the P-code (BD + 2-digit division), per research.md section 1.3.
-  const districts = codes.map((code) => ({ code, name: nameOf.get(code) || code, div: code.slice(0, 4) }));
+  const aggNames = meta.role?.aggregates || {};
+  const districts = codes.map((code) => ({ code, name: aggNames[code] || nameOf.get(code) || code, div: code.slice(0, 4),
+    aggregate: code in aggNames }));
 
   return {
-    meta, threshold, weeks, weekStrs, wIdx, diseases, series, methods, alertIdx, fc,
+    meta, role: meta.role || null, threshold, weeks, weekStrs, wIdx, diseases, series, methods, alertIdx, fc,
     scenarios, budgets, alphas, resources, allocIdx, cal, dq, geo, districts,
     districtByCode: new Map(districts.map((d) => [d.code, d])),
     getSeries: (d, dz) => series.get(key(d, dz)) || new Array(weeks.length).fill(null),
