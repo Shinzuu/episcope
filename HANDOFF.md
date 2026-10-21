@@ -1,4 +1,4 @@
-# Handoff (2026-10-20 22:40)
+# Handoff (2026-10-21 09:40)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -61,6 +61,15 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   .env.example), scaling.sh sets it to $WORK/spark-local. Failed workspace deleted.
 - SF=1 re-run started 22:40 (task buj3uofy8), KEEP=1 EVENT_LOG=1, log /var/tmp/episcope-runs/scaling-sf1.log.
   Kept workspace holds event logs with the padded key: delete after the Spark UI screenshots.
+
+## 09:40 SF=1 suspended mid-run
+- SF=1 (22:34 start) finished "ok" but the laptop suspended 22:52:10 to 09:24:56 (37,966 s, systemctl from the
+  user session) during analytics.detection. Stages: generate 30.6, bronze 240.7, silver 613.3, gold 185.9,
+  analytics 38503.8 wall (about 538 s minus the suspend), serve 55.3; about 27.7 min without the suspend. Not
+  used as the gate number. Saved: /var/tmp/episcope-runs/scaling-sf1-suspended.json and -workspace.log;
+  workspace deleted (event logs held the padded key).
+- Clean SF=1 re-run started 09:40 (task b6x925ky6), KEEP=1 EVENT_LOG=1. If it suspends again, ask shinzuu
+  about a sleep inhibitor (systemd-inhibit) for timing runs.
 
 ## Next, in order
 1. SF=1 (running); then commit scaling.json and check gate 5.
