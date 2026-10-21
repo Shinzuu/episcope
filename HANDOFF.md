@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 14:40)
+# Handoff (2026-10-21 15:35)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -130,6 +130,15 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
 - Running (task b3d9zwz2h): final hidden-drop drill on HEAD (DAG make all), then `make check`.
   Then: commit drill JSON, rebuild group pack, final summary, BDA-SUBMIT-READY.
 - SF=1 workspace /var/tmp/episcope-sf1-eval.EJLTFQ (final dashboard data, 7.3 GB): delete after the summary.
+
+## 15:35 done
+- Final drill on HEAD PASS (seed 4675, +8,888 rows, 0 duplicates, 9.76 MB, 28 min). make check: gates 1 (156
+  passed), 3, 5 PASS; gate 4 false positive (outbreak count "n" in detection_tradeoff.json) and gate 2 (ENG-3
+  row) fixed in ce611f7, both PASS on re-check.
+- Group pack rebuilt (report v0.2). 01-Status PDF still describes 20 Oct task split.
+- SF=1 workspace deleted. Nothing pushed or tagged.
+- For shinzuu/team: group number and IDs, video link, contribution matrix cells, shares, signatures,
+  reflections; tag v1.0 and push (outbound, not done).
 
 ## Next, in order
 1. ING-6 measured at SF=1 (kept workspace, main checkout untouched): drop written 10:30:27, alerts refreshed
