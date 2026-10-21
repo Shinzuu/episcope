@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 16:20)
+# Handoff (2026-10-21 17:05)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -146,6 +146,13 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   changes the §6 alpha-curve numbers and needs a new SF=1 run, so it waits on shinzuu. The report states the
   over-allocation with its source (excess_cost in allocation_curve.csv). Item 1 (contribution matrix) waits.
 - Footer/groupplots change sits in 348074e (ENG-3 commit) by mistake; content correct, history left as is.
+
+## 17:05 allocation capped (Lilith decision on review item 6)
+- 1acb5e1: x <= need, floor = min(alpha p_d sum x, need) as a MILP; tests (168 total now pass).
+- Clean SF=1 at 1acb5e1: 25.0 min; only allocation files changed (detection, backtest, calendar, SEIR identical).
+  excess_cost 0 everywhere; headline 67.8% vs 34.4%, alpha 0. Report, brief, FINAL-NUMBERS, pack updated
+  (2ac8358, 54869a1); make check on 54869a1 all 5 gates PASS. SF=1 workspace deleted.
+- 9571bf7 had a stray brace in dashboard allocation.js, fixed in 7115c95 (verify.mjs ok).
 
 ## Next, in order
 1. ING-6 measured at SF=1 (kept workspace, main checkout untouched): drop written 10:30:27, alerts refreshed
