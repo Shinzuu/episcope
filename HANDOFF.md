@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 11:55)
+# Handoff (2026-10-21 12:00)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -102,7 +102,10 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
 5. SF=1 backtest/allocation/calendar outputs saved in docs/experiments/sf1/ (backtest rel. WIS 0.838 overall;
    allocation still degenerate at SF=1: alpha 0 recommended, Gini 0.98, for Rafi). Detection at SF=1 not
    evaluated (scaling does not run `make evaluate`; the kept workspace now holds two extra drops).
-   BDA-NEEDS-SHINZUU asked: new clean SF=1 build + evaluate (~35 min) for the report, or keep SF=0.25.
+   shinzuu chose A: clean SF=1 build + `make evaluate` running (task bu2o69lyt, script sf1_eval.sh in the
+   session scratchpad, same settings as scaling.sh, does not write scaling.json; workspace
+   /var/tmp/episcope-sf1-eval.*; log /var/tmp/episcope-runs/sf1-eval.log). Then §6 all from SF=1, then the
+   ten passes. AI_USAGE video row was already in (431b7a9); added the report/audit row (d7e5694).
 6. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
 
 ## Decisions
