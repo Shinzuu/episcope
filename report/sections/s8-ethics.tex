@@ -21,8 +21,11 @@ closes it. The
 bundles decide what each role is sent, but a static web server cannot stop a district user from requesting the
 national files: a real deployment needs a login and a separate path per role.
 
-\textbf{Equity.} The equity floor $\alpha$ guarantees each district a population share of every resource, so a
-district with little measured need, perhaps because it reports badly, is not left with nothing. It costs
+\textbf{Equity.} The equity floor gives every district a population share of what is sent, but never more than
+it needs. A district that shows no need gets nothing, so the floor cannot protect a district whose reports are
+missing. The pipeline keeps such gaps visible instead of hiding them: a district-week in which fewer than 80\%
+of the expected facilities reported is marked missing, not zero, and the dashboard shows it as ``no report''.
+It does not raise an alert on its own; a reporting-gap alert is left for future work. The floor costs
 efficiency, and Section~\ref{sec:alloc} gives the price. The weights in the objective are a value judgement
 that the ministry, not the analysts, should own.
 

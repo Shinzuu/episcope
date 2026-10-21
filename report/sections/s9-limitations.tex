@@ -5,8 +5,8 @@ planted, not real-world accuracy. The storage layer runs on the local filesystem
 \begin{itemize}
 \item \textbf{Data.} Synthetic stock follows a simple min/max policy; real stock records would change the
 allocation. Next: load a real stock feed through the same S6 contract.
-\item \textbf{Detection.} The threshold was tuned on outbreaks we planted. Next: re-tune on reported outbreaks
-from DGHS bulletins.
+\item \textbf{Detection.} The threshold was tuned on outbreaks we planted, and a district that stops reporting
+raises no alert. Next: re-tune on reported outbreaks from DGHS bulletins, and add a reporting-gap alert.
 \item \textbf{Forecasting.} The intervals ignore parameter uncertainty, and dengue forecasts tend to fall short
 in a surge. Next: a bootstrap over the fit and a growth term.
 \item \textbf{Allocation.} Costs and units per case are rough assumptions, and the LP plans one four-week round.
