@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 11:00)
+# Handoff (2026-10-21 11:25)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -91,8 +91,8 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
    the 60 s trigger wait). Target under 5 min missed by 1.5 s. Lilith: default trigger now 30 s (f3dcb33);
    second SF=1 run with 30 s queued under flock after the drill (task bmm6k6e7n, same procedure, fresh stream
    checkpoint, next 14-day drop). Report BOTH runs in the report and stream_latency.json, as measured.
-2. Final hidden-drop drill on HEAD running (task bhbxccww1, DRILL_WORKTREE=0, SF=0.05, make setup); log
-   /var/tmp/episcope-runs/drill-head.log. Report build (latexmk) also waits on the lock.
+2. Drill on HEAD (4cddbb9, DRILL_WORKTREE=0, SF=0.05, make setup) PASS: drop seed 3006, +8,741 silver rows,
+   through 2026-01-14, 0 duplicates after re-run, export 9.78 MB, 38 min. Committed (d612084); report §4 updated.
 3. Names (shinzuu): Tahsin Ahmed Rafi and Rimjhim Dey in formal places (report title block, appendix
    reflections line, status PDF header and member headings, 00-README team line); short names in task lists.
    Edits made; the group-pack PDFs refresh with the next report build (queued under flock, task bp6eu4i4g).
