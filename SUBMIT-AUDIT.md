@@ -116,3 +116,18 @@ now cover the report only.
 | ENG-3, ENG-4 | left for Samira | decision 2026-10-20 (R9 is per person) |
 
 Tests: `tests/test_pipeline.py` + `tests/test_generator.py` 23 passed (9 min 49 s).
+
+## Status at 2026-10-21 (after the "we do the whole project" change)
+
+| Area | Status | Evidence |
+|---|---|---|
+| AN-7, AN-8 allocation | fixed (three faults) | `docs/experiments/allocation_diagnosis.md`, commit 28952eb |
+| ENG-2 scaling, gate 5 | SF=1 28.3 min (timing run), 25.3 min final code | `scaling.json`, `sf1_final_run.json` |
+| ENG-3 Spark optimisations | two, with outputs unchanged and Spark UI screenshots | `silver_optimisation.json`, `backtest_optimisation.json`, `report/figures/` |
+| ENG-4 DAG with retries | done | `scripts/dag.py`, `tests/test_dag.py` |
+| PRV-3 role views | done; aggregates safe against differencing | `serving/roles.py`, `?district=` |
+| AN-10 SEIR scenarios | done | `analytics/scenario/seir.py`, `seir_scenarios.json` |
+| ING-6 latency | 219.2 s at SF=1 with the 30 s trigger | `stream_latency.json` |
+| Usability | simulated persona walkthroughs (AI agents), two rounds | `docs/usability/` |
+| Report | all sections from the SF=1 run, ten passes, 10 pages, 0 warnings | `report/versions/VERSIONS.md` |
+| Left for the team | group number and IDs, video link, contribution matrix support cells and shares, signatures, reflections, tag v1.0 and push | report boxes |

@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 13:45)
+# Handoff (2026-10-21 14:40)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -121,6 +121,15 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   on the final dashboard in /var/tmp/episcope-sf1-eval.EJLTFQ/repo/dashboard via dashboard/tools/walk.mjs under
   flock. Results to the session scratchpad personas/*-round1.json. Then fix, round 2, §7 + AI_USAGE row.
 - Keep the SF=1 workspace until step 4 ends (dashboard data), then delete it.
+
+## 14:40 steps 4 and 5
+- Persona walkthroughs: round 1 (0/15 tasks done), fixes ff8beaf, round 2 (13/15), fixes 62791b4;
+  docs/usability/, report §7, AI_USAGE row. Not real participants, said so everywhere.
+- Ten report passes done (f88074b), report/versions/v1..v10, VERSIONS.md. 10 pages, 0 warnings.
+- docs/FINAL-NUMBERS.md: headline numbers with sources (for slides/script sync).
+- Running (task b3d9zwz2h): final hidden-drop drill on HEAD (DAG make all), then `make check`.
+  Then: commit drill JSON, rebuild group pack, final summary, BDA-SUBMIT-READY.
+- SF=1 workspace /var/tmp/episcope-sf1-eval.EJLTFQ (final dashboard data, 7.3 GB): delete after the summary.
 
 ## Next, in order
 1. ING-6 measured at SF=1 (kept workspace, main checkout untouched): drop written 10:30:27, alerts refreshed
