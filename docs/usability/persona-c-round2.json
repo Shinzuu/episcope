@@ -1,0 +1,59 @@
+{
+  "persona": "c: Dr. Farhana Haque, Additional Secretary, Ministry of Health (national view, query \"\"). Round 2 confirm round. SIMULATED persona walkthrough run with an AI agent, not a real participant.",
+  "tasks": [
+    {
+      "task": 1, "success": "yes", "runs": 1, "steps": 3, "est_seconds": 30,
+      "round1_status": "mostly fixed",
+      "stuck": "Headline line 'On alert in the last full week (week of 22 Dec 25, EARS C2 (fast rises)): none.' answers the question for all four diseases at once. Table has 'Alert now' column (all 'no') and plain headers. She took the top row, Bhola (now the default district), as district of concern. NEW: the map still draws every flagged district with a solid orange triangle, although the legend says solid = 'on alert in the last full week' and outline = 'alert earlier in the range'. The map contradicts the headline 'none' (code sets fill='none' as an attribute, but the solid fill still renders, likely a CSS rule overriding it). Minor: 'EARS C2' still appears in the headline and method drop-down.",
+      "quotes": ["The top line says nobody is on alert this week. Good. But then why is the map covered in solid orange triangles?"]
+    },
+    {
+      "task": 2, "success": "yes", "runs": 1, "steps": 1, "est_seconds": 25,
+      "round1_status": "fixed",
+      "stuck": "New 'Forecast for Bhola, made on 29 Dec 2025' table: next week 13 (8 to 19), week of 26 Jan 7 (<5 to 11), next 4 weeks 41. Legend says 'likely range (8 weeks in 10 fall inside)'. Hover now reads 'Cases: 433 / Alert (EARS C2 (fast rises)): no'. No new problem for her.",
+      "quotes": ["Thirteen next week, about seven in four weeks, forty-one in total. That I can repeat in a meeting."]
+    },
+    {
+      "task": 3, "success": "yes", "runs": 2, "steps": 4, "est_seconds": 60,
+      "round1_status": "fixed",
+      "stuck": "Default supply is IV saline with plain units ('1-litre bags'), budget in BDT, a sentence per selected district: 'Chattogram: needs 4,133, has 1,280, short by 2,853; receives 1,426, still short by 1,426.' Dhaka (stock 196,165, need 15,989) now receives 0. She can answer the journalist: Chattogram got the most because its shortfall is the largest. NEW/remaining: Dhaka holds about 180,000 spare bags while the country is 43,559 short; the plan only buys, never moves stock between districts, and the screen does not say why.",
+      "quotes": ["Chattogram got the most because it is short by nearly three thousand bags. But Dhaka is sitting on a hundred and eighty thousand spare. Why are we buying instead of moving them?"]
+    },
+    {
+      "task": 4, "success": "partly", "runs": 2, "steps": 10, "est_seconds": 120,
+      "round1_status": "partly fixed",
+      "stuck": "Budget slider now reads '3.89 million BDT (50% of the cost of all need)'; IV saline cover at 25/50/75%: 1%/28%/73%. Floor renamed 'Minimum share for every district (equity floor α): 0.0 (recommended)' with a paragraph explaining it. Chart now shows 'share of shortfall left' with 'this budget' labelled. Remaining: for IV saline at half budget the floor still raises cover (α 0.0 28%, α 0.2 44%), while for ORS it lowers it (75% -> 50%). The paragraph warns of this, but she only sees one supply at a time and gets no all-supplies total, so she cannot check the 'recommended' claim herself. The grey lines for the other budgets in the chart have no labels.",
+      "quotes": ["For saline the minimum share helps, for ORS it hurts. Show me the total for all supplies, then I will decide. For now I leave it at zero as recommended."]
+    },
+    {
+      "task": 5, "success": "yes", "runs": 0, "steps": 1, "est_seconds": 150,
+      "round1_status": "mostly fixed",
+      "stuck": "Clean single column, placeholders and references gone, and a 'Decision requested' section: full need about 7.8 million taka, half gives 68% vs 34% by population, recommended no minimum share. NEW: a leftover LaTeX fragment 'lcccc@{}}' above the calendar table; the calendar covers only dengue and diarrhoea (no ILI or malaria); 'taka' in the brief vs 'BDT' on the dashboard. The 68% is an average over supplies that the dashboard never shows (it shows 28% for saline and 75% for ORS at half budget), and the brief says any minimum lowers cover, but the dashboard shows saline cover going up with a floor of 0.2.",
+      "quotes": ["Now I know what I am asked to approve: 7.8 million, or half of it with 68 percent covered. Put that 68 percent on the dashboard so I can show it."]
+    }
+  ],
+  "round1_issues_status": [
+    {"issue": "Map triangles show any alert in 26 weeks; cannot see who is on alert now", "status": "partly"},
+    {"issue": "Table ranked by alert weeks, jargon headers, no tooltips", "status": "fixed"},
+    {"issue": "No national 'on alert now' summary across diseases", "status": "fixed"},
+    {"issue": "Table/chart/forecast numbers look inconsistent (Latest wk 160 vs 150k chart; <5 vs 183); dengue rechecked (Dhaka now 1,717), diarrhoea row not rechecked", "status": "fixed"},
+    {"issue": "No readable four-week forecast; jargon in chart hover", "status": "fixed"},
+    {"issue": "Chart legend jargon (80% PI, q10-q90, ears_c2, CUSUM)", "status": "partly"},
+    {"issue": "Default resource 'ns1 kits' showed allocated 0; jargon resource names", "status": "fixed"},
+    {"issue": "Budget without currency or scope", "status": "fixed"},
+    {"issue": "Dhaka (12x surplus) received extra allocation; bars dominated by stock", "status": "partly"},
+    {"issue": "Equity floor alpha unexplained, chart labels overlap, effect non-monotone", "status": "partly"},
+    {"issue": "Detection threshold control unexplained in budget panel", "status": "partly"},
+    {"issue": "Scenario ids and 'q90' shown to decision-makers", "status": "fixed"},
+    {"issue": "Policy brief scrambled with references and placeholders", "status": "fixed"},
+    {"issue": "Brief lacks explicit decision with costs in Taka", "status": "fixed"},
+    {"issue": "Brief numbers do not match dashboard", "status": "partly"}
+  ],
+  "issues": [
+    {"where": "#map alert triangles", "problem": "All flagged districts render as solid triangles, so the map says 'on alert now' everywhere while the headline says 'none'. The outline style is set as an attribute but does not render.", "severity": "high", "suggested_fix": "Set the hollow style with .style('fill','none') or fix the CSS rule for .alert-marker; check the map visually."},
+    {"where": "#alloc", "problem": "Large surplus stock (Dhaka 196,165 vs need 15,989) is never moved to districts that are short; not explained.", "severity": "medium", "suggested_fix": "Say 'stock is not moved between districts in this plan', or add a transfer option."},
+    {"where": "#whatif / #equity", "problem": "No all-supplies total. The brief's 68% average and its 'any minimum lowers cover' claim cannot be checked on screen, and saline shows the opposite. Grey budget lines in the chart are unlabelled.", "severity": "medium", "suggested_fix": "Add an 'all supplies' line: '% of total shortfall cost covered'; label or drop the other budget lines."},
+    {"where": "policy_brief.txt", "problem": "Leftover LaTeX 'lcccc@{}}'; calendar lacks ILI and malaria; 'taka' vs 'BDT'.", "severity": "low", "suggested_fix": "Remove the fragment, add or explain the missing diseases, use one currency label."},
+    {"where": "Headline / ALERT METHOD drop-down", "problem": "'EARS C2 (fast rises)' is still a code name in the top line.", "severity": "low", "suggested_fix": "Show 'fast-rise check' only; keep the method name under an advanced toggle."}
+  ]
+}

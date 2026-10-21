@@ -1,0 +1,162 @@
+{
+ "persona": "b - Ms. Nasrin Akter, store-keeper (medical store officer), Chattogram Medical College Hospital, BD2015; national login (query \"\"), selects her district. SIMULATED persona walkthrough run with an AI agent, not a real participant.",
+ "tasks": [
+  {
+   "task": 1,
+   "success": "partly",
+   "runs": 1,
+   "steps": 6,
+   "est_seconds": 150,
+   "found": "Dengue: Chattogram is row 33 of 64 in the Early warning ranking, '2' alert weeks over 07 Jul-29 Dec 25, peak/thr 1.12, latest wk 24, next wk forecast 80. Chart triangles show the two alerts were around early July and mid-November, so no alert this week. Diarrhoea (seen later with the last-week range): 0 alert weeks, row 10.",
+   "stuck": "Nothing on screen says 'alert this week: yes/no'. 'Alert wks' counts alerts over the whole 26-week range, so 'is there an alert now' needs matching the orange triangles in the chart to dates. Rank 33 is easy to misread as 'safe'. The table scrolls on its own to Chattogram, so the top of the list (Dhaka, Sunamganj) is out of view. Many map triangles across the country look like a national emergency, but they mean 'alert at some point in 26 weeks'. Column heads 'Peak ÷ thr', 'Mean /100k', 'CUSUM', 'ears_c2' mean nothing to her. When she clicks one week in the seasonal grid the ranking re-sorts alphabetically with all zeros, which looks like the alerts disappeared.",
+   "quotes": [
+    "Just tell me: is there an alert in Chattogram this week, yes or no?",
+    "Number 33 out of 64, so are we fine or not? And what is 'Peak divided by thr'?"
+   ]
+  },
+  {
+   "task": 2,
+   "success": "partly",
+   "runs": 3,
+   "steps": 22,
+   "est_seconds": 420,
+   "found": "Dengue, Chattogram: next week 80 cases (range 54-109), week 4 (25 Jan) about 40 (roughly 27-57, read off the band). Diarrhoea: next week 956 (724-1,203), week 4 about 1,130 (roughly 860-1,430, read off the chart). Only the next-week number and hovered week 2 (dengue 62 [41-86], diarrhoea 1,036 [782-1,307]) were shown as text. Week 3 and week 4 had to be guessed from the chart.",
+   "stuck": "In the default 26-week view the forecast is a tiny dashed line squashed at zero next to a 3k axis, so it can't be read. She only got numbers after clicking the 2026 cell in the seasonal grid, which she would not think to try. The hover tooltip only covers the week under the mouse. There is no table listing weeks 1-4 with numbers. Labels '80% PI (q10-q90)', 'h2', 'origin 29 Dec 2025' are jargon. The last observed week (29 Dec) shows 24 dengue cases right after a week of about 420 on the chart. That looks like a part week (data through 31 Dec) but nothing says so, and 'Latest wk 24' in the table reads as cases falling to almost nothing. The dashboard never turns cases into stock: no cases-to-units conversion, no 4-week total.",
+   "quotes": [
+    "The line is lying flat on zero. I can't read a number off that.",
+    "80 dengue cases next week is fine, but how many NS1 kits and how many saline bags is that? I need it added up for the month."
+   ]
+  },
+  {
+   "task": 3,
+   "success": "partly",
+   "runs": 3,
+   "steps": 27,
+   "est_seconds": 480,
+   "found": "Budget 5,837,591, alpha 0.20. IV saline: demand (q90) 4,133, stock 1,280, allocated 2,140, unmet 713. ORS: demand 31,806, stock 4,259, allocated 20,660, unmet 6,887. NS1 kits: demand 479, stock 1,865, allocated 0, unmet 0. Her reading: we get saline and ORS because our stock is below the forecast need, and no NS1 kits because we already hold more than needed. Even with the allocation, about 700 saline and about 6,900 ORS are still short.",
+   "stuck": "Her district's numbers only show in a hover tooltip on a bar. The summary line ('iv saline: demand 87,595, stock 224,212, allocated 31,164, unmet 13,076') is the national total, but it sits right under the controls with no 'national' label, so she first took it for Chattogram. The selected-district highlight is a light-blue box across the full row, the same colour as 'recommended allocation'. For NS1 kits Chattogram looked like it gets about 160k kits when it really gets 0. Dhaka's stock (196k saline, 160k NS1) sets the axis, so Chattogram's own bars are a few pixels wide. Units are never given (bags? 500 ml or 1 L? sachets? test kits?), nor is the budget currency, nor the period the demand covers (1 week? 4 weeks?), nor when the allocation arrives. 'Demand (q90)' and 'Equity floor α' are unexplained. Resource names are lower-case ('iv saline', 'ns1 kits'). Changing the disease to diarrhoea silently switches the resource to ORS.",
+   "quotes": [
+    "Demand 4,133 of what? Bags? For one week or for the month?",
+    "At first I thought Chattogram was getting a hundred and fifty thousand NS1 kits. The whole bar is blue!"
+   ]
+  },
+  {
+   "task": 4,
+   "success": "partly",
+   "runs": 2,
+   "steps": 32,
+   "est_seconds": 360,
+   "found": "IV saline, Chattogram: lowest budget 1,945,864 gives allocation 0 (unmet 2,853). Highest budget 11,675,182 gives 2,853 (unmet 0). Default budget with alpha 0.0 gives 2,140 (unmet 713), alpha 1.0 gives 1,550 (unmet 1,303). ORS, Chattogram: lowest budget gives 13,774 (unmet 13,774), highest gives 27,547 (unmet 0). Alpha 0.0 gives 20,660, alpha 1.0 gives 22,128 (unmet 5,419). She could do it, but without explanations.",
+   "stuck": "The sliders don't show their range or steps. The budget jumps between 5 fixed values (1.9M, 3.9M, 5.8M, 7.8M, 11.7M) with no currency and no '% of need' label. She had to hover her bar again after every change, because the bar stays tiny and no Chattogram number is printed. 'Equity floor α' means nothing to her. Raising it cut her saline but raised her ORS, and the panel doesn't say why. At the lowest budget, saline gets 0 for every district while ORS still gets 256k nationally, and nothing explains how one budget is split across resources. The 'Cost of equity' chart (total unmet vs α, B= labels overlapping at the right edge) is unreadable to her. The 'Detection threshold × 1.0' slider sits in the supply panel but is about alerts.",
+   "quotes": [
+    "What is this alpha? When I move it up my saline goes down but my ORS goes up. Which one should I want?",
+    "Budget 5,837,591 taka? Dollars? And I have to point at the bar again every time to see my own number."
+   ]
+  },
+  {
+   "task": 5,
+   "success": "partly",
+   "runs": 0,
+   "steps": 1,
+   "est_seconds": 420,
+   "found": "Recommendations: (1) act on the weekly warning list and check every warning (about 2 false alarms a year per district); (2) send supplies by measured shortfall, not population (68% vs 34% of shortfall covered at half the money), with an optional equity floor; (3) prepare before the season: supplies in place by mid-July for dengue in Dhaka division. For her store: order from the high end of the forecast range, have stock in place before the season, and expect supplies only where stock is below need.",
+   "stuck": "The text file's columns are mixed up: the reference list, page footers, 'TEAMMATE: ... Half a page in your own words' placeholders and the recommendations all run together, so she has to hunt for 'Three recommendations' halfway down. Recommendation 3 gives dates only for Dhaka division. Nothing for Chattogram, and it doesn't say where the calendar date for her division is (the small triangle above the seasonal grid has no date on it). The brief says costs and per-patient use are 'our estimates', so she isn't sure she can order on these numbers. The useful line for her, 'stock is planned on the high end of the range', is under 'How far to trust it', not in the dashboard.",
+   "quotes": [
+    "Half of this page is references and blank 'your own words' boxes. Where are the three points?",
+    "It tells Dhaka to be ready by mid-July. When do I have to be ready in Chattogram?"
+   ]
+  }
+ ],
+ "issues": [
+  {
+   "where": "Early warning ranking (#table) and map triangles",
+   "problem": "No 'alert this week' indicator. 'Alert wks' counts alerts over the whole time range, and the map triangles mean 'alert at any time in range', so a user can't tell whether her district is in alert now.",
+   "severity": "high",
+   "suggested_fix": "Add an 'Alert this week: YES/NO' column or badge (and a district banner when the selected district is in alert), and put the alert week date in the row."
+  },
+  {
+   "where": "Weekly cases chart (#ts) in the default 26-week range",
+   "problem": "The 4-week forecast is squashed into a few pixels at the right edge and can't be read. Numbers only appear one week at a time on hover, and only after narrowing the range (clicking the 2026 heatmap cell, which nobody would find).",
+   "severity": "high",
+   "suggested_fix": "Add a small forecast table under the chart: week 1-4 date, expected cases, likely low-high, plus a 4-week total. Or open the chart zoomed on the last 8 weeks plus the forecast."
+  },
+  {
+   "where": "#ts last observed point / table 'Latest wk'",
+   "problem": "The last week (29 Dec, data through 31 Dec) shows 24 dengue cases after about 420 the week before. It looks like a partial week but isn't marked, and the forecast is anchored on it.",
+   "severity": "high",
+   "suggested_fix": "Mark incomplete weeks ('partial week, 3 of 7 days') or drop them from 'Latest wk', and say which week the forecast starts from in plain words."
+  },
+  {
+   "where": "Resource allocation bars (#alloc), selected-district highlight",
+   "problem": "The selected district's highlight is a full-width light-blue box, nearly the same colour as 'recommended allocation'. For NS1 kits it looks like Chattogram gets about 160k kits when it gets 0.",
+   "severity": "high",
+   "suggested_fix": "Use a neutral grey or outline-only highlight, or bold the district name, so the highlight can't be read as a bar."
+  },
+  {
+   "where": "#alloc summary line",
+   "problem": "The national totals line ('iv saline: demand 87,595, stock 224,212, allocated 31,164 ...') has no 'all districts' label and is easily read as the selected district's figures. The district's own numbers are only in a hover tooltip.",
+   "severity": "high",
+   "suggested_fix": "Label it 'All 64 districts', and add a printed line for the selected district: 'Chattogram: need 4,133, in stock 1,280, you will receive 2,140, still short 713'."
+  },
+  {
+   "where": "#alloc axis scale",
+   "problem": "Dhaka's very large stock (196k saline, 160k NS1) sets the x-axis, so other districts' bars are a few pixels wide and unreadable.",
+   "severity": "medium",
+   "suggested_fix": "Cap the axis (e.g. at the largest demand) with a break marker, or show the selected district's bar at its own scale or in a small number table."
+  },
+  {
+   "where": "Allocation units, budget, period",
+   "problem": "No unit for any resource (saline bag size, ORS sachets, kits, beds or bed-days), no currency for the budget, no period for 'demand' (1 week? 4 weeks?), no delivery date.",
+   "severity": "high",
+   "suggested_fix": "Show units next to every number ('IV saline, 1 L bags'), 'Budget (BDT)', 'Need for the next 4 weeks (4 Jan-31 Jan)', and the expected delivery week."
+  },
+  {
+   "where": "Forecast-to-stock link",
+   "problem": "There is no conversion from forecast cases to supply quantities (per-patient use), so a store-keeper can't check or redo the demand figure.",
+   "severity": "medium",
+   "suggested_fix": "Show the rule in the tooltip or a footnote, e.g. 'need = high-end cases × 3 bags per dengue in-patient', with the values used."
+  },
+  {
+   "where": "Jargon throughout",
+   "problem": "'q90', '80% PI (q10–q90)', 'h2', 'origin', 'Peak ÷ thr', 'Mean /100k', 'CUSUM', 'ears_c2', 'Equity floor α', 'Scenario #b0.75_a0.2', 'Cost of equity: unmet demand vs α', 'B=' labels.",
+   "severity": "medium",
+   "suggested_fix": "Use plain labels ('likely range', 'planning figure (high end)', 'week 2 ahead', 'minimum share for every district'), with a ? tooltip for the technical term."
+  },
+  {
+   "where": "What-if panel sliders (#sl-budget, #sl-alpha, #sl-thr)",
+   "problem": "No range or step labels. Budget jumps between 5 hidden values. The district result needs a re-hover after every change. 'Detection threshold' (an alert setting) sits inside the supply panel. Raising alpha lowers her saline but raises her ORS with no explanation.",
+   "severity": "medium",
+   "suggested_fix": "Label the budget steps as '% of total need'. Show a before/after line for the selected district ('Chattogram IV saline: 2,140 → 1,550'). Move the detection threshold to the alert area. Add one sentence on what the minimum share does."
+  },
+  {
+   "where": "#equity chart",
+   "problem": "The 'B=' labels overlap at the right edge (B=5,837,591 / B=7,783,455), there's no unit on 'total unmet', and it's unclear which line is the current budget.",
+   "severity": "low",
+   "suggested_fix": "Stagger or move the labels into a legend, name the current line ('current budget'), and add units."
+  },
+  {
+   "where": "Disease buttons → resource drop-down",
+   "problem": "Choosing a disease silently changes the resource (diarrhoea → ORS). She can lose track of which supply she's looking at. Resource names are lower-case shorthand ('iv saline', 'ns1 kits').",
+   "severity": "low",
+   "suggested_fix": "Keep the resource as chosen, or show a notice when it changes. Use proper names ('IV saline (1 L)', 'Dengue NS1 test kits')."
+  },
+  {
+   "where": "Early warning ranking after clicking one heatmap week",
+   "problem": "With a one-week range every row shows 0 alerts and 0.00, and the list re-sorts alphabetically, so it looks like alerts vanished.",
+   "severity": "low",
+   "suggested_fix": "Keep the alert ranking on a fixed recent window (e.g. last 8 weeks) independent of the chart zoom, or show a note that the ranking follows the selected range."
+  },
+  {
+   "where": "Seasonal pattern calendar markers (pre-position supplies / start campaign)",
+   "problem": "The triangle and dot above the grid have no date or week number. Only the policy brief gives a date, and only for Dhaka division.",
+   "severity": "medium",
+   "suggested_fix": "Print 'Chattogram division: supplies in place by week NN (date)' next to the markers and in the district view."
+  },
+  {
+   "where": "policy_brief.txt",
+   "problem": "The two-column text extraction is interleaved: references, page footer, teammate placeholders ('Half a page in your own words') and the recommendations run together. The recommendations are halfway down and partly broken across columns.",
+   "severity": "medium",
+   "suggested_fix": "Export the brief as single-column text in reading order, remove placeholders, and put the three recommendations first, with a line on what each means for a district store."
+  }
+ ]
+}

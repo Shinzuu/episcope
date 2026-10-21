@@ -1,0 +1,82 @@
+{
+  "persona": "c: Dr. Farhana Haque, Additional Secretary, Ministry of Health (senior non-technical decision-maker, national view, query \"\"). SIMULATED persona walkthrough run with an AI agent, not a real participant.",
+  "tasks": [
+    {
+      "task": 1,
+      "success": "partly",
+      "runs": 2,
+      "steps": 9,
+      "est_seconds": 120,
+      "stuck": "No 'this week' view. The map puts a triangle on almost every district (legend: 'cusum alert in range' = any alert in 26 weeks), so the map cannot answer 'who is on alert now'. The ranking table orders by 'Alert wks' over 07 Jul-29 Dec 25, not by current status; 'Peak ÷ thr', 'Mean /100k', '80% PI' unexplained, and header hover gives no tooltip. Picked Dhaka (row 1, dengue) but could not tell whether Dhaka is on alert this week or was months ago (its chart shows the peak in Oct/Nov and near-zero cases by late Dec). Table shows 'Latest wk 160' while the chart's y-axis shows up to 150k cases/week for Dhaka; the two numbers do not look like the same thing. Only by clicking each disease button separately could she see other diseases; there is no all-disease summary. Some rows show 'Latest wk <5' but 'Next wk forecast 183' (diarrhoea, Lalmonirhat), which looks wrong to her.",
+      "quotes": [
+        "Nearly the whole map has orange triangles. If everything is an alert, what am I supposed to act on?",
+        "I asked which districts are on alert this week. This table tells me how many weeks they were on alert since July. Those are different questions."
+      ]
+    },
+    {
+      "task": 2,
+      "success": "partly",
+      "runs": 2,
+      "steps": 3,
+      "est_seconds": 90,
+      "stuck": "Next week is only in the table: '953, 80% PI 604-1,340'. She can guess 953 is the expected number but not that '80% PI' means 'probably between 604 and 1,340'. No four-week figure is shown anywhere as text; on the chart the forecast is a thin dashed line squashed against zero because the axis is scaled to the 150k peak. The hover readout over the chart gives 'Threshold (ears_c2): 3.0' next to 'Observed: 52,690' and 'cusum: stat 4.89 / thr 5.00', which is meaningless to her. 953 next week vs 160 latest week is a 6x jump with no explanation.",
+      "quotes": [
+        "Next week, 953 cases. In four weeks? I cannot find it. The line is flat at the bottom.",
+        "What is 'PI'? What is 'q10-q90'? Just tell me: most likely this many, could be up to that many."
+      ]
+    },
+    {
+      "task": 3,
+      "success": "no",
+      "runs": 1,
+      "steps": 6,
+      "est_seconds": 150,
+      "stuck": "Default resource is 'ns1 kits' (jargon) and the summary says 'allocated 0, unmet 0', so the panel shows nothing being shared. Switching to 'iv saline' shows allocations, but the chart is dominated by Dhaka's huge green 'current stock' bar (196,165 of 224,212 national stock) and the allocation slivers are invisible. Hover shows Dhaka demand 15,989, stock 196,165, yet 'Recommended allocation: 682' while other districts are left with 13,076 unmet. She cannot explain why a district holding 12x its need receives more. Budget '5,837,591' has no currency, and it is not stated whether the budget is for this resource or all supplies (the same scenario id applies to every resource). 'Scenario #b0.75_a0.2', 'demand (q90)' are code names.",
+      "quotes": [
+        "If a journalist asks me why Dhaka got more, the honest answer from this screen is: I don't know. Dhaka already has twelve times what it needs.",
+        "5,837,591 what? Taka? Lakh? Units?"
+      ]
+    },
+    {
+      "task": 4,
+      "success": "partly",
+      "runs": 3,
+      "steps": 30,
+      "est_seconds": 240,
+      "stuck": "Budget slider works and the summary sentence is the one useful line: at 25% budget '0% of shortfall covered', 50% -> 44%, 75% -> 70%, 100% -> 96%, 150% -> 100% (iv saline, floor 0.20). But 'Equity floor α' is never explained (no tooltip on the slider), the 'Cost of equity: unmet demand vs α' chart has overlapping B= labels and, for ns1 kits, a y-axis reading '1, 800m, 600m...'. Effects of the floor are inconsistent: at half budget, floor 0.0 covers 28% but floor 0.2 covers 44%; at 25% budget, floor 0.0 allocates 594, 0.5 allocates 0, 1.0 allocates 2,530. At default budget raising the floor 0.2 -> 0.6 drops coverage 70% -> 60%. She cannot tell if the floor helps or hurts, so would not raise it. 'Detection threshold × 1.0' sits in the budget panel with no explanation.",
+      "quotes": [
+        "Cut the budget by a quarter and we cover 70 percent instead of 96. That I understand, and I can defend it.",
+        "Alpha? I am not raising anything called alpha until someone tells me in one sentence what it does to which districts."
+      ]
+    },
+    {
+      "task": 5,
+      "success": "partly",
+      "runs": 0,
+      "steps": 1,
+      "est_seconds": 300,
+      "stuck": "The plain-language content is good (three recommendations, 'equity floor' explained as a minimum share, 'a warning is a reason to investigate'). But the text she received is scrambled: references [1]-[18] are interleaved with the brief, sentences break mid-column ('Resource Plan... ning'), and teammate placeholders ('TEAMMATE: ... Half a page in your own words.') are still in. There is no single 'Decision requested' line with options and costs in Taka, no statement of this season's numbers (which districts, how much money). Its numbers do not match what she sees on the dashboard: brief says need-based sharing at half the money covers 68% of the shortfall, the dashboard at half budget shows 28-44% for iv saline and 75% for ORS; brief says a floor 'costs' coverage, dashboard shows floor 0.2 improving it at half budget. Brief promises a 'forecast for the next four weeks' that the dashboard does not show readably.",
+      "quotes": [
+        "Recommendation two I can take into a meeting. But what exactly do you want me to sign, and how much does it cost?",
+        "Half of this page is a list of journal articles and notes to your teammates. Send me the clean version."
+      ]
+    }
+  ],
+  "issues": [
+    {"where": "#map triangles / #map-legend 'cusum alert in range'", "problem": "Triangle marks any alert in the 26-week range, so nearly every district has one; cannot see who is on alert now. 'cusum' unexplained.", "severity": "high", "suggested_fix": "Mark only districts on alert in the latest week (or colour by weeks since last alert); legend text 'On alert this week'."},
+    {"where": "#table (Early warning ranking)", "problem": "Ranked by alert weeks over 6 months, not current status; headers 'Peak ÷ thr', 'Mean /100k', 'Latest wk', '80% PI' are jargon with no tooltips.", "severity": "high", "suggested_fix": "Add an 'Alert now? yes/no' column and sort by it; rename headers ('Cases last week', 'Cases per 100,000 people', 'Expected next week (likely range)'); add header tooltips."},
+    {"where": "Top of page", "problem": "No national summary: how many districts on alert this week, for which diseases. Must click each disease button separately.", "severity": "high", "suggested_fix": "A one-line headline strip per disease: 'Dengue: 3 districts on alert this week (Dhaka, ...)'."},
+    {"where": "#table Dhaka row vs #ts chart", "problem": "'Latest wk 160' and 'Mean /100k 158.13' next to a chart peaking at 150k cases/week; next-week forecast 953 vs latest 160. Numbers look inconsistent. Also rows with 'Latest wk <5' and forecast 183 (diarrhoea, Lalmonirhat).", "severity": "high", "suggested_fix": "Check that table, chart and forecast use the same unit and week; label units explicitly (cases vs per 100k)."},
+    {"where": "#ts forecast and hover readout", "problem": "Four-week forecast only as a dashed line squashed at zero under a 150k axis; no numbers for weeks 2-4. Hover shows 'Threshold (ears_c2): 3.0', 'cusum: stat 4.89 / thr 5.00', 'Forecast h1'.", "severity": "high", "suggested_fix": "Add a small text block: 'Next week ~953 (likely 604-1,340); in 4 weeks ~X (likely A-B)'. Default the chart range so the forecast is visible. Plain words in hover ('alert level', 'week 1 ahead')."},
+    {"where": "#ts-legend", "problem": "'forecast mean, 80% PI (q10–q90), origin 29 Dec 2025', 'alert threshold (ears_c2)' are statistical jargon; ALERT METHOD drop-down 'CUSUM' too.", "severity": "medium", "suggested_fix": "'Forecast (shaded: likely range)', 'Alert level'; hide method choice behind an 'advanced' toggle."},
+    {"where": "#resource-select default 'ns1 kits'", "problem": "Default resource shows 'allocated 0, unmet 0', so the allocation panel appears empty; 'ns1 kits' is unexplained.", "severity": "medium", "suggested_fix": "Default to the resource with the largest shortfall; label 'Dengue test kits (NS1)'."},
+    {"where": "#alloc summary 'budget 5,837,591'", "problem": "No currency or unit; unclear whether the budget covers this resource or all supplies.", "severity": "high", "suggested_fix": "'Budget: BDT 5.84 million (all supplies)' and show this resource's share."},
+    {"where": "#alloc bars (iv saline)", "problem": "Dhaka's stock bar (196,165) dwarfs everything, so allocations are invisible; Dhaka gets 682 more despite holding 12x its demand while 13,076 remains unmet elsewhere. Cannot be defended to a journalist.", "severity": "high", "suggested_fix": "Plot shortfall and allocation, not raw stock; add per-district 'why' text ('shortfall X, got Y'); check the optimiser does not send supplies to districts in surplus, or explain why."},
+    {"where": "#whatif 'Equity floor α' slider and #equity chart", "problem": "α unexplained, no tooltip; chart has overlapping 'B=...' labels and odd y-axis ('1, 800m...') for ns1 kits; effect of the floor is non-monotone (half budget: α0.0 28%, α0.2 44%; quarter budget: α0.5 allocates 0, α1.0 allocates 2,530).", "severity": "high", "suggested_fix": "Rename 'Minimum share per district' with a one-line help text; show '% shortfall covered' change vs current setting; fix label overlap/axis; verify the scenario results."},
+    {"where": "#whatif 'Detection threshold × 1.0'", "problem": "Alert sensitivity control sits inside the budget panel with no explanation.", "severity": "low", "suggested_fix": "Move to the alert section and label 'Alert sensitivity (higher = fewer alerts)'."},
+    {"where": "#alloc 'Scenario #b0.75_a0.2', 'demand (q90)'", "problem": "Internal ids and statistical terms shown to decision-makers.", "severity": "low", "suggested_fix": "Hide scenario id; say 'planned demand (high estimate)'."},
+    {"where": "policy_brief.txt layout", "problem": "Text scrambled with references and teammate placeholders ('TEAMMATE: ... Half a page in your own words.'); two columns interleaved.", "severity": "high", "suggested_fix": "Clean single-column brief; remove placeholders and references from the Director's copy."},
+    {"where": "policy_brief.txt content", "problem": "No explicit 'decision requested' with options and costs in Taka; no current-season numbers.", "severity": "high", "suggested_fix": "Open with: 'Decide: (a) budget level X vs Y, (b) minimum share Z; cost and effect of each', plus this week's alert districts."},
+    {"where": "policy_brief.txt vs dashboard", "problem": "Brief: half money covers 68% need-based and a floor 'costs' coverage; dashboard shows 28-44% (iv saline) and the floor raising coverage at half budget. Brief promises a readable 4-week forecast the dashboard does not show.", "severity": "medium", "suggested_fix": "State which resource/aggregate the brief numbers refer to and make the dashboard show the same figure."}
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "persona": "(a) Mr. Rahim Uddin, district health officer, Cox's Bazar (BD2022). SIMULATED persona walkthrough run with an AI agent, not a real participant. Round 2 (confirm round). View ?district=BD2022, width 1366. 4 browser runs in total (run 2's printed output was lost to a parsing error in my script, so run 3 repeated it; its screenshot was kept).",
+  "tasks": [
+    {
+      "task": 1, "success": "yes", "runs": 2, "steps": 11, "est_seconds": 30,
+      "round1_problem": "partly fixed",
+      "stuck": "Fixed: the line 'On alert in the last full week (week of 22 Dec 25, EARS C2 (fast rises)): none.' answers the question at once. The table now has 'Alert now: no'. 'Cases last full week' shows real numbers (Cox's Bazar dengue 38, Dhaka division 2,252). Headers are plain words. Still there: the ranking still compares my district with eight divisions, every division row says 'no' / 0 as if it had been checked, and the table is still cut off on the right ('Weekly ca...'; the next-week column is hidden). NEW: on the dengue map, Cox's Bazar shows a SOLID triangle, which the legend says means 'on alert in the last full week', while the top line says 'none' and the table says 'no'. Cause, for the developers: CSS '.alert-marker { fill: var(--alert) }' in css/style.css overrides the fill='none' attribute that map.js sets for 'earlier' alerts, so every triangle is drawn solid. NEW (small): for malaria, the 'Alert weeks' cell shows '0' with an orange bar next to it.",
+      "quotes": ["Good, one line at the top: no alert this week. But the map triangle is filled in, and the legend says filled means alert now. Which one is right?"]
+    },
+    {
+      "task": 2, "success": "yes", "runs": 2, "steps": 4, "est_seconds": 20,
+      "round1_problem": "fixed",
+      "stuck": "A forecast table under the chart answers it directly. Dengue: next week (5 Jan) 20, likely 12 to 29; week of 26 Jan 11, likely 6 to 16; 59 over the next 4 weeks. Malaria: 46 (24 to 72) next week; 56 (29 to 87) in week 4; 212 over 4 weeks. 'Likely range (8 weeks in 10 fall inside)' is clear. The confusing threshold line is gone, and the hover now reads 'Forecast, 2 weeks ahead: 16 (likely 9 to 23)'. Small: the table says 'made on 29 Dec 2025' but the dashboard was exported in Oct 2026, so it is not obvious how old the forecast is.",
+      "quotes": ["This is what I wanted: next week 20, in four weeks about 11, and the range beside it."]
+    },
+    {
+      "task": 3, "success": "yes", "runs": 1, "steps": 12, "est_seconds": 45,
+      "round1_problem": "mostly fixed",
+      "stuck": "Fixed: a sentence for my district appears without hovering, e.g. 'Cox's Bazar: needs 1,408, has 638, short by 770; receives 193, still short by 578. The budget is not enough to cover every shortfall.' The budget now has a currency (3.89 million BDT, 50% of the cost of all need). The supply names are plain ('ORS sachets', 'dengue test kits (NS1)'), and the supply now follows the disease. At the 50% default: antimalarials 285 (short 0), ORS 5,610 (still short 1,870), IV saline 193 (still short 578), beds 0 and NS1 kits 0 ('Its stock already covers its need'). Still there: my district's row is outlined across the full chart width (now a white box), so it still looks like a long bar. NEW: the budget says '50% of the cost of all need', but IV saline covers only 16% of its shortfall and ORS 75%, with no hint why. NEW: in the cost chart a grey line runs through the 'in stock / sent by this plan' legend.",
+      "quotes": ["Now it tells me in one line: we need 1,408 bags, we have 638, we get 193. Clear. But why only 193 if the budget is half?"]
+    },
+    {
+      "task": 4, "success": "partly", "runs": 1, "steps": 34, "est_seconds": 90,
+      "round1_problem": "partly fixed",
+      "stuck": "Fixed: the sliders are labelled in plain words ('Minimum share for every district (equity floor α): 0.0 (recommended)'). An explanation box says a floor of 1 shares by population and can send a district more than its own shortfall. My district's sentence updates with every move. Still there: at 25% budget, a floor of 1.0 still cuts Cox's Bazar antimalarials from 285 to 5. At 150% budget, a floor of 1.0 still gives ORS 8,526 against a 7,480 shortfall (now explained). NEW, serious: antimalarials at 150% budget with floor 1.0: 'this plan sends 9,237 and covers 47% of the shortfall' while the total shortfall is only 684. Cox's Bazar 'receives 161, still short by 124'. More money and the plan sends 13 times the shortfall yet covers less; this looks like a bug. The 'Alert level' slider still sits among the budget controls.",
+      "quotes": ["One and a half times the money, and it sends nine thousand courses when the whole country is short 684, and still half is not covered? I would not trust this number."]
+    },
+    {
+      "task": 5, "success": "yes", "runs": 0, "steps": 1, "est_seconds": 120,
+      "round1_problem": "mostly fixed",
+      "stuck": "The text is clean and readable, the placeholders are gone, and there is a 'Decision requested' section and a 2026 calendar per division. My division (Chattogram) gets dengue supplies by 6 Jul and a campaign by 15 Jun. What it asks of me: check every warning (about 2 false alarms a year) and plan stock on the high end of the range. The 68% is now said to be an average over supplies. Still there: it is written to the Director, with no box for district officers. It still says 'Click a district to see its weekly cases', which does not apply in my district view. NEW: a LaTeX fragment 'lcccc@{}}' sits above the calendar table. The table covers only dengue and diarrhoea: no malaria, which is the main disease of my district, and Cox's Bazar is not named (I had to know it is in Chattogram division). Its description of the solid and outlined triangles does not match what the map shows.",
+      "quotes": ["Now I can read it. Chattogram: dengue supplies by 6 July. But where is malaria? That is my problem in Cox's Bazar."]
+    }
+  ],
+  "round1_issues_status": [
+    {"issue": "No 'alert now' indicator; 'Alert wks' read as current", "status": "fixed"},
+    {"issue": "'Latest wk' showed <5 everywhere (partial last week)", "status": "fixed"},
+    {"issue": "Rank compares district with divisions; division rows shown as evaluated (0/0.00)", "status": "not fixed"},
+    {"issue": "Table cut off on the right / '80%' label spilling into the allocation panel", "status": "partly"},
+    {"issue": "Abbreviated headers ('Peak ÷ thr', 'Mean /100k') without explanation", "status": "fixed"},
+    {"issue": "4-week forecast not written anywhere", "status": "fixed"},
+    {"issue": "Forecast jargon (h2, PI, q10–q90, ears_c2)", "status": "fixed"},
+    {"issue": "Threshold line flat at 0 under 800 cases, method mismatch", "status": "fixed"},
+    {"issue": "Heatmap click zoom changes whole page (map/rank)", "status": "partly"},
+    {"issue": "Selected-row highlight looks like a huge allocation", "status": "partly"},
+    {"issue": "Allocation only by hover, no plain reason", "status": "fixed"},
+    {"issue": "Resource default does not follow disease", "status": "fixed"},
+    {"issue": "Budget without currency; scenario id; 'Demand (q90)' jargon", "status": "fixed"},
+    {"issue": "Equity floor unexplained; α=1 starves Cox's Bazar antimalarials (285→5); over-allocation beyond shortfall", "status": "partly"},
+    {"issue": "Detection threshold slider placed among allocation controls", "status": "partly"},
+    {"issue": "Cost-of-equity chart overlapping labels and '800m' axis", "status": "fixed"},
+    {"issue": "Triangle legend jargon ('cusum alert in range')", "status": "partly"},
+    {"issue": "Policy brief garbled / placeholders / Director-only / Dhaka-only dates / 'click a district'", "status": "partly"}
+  ],
+  "issues": [
+    {"where": "#map alert triangles (css/style.css .alert-marker)", "problem": "Every triangle is drawn solid ('on alert in the last full week') because the CSS fill overrides map.js fill='none'. Cox's Bazar dengue shows solid while the top line says 'none'.", "severity": "high", "suggested_fix": "Move fill/stroke for the outline case into a CSS class (e.g. .alert-marker.earlier { fill: none; stroke: var(--alert) }), or set it with .style() instead of .attr()."},
+    {"where": "#alloc antimalarials, budget 150%, floor 1.0", "problem": "'this plan sends 9,237 and covers 47% of the shortfall' when the national shortfall is 684. Cox's Bazar receives 161, still short 124. More money gives worse coverage and massive over-sending.", "severity": "high", "suggested_fix": "Check the allocation optimiser at high budget and α=1 (per-district cap at shortfall, or population share applied to the wrong base); add a test that 'sends' never exceeds total shortfall unless that is explained."},
+    {"where": "#whatif budget label vs #alloc coverage", "problem": "'50% of the cost of all need' while IV saline covers 16% and ORS 75%, with no explanation.", "severity": "medium", "suggested_fix": "Add a sentence saying the budget is shared across supplies by cost and urgency, so coverage differs per supply."},
+    {"where": "#table", "problem": "Still clipped at 1366 px ('Weekly ca...', next-week column hidden). Division rows are still shown as evaluated. Malaria 'Alert weeks 0' shows an orange bar.", "severity": "medium", "suggested_fix": "Narrow or wrap the columns; show '–' for division rows; hide the bar when the count is 0."},
+    {"where": "#equity cost chart", "problem": "A grey budget line crosses the allocation legend; the grey lines for other budgets are unlabeled.", "severity": "low", "suggested_fix": "Clip the chart to its own area; label the lines or add a legend."},
+    {"where": "policy_brief.txt", "problem": "LaTeX residue 'lcccc@{}}'. The calendar has no malaria or ILI columns. Districts are not mapped to divisions. 'Click a district' does not apply to the district view. Nothing is addressed to district officers.", "severity": "medium", "suggested_fix": "Remove the residue; add malaria to the calendar; add a 'For district officers' paragraph; reword the view instructions."}
+  ]
+}

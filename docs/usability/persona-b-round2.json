@@ -1,0 +1,170 @@
+{
+ "persona": "b - Ms. Nasrin Akter, store-keeper, Chattogram Medical College Hospital (BD2015); national view, Chattogram selected. Round 2 confirm round. SIMULATED persona walkthrough run with an AI agent, not a real participant.",
+ "tasks": [
+  {
+   "task": 1,
+   "success": "yes",
+   "runs": 1,
+   "steps": 7,
+   "est_seconds": 40,
+   "found": "Top line: 'On alert in the last full week (week of 22 Dec 25, EARS C2 (fast rises)): none.' Chattogram: Alert now 'no', 3 alert weeks, row 5 of 64 for dengue. Diarrhoea: 'no', 0 alert weeks, row 34.",
+   "round1_status": "fixed (alert-now banner and column)",
+   "new_problems": "The map draws every flagged district as a SOLID orange triangle, but the legend and the brief say solid means 'on alert in the last full week'. The page shows about 40 solid triangles while the top line says none. (In css/style.css, '.alert-marker { fill: var(--alert) }' overrides the fill='none' that should make the outline triangles.) For dengue, Chattogram 'Cases last full week' is '<5' even though the chart shows about 400 a week through mid-December, which looks like an error. Changing the default alert method from CUSUM to EARS C2 moved Chattogram from rank 33 to rank 5 without telling her.",
+   "quotes": [
+    "Good, it says 'none' right at the top and 'no' for Chattogram. But then why is the whole map covered in orange triangles?"
+   ]
+  },
+  {
+   "task": 2,
+   "success": "yes",
+   "runs": 2,
+   "steps": 11,
+   "est_seconds": 60,
+   "found": "Dengue: 80 (54 to 109), 62, 49, 40 (26 to 56), next 4 weeks 232. Diarrhoea: 956 (724 to 1,203), 1,036, 1,074, 1,137 (858 to 1,435), next 4 weeks 4,202.",
+   "round1_status": "fixed (forecast table with 4 weeks and total; part week shown as open dot and labelled)",
+   "new_problems": "The 4-week total sums the expected cases only. There is no high-end total, and the brief says to plan on the high end. Still no visible rule for turning cases into supplies (per-patient use), though the allocation panel now gives the supply need directly.",
+   "quotes": [
+    "Now I can copy it straight into my register: 232 dengue and 4,202 diarrhoea for the month. A high-side total would be even better."
+   ]
+  },
+  {
+   "task": 3,
+   "success": "yes",
+   "runs": 2,
+   "steps": 6,
+   "est_seconds": 60,
+   "found": "Default budget 3.89 million BDT (50%), floor 0.0. IV saline: needs 4,133, has 1,280, short by 2,853; receives 1,426, still short by 1,426. ORS: needs 31,806, has 4,259, short 27,547; receives 20,660, still short 6,887. NS1 kits: needs 479, has 1,865; receives 0, 'Its stock already covers its need.'",
+   "round1_status": "fixed (printed Chattogram line, 'All districts' label, units, BDT, 'next 4 weeks', outline-only highlight, Dhaka stock bar capped)",
+   "new_problems": "Still no delivery date or week for when the supplies arrive. Beds have no unit visible to her (beds or bed-days?), though she didn't check it closely.",
+   "quotes": [
+    "Receives 1,426 one-litre bags, still short 1,426. That I understand. When will the truck come?"
+   ]
+  },
+  {
+   "task": 4,
+   "success": "yes",
+   "runs": 2,
+   "steps": 28,
+   "est_seconds": 150,
+   "found": "IV saline: 1.95M (25%) gives 0 (short 2,853). 11.68M (150%) gives 2,853 (short 0). At 3.89M with floor 1.0 she gets 873 (short 1,980) instead of 1,426. ORS: 1.95M gives 13,774. 11.68M gives 27,547. At 3.89M with floor 1.0 she gets 17,295 instead of 20,660.",
+   "round1_status": "partly fixed (budget labelled in BDT and % of need, plain-language floor and alert labels, explanation paragraph, cost chart in % with 'this budget' label; still no before/after for her district, and the alert-level slider is still in the supply panel)",
+   "new_problems": "'(recommended)' next to floor 0.0 reads as an order rather than a choice. In the cost chart, only the current-budget line is labelled. The other four grey lines are unnamed.",
+   "quotes": [
+    "More money, more saline. That is clear now. But I have to write down the old number myself to see what I lost when I moved the floor."
+   ]
+  },
+  {
+   "task": 5,
+   "success": "yes",
+   "runs": 0,
+   "steps": 1,
+   "est_seconds": 180,
+   "found": "Three recommendations: act on every weekly warning; send supplies by shortfall, not population; prepare before the season. Chattogram division: dengue supplies in place by 6 Jul, campaign by 15 Jun; diarrhoea supplies by 26 Jan, campaign by 19 Jan 2026. Plan stock on the high end of the range.",
+   "round1_status": "fixed (single-column text, recommendations near the top, per-division date table including Chattogram)",
+   "new_problems": "Leftover LaTeX fragment 'lcccc@{}}' above the date table. The brief says a solid map triangle means a warning last week, which the dashboard doesn't do (see task 1). The diarrhoea supply date for Chattogram (26 Jan) falls inside the current 4-week forecast window, but the dashboard doesn't show that date anywhere.",
+   "quotes": [
+    "Chattogram, 26 January for diarrhoea supplies. That is three weeks from now. I can plan for that."
+   ]
+  }
+ ],
+ "round1_issues_status": [
+  {
+   "issue": "No 'alert this week' indicator",
+   "status": "fixed"
+  },
+  {
+   "issue": "Forecast unreadable in 26-week view; no week 1-4 numbers",
+   "status": "fixed"
+  },
+  {
+   "issue": "Partial last week not marked",
+   "status": "fixed"
+  },
+  {
+   "issue": "Selected-district highlight looks like an allocation bar",
+   "status": "fixed"
+  },
+  {
+   "issue": "National summary line unlabeled; district numbers only in tooltip",
+   "status": "fixed"
+  },
+  {
+   "issue": "Dhaka stock sets the axis, other bars unreadable",
+   "status": "fixed"
+  },
+  {
+   "issue": "No units, currency, demand period, delivery date",
+   "status": "partly"
+  },
+  {
+   "issue": "No forecast-to-supply conversion shown",
+   "status": "partly"
+  },
+  {
+   "issue": "Jargon (q90, PI, CUSUM, ears_c2, Peak ÷ thr, α, scenario id)",
+   "status": "partly"
+  },
+  {
+   "issue": "What-if sliders: no range labels, re-hover needed, threshold in supply panel, alpha effect unexplained",
+   "status": "partly"
+  },
+  {
+   "issue": "#equity chart overlapping B= labels, no units",
+   "status": "partly"
+  },
+  {
+   "issue": "Disease change silently switches resource; lower-case resource names",
+   "status": "partly"
+  },
+  {
+   "issue": "Ranking goes all-zero/alphabetical on one-week range",
+   "status": "not fixed"
+  },
+  {
+   "issue": "Calendar markers have no date; brief only gives Dhaka",
+   "status": "partly"
+  },
+  {
+   "issue": "policy_brief.txt columns interleaved, placeholders",
+   "status": "fixed"
+  }
+ ],
+ "issues": [
+  {
+   "where": "#map alert triangles (css/style.css .alert-marker)",
+   "problem": "All flagged districts are drawn as solid triangles, so 'alert earlier' looks the same as 'on alert in the last full week'. This contradicts the legend, the brief and the 'none' banner.",
+   "severity": "high",
+   "suggested_fix": "Scope the CSS fill to the time-series markers (e.g. '#ts .alert-marker') or set fill/stroke with .style() in map.js so the outline triangles show."
+  },
+  {
+   "where": "#table 'Cases last full week' for dengue, Chattogram",
+   "problem": "Shows '<5' for the week of 22 Dec, while the chart shows about 400 a week up to mid-December, with no hatched marker where the line stops.",
+   "severity": "medium",
+   "suggested_fix": "Check the suppression for that cell. If the count is hidden, draw the hatched bar on the chart for that week and add a note ('hidden for privacy') to the table cell."
+  },
+  {
+   "where": "Alert method default (EARS C2)",
+   "problem": "The default method changed and the ranking moved a lot (Chattogram dengue from 33 to 5). Nothing says the method decides the ranking.",
+   "severity": "low",
+   "suggested_fix": "Put a one-line note by the method drop-down: 'changes which weeks count as alerts'."
+  },
+  {
+   "where": "Forecast table total",
+   "problem": "'Next 4 weeks' adds up the expected cases only. There's no high-end total, which is the figure the brief says to plan with.",
+   "severity": "medium",
+   "suggested_fix": "Add the likely-range total (or a 'plan with' high-end total) to the 'Next 4 weeks' row."
+  },
+  {
+   "where": "Allocation panel",
+   "problem": "Still no delivery week, and no before/after when a slider moves.",
+   "severity": "medium",
+   "suggested_fix": "Add 'arrives by week of ...' and show the previous value next to the district line after each change."
+  },
+  {
+   "where": "policy_brief.txt",
+   "problem": "Leftover LaTeX 'lcccc@{}}' above the date table. Its map-triangle description doesn't match the dashboard.",
+   "severity": "low",
+   "suggested_fix": "Strip the fragment. Fix the map so the description holds."
+  }
+ ]
+}
