@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 12:40)
+# Handoff (2026-10-21 12:55)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -97,6 +97,18 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   policy brief, contribution matrix draft), 3 clean SF=1 + evaluate under flock, 4 persona walkthroughs (3 AI
   personas, one headless browser under flock, fix, confirm round; §7 as "simulated persona walkthroughs run
   with AI agents"; AI_USAGE row), 5 re-run what depends on allocation, ten passes, BDA-FINAL-NUMBERS.
+
+## 12:55 step 2 code gaps closed
+- ENG-4 aaa7ba7: `make all` = scripts/dag.py (DAG, 2 retries with backoff, run record in lake/_runs).
+- ENG-3 bf4b182: backtest AQE coalesced 64 districts into 1 task; one partition per district: 325 s -> 165 s,
+  same scores; Spark UI screenshots report/figures/sparkui-backtest-{before,after}.png. Silver rule reuse is #1.
+- PRV-3 5f0c8e8 + 92cae6e: dashboard/roles/<code>/ bundles, ?district= view; aggregate cell shown only when all
+  district cells under it are visible nationally (security review: differencing). Static server = no access
+  control; documented (README, serving/roles.py), to state in report §7/§8.
+- AN-10 a2e160b: analytics/scenario/seir.py (R0 2.06 fitted on SF=0.25 surge, R2 0.90), in run_all.
+- README: no-Docker note, spill folder (a99339c).
+- Clean SF=1 + evaluate started 12:52 under flock at a99339c (task bgy00ag6x; log
+  /var/tmp/episcope-runs/sf1-final.log; workspace /var/tmp/episcope-sf1-eval.EJLTFQ). Meanwhile: report prose.
 
 ## Next, in order
 1. ING-6 measured at SF=1 (kept workspace, main checkout untouched): drop written 10:30:27, alerts refreshed
