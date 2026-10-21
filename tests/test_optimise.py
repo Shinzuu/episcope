@@ -59,16 +59,20 @@ def test_budget_and_equity_floor_hold(level, alpha):
 
 
 def _greedy_efficiency(need, budget):
-    """Independent pure-efficiency optimum for the normalised objective with no transport limit: a fractional
-    knapsack. Each unit of r removes 1/N_r of objective at cost c_r, so fill resources by (1/N_r)/c_r."""
+    """Independent pure-efficiency optimum with no transport limit: a fractional knapsack over need slices.
+    Slice k of need[d,r] (size need/K) removes t_k/N_r of the tranche objective per unit at cost c_r, so slices
+    are bought by t_k/(N_r c_r), deepest shortfall first. Returns the share-of-need-unmet metric (info objective)
+    of that allocation."""
     N = need.groupby("resource")["need"].sum()
-    order = sorted(N.index, key=lambda r: -(1 / N[r]) / COST[r])
-    left, obj = budget, float(len(N[N > 0]))
-    for r in order:
-        take = min(N[r], left / COST[r])
-        obj -= take / N[r]
+    K, tw = A.UNMET_TRANCHES, A.UNMET_TRANCHE_WEIGHTS
+    slices = sorted(((tw[k] / N[r] / COST[r], r, v / K) for r, v in zip(need["resource"], need["need"])
+                     for k in range(K) if v > 0), key=lambda s: -s[0])
+    left, bought = budget, {r: 0.0 for r in N.index}
+    for _, r, size in slices:
+        take = min(size, left / COST[r])
+        bought[r] += take
         left -= take * COST[r]
-    return obj
+    return float(sum(1 - bought[r] / N[r] for r in N.index if N[r] > 0))
 
 
 @pytest.mark.parametrize("level", [0.1, 0.25, 0.5, 0.9])
@@ -137,3 +141,38 @@ def test_net_need_subtracts_stock():
     nn = net_need(dem, stock).set_index("resource")
     assert nn.loc["ors", "need"] == pytest.approx(25.0)     # 4 x 10 - 15
     assert nn.loc["beds", "need"] == pytest.approx(4.0)     # busiest week, no stock
+
+
+def test_money_follows_need_not_a_corner():
+    """Equal need in many districts and half the money: every district gets a share (allocation_diagnosis.md).
+    With one flat unmet price the LP was indifferent and gave some districts everything and the rest nothing."""
+    districts = [f"E{i:02d}" for i in range(10)]
+    need = pd.DataFrame([{"district_code": d, "resource": "beds", "need": 100.0} for d in districts])
+    pop = {d: 1_000_000.0 for d in districts}
+    alloc, info = lp.solve(need, pop, {d: "K" for d in districts}, 0.5 * b_ref(need), 0.0)
+    cov = alloc.set_index("district_code")["allocation"] / 100.0
+    assert info["status"] == "Optimal"
+    assert (cov > 0.2).all() and (cov < 0.8).all()        # no district left at 0 or filled to 1
+    assert cov.sum() == pytest.approx(5.0, rel=1e-6)      # the whole budget is still used
+
+
+def test_bigger_need_gets_more():
+    need = pd.DataFrame([{"district_code": "A", "resource": "ors", "need": 3000.0},
+                         {"district_code": "B", "resource": "ors", "need": 1000.0}])
+    pop = {"A": 1e6, "B": 1e6}
+    alloc, _ = lp.solve(need, pop, {"A": "K", "B": "K"}, 0.5 * b_ref(need), 0.0)
+    a = alloc.set_index("district_code")["allocation"]
+    assert a["A"] > a["B"] > 0
+
+
+def test_bed_census_counts_current_inpatients_as_available():
+    from analytics.optimise.run import bed_census
+
+    dem = pd.DataFrame([{"district_code": "X", "resource": "beds", "horizon_weeks": h, "demand_mean": 10.0,
+                         "demand_q90": 20.0} for h in (1, 2, 3, 4)])
+    cases = pd.DataFrame([{"district_code": "X", "disease": "dengue", "week_start": pd.Timestamp("2025-12-22"),
+                           "admissions": 14}, {"district_code": "X", "disease": "dengue",
+                                               "week_start": pd.Timestamp("2025-12-15"), "admissions": 99}])
+    stock = pd.DataFrame([{"district_code": "X", "resource": "beds", "stock": 5.0}])
+    nn = net_need(dem, stock, bed_census(cases)).set_index("resource")
+    assert nn.loc["beds", "need"] == pytest.approx(20.0 - 5.0 - 14 * 5.0 / 7.0)  # latest week only, LOS 5 days

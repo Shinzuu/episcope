@@ -2,14 +2,21 @@
 
 Decision variables x[d,r] >= 0 (units of resource r sent to district d) and u[d,r] >= 0 (unmet need).
 
-    minimise    sum_{d,r} w_d * u[d,r] / N_r   (+ WASTE_PENALTY * sum c_r x[d,r] / B)
-    subject to  u[d,r] >= need[d,r] - x[d,r]                              unmet demand
+    minimise    sum_{d,r,k} w_d * t_k * u[d,r,k] / N_r   (+ WASTE_PENALTY * sum c_r x[d,r] / B)
+    subject to  sum_k u[d,r,k] >= need[d,r] - x[d,r],  0 <= u[d,r,k] <= need[d,r] / K      unmet demand
                 x[d,r] >= alpha * p_d * sum_e x[e,r]                       equity floor (p_d = population share)
                 sum_{d,r} c_r x[d,r] <= B                                  budget
                 sum_{d in k} sum_r v_r x[d,r] <= T_k   for each division k    transport capacity
                 (optional) sum_d x[d,r] <= S_r                             national stock
 
 need[d,r] = max(0, q90 planning demand - current stock).
+
+Unmet need is priced in tranches (our fix, docs/experiments/allocation_diagnosis.md): u[d,r] is split into
+UNMET_TRANCHES equal slices of need[d,r], and the k-th slice (the deepest shortfall last) costs
+UNMET_TRANCHE_WEIGHTS[k]. With one flat price every unit of resource r is worth the same in every district, so
+the LP is indifferent between districts and the solver returns a corner: some districts get all their need and
+the rest nothing. Rising slice prices make the first units in a district worth more than the last ones, so
+money follows need across all districts and resources.
 
 Our extension (research.md §10.3 issue 2): unmet need is divided by N_r = sum_d need[d,r], the national net need
 for resource r. A bed and an NS1 kit are otherwise worth the same in the objective; after normalisation each
@@ -67,17 +74,22 @@ def solve(need, pop, division, budget, alpha, cost=None, volume=None, transport_
     ri = {r: j for j, r in enumerate(Ract)}
     idx = [(di[d], ri[r]) for d in D for r in Ract]
 
+    K, tw = A.UNMET_TRANCHES, A.UNMET_TRANCHE_WEIGHTS
+    tidx = [(i, j, k) for i, j in idx for k in range(K)]
     m = pulp.LpProblem("episcope_allocation", pulp.LpMinimize)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
         x = pulp.LpVariable.dicts("x", idx, lowBound=0)
-        u = pulp.LpVariable.dicts("u", idx, lowBound=0)
+        u = pulp.LpVariable.dicts("u", tidx, lowBound=0)
     bscale = max(float(budget), 1.0)
-    m += (pulp.lpSum(w[d] * u[(di[d], ri[r])] * (1.0 / N[r]) for d in D for r in Ract)
+    m += (pulp.lpSum(w[d] * tw[k] * u[(di[d], ri[r], k)] * (1.0 / N[r]) for d in D for r in Ract for k in range(K))
           + pulp.lpSum(A.WASTE_PENALTY * cost[r] / bscale * x[(di[d], ri[r])] for d in D for r in Ract))
     for d in D:
         for r in Ract:
-            m += u[(di[d], ri[r])] >= nd[(d, r)] - x[(di[d], ri[r])], f"unmet_{di[d]}_{ri[r]}"
+            i, j = di[d], ri[r]
+            m += pulp.lpSum(u[(i, j, k)] for k in range(K)) >= nd[(d, r)] - x[(i, j)], f"unmet_{i}_{j}"
+            for k in range(K):
+                m += u[(i, j, k)] <= nd[(d, r)] / K, f"tranche_{i}_{j}_{k}"
     if equity and alpha > 0:
         for r in Ract:
             tot = pulp.lpSum(x[(di[e], ri[r])] for e in D)

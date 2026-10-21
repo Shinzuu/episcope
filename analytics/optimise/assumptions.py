@@ -42,5 +42,11 @@ DEFAULT_BUDGET_LEVEL = 0.5
 # the pure-efficiency answer (alpha = 0) at every scarce budget (< B_ref).
 RECOMMEND_TOLERANCE_PP = 2.0
 
+# Unmet need priced in K equal slices with rising weights (lp.py): the deepest shortfall in a district costs
+# most, so the first units sent anywhere are worth more than the last units sent to a district already well
+# covered. Without it the LP is flat across districts and returns all-or-nothing corners (allocation_diagnosis.md).
+UNMET_TRANCHES = 4                          # ASSUMPTION. Quarters of a district's need.
+UNMET_TRANCHE_WEIGHTS = (1.0, 2.0, 3.0, 4.0)  # ASSUMPTION. The last quarter of unmet need counts 4x the first.
+
 # Tiny cost penalty so the solver does not hand out supplies nobody needs when the budget is slack.
 WASTE_PENALTY = 1e-6

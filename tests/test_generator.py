@@ -247,3 +247,18 @@ def test_default_paths_follow_data_dir(tmp_path, monkeypatch):
     a = G.parse([])
     assert pathlib.Path(a.out) == tmp_path / "elsewhere" / "raw"
     assert pathlib.Path(a.reference) == tmp_path / "elsewhere" / "reference"
+
+
+def test_stock_follows_case_load(gen):
+    """S6 stock is sized and drained by each facility's own case load (allocation_diagnosis.md): facilities that
+    see more diarrhoea hold more ORS, and some lines run out before the next delivery."""
+    import glob
+    import json
+
+    snaps = sorted(glob.glob(str(gen["raw"] / "stock" / "snapshot_date=*" / "part-*.json")))
+    rows = [json.loads(line) for f in snaps[-60:] for line in open(f) if line.strip()]
+    st = pd.DataFrame(rows).groupby("facility_id")["ors_packets"].mean()
+    dia = gen["df"][gen["df"]["icd10_code"].astype(str).str.startswith("A09")].groupby("facility_id").size()
+    j = pd.concat([st, dia.rename("cases")], axis=1).fillna(0)
+    assert j["ors_packets"].corr(j["cases"], method="spearman") > 0.5
+    assert (pd.DataFrame(rows)[["iv_saline_units", "ns1_kits", "ors_packets"]] == 0).any().any()

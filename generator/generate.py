@@ -51,7 +51,7 @@ def _init(ctx):
 def _run(task):
     t0 = time.time()
     if task[0] == "stock":
-        n = S.write(_CTX, _CTX.facilities, _CTX.fac_malaria_w)
+        n = S.write(_CTX, _CTX.facilities)
     else:
         n = E.write_task(_CTX, task[1], task[2])
     return task, n, time.time() - t0
@@ -199,11 +199,9 @@ def main(argv=None):
 
     weather = R.Weather(weather_df, codes)
     holidays = cal.holidays(np.datetime64(first - 200, "D"), np.datetime64(last + 200, "D"))
-    mal_w = dict(zip(codes, weights[:, C.D_MALARIA]))
     ctx = E.Ctx(seed=a.seed, sf=a.sf, first=first, last=last, out=out, districts=dlist, groups=groups,
                 codes=codes, fac_ids=fac_ids, weather=weather, holidays=holidays, outbreaks=outbreaks,
-                artefacts=arts, max_src=max([o.ordinal for o in outbreaks] + [0]), facilities=fac,
-                fac_malaria_w=S.facility_malaria_weight(fac, mal_w))
+                artefacts=arts, max_src=max([o.ordinal for o in outbreaks] + [0]), facilities=fac)
 
     # make the output idempotent: remove what this run is about to write
     if incremental:

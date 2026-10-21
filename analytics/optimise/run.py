@@ -1,7 +1,8 @@
 """Allocation job. Implements AN-7 (gold.allocation, baseline comparison) and AN-8 (curve data, recommended alpha).
 
 Inputs: gold.demand (AN-6), gold.stock_latest (stock 0 if the table is missing), data/reference/districts.csv
-(population_2022, division_code). Net need = max(0, q90 planning demand - stock).
+(population_2022, division_code), gold.cases_weekly (current bed census). Net need = max(0, q90 planning
+demand - stock); for beds the stock is free beds plus the beds modelled patients hold now (bed_census).
 
 Outputs:
     gold.allocation                         every LP scenario of the grid (contract columns)
@@ -16,6 +17,7 @@ import json
 
 import pandas as pd
 
+from analytics.forecast import demand_assumptions as DA
 from analytics.forecast import io
 from analytics.forecast.demand import planning_demand
 from analytics.optimise import assumptions as A
@@ -37,19 +39,37 @@ def load_reference(district_codes):
     return {d: 1.0 for d in district_codes}, {d: str(d)[:4] for d in district_codes}
 
 
-def net_need(demand, stock=None):
+def bed_census(cases):
+    """Beds the modelled diseases hold now, per district: admissions in the latest week x LOS / 7.
+
+    gold.stock_latest counts free beds, and the bed demand forecast counts every modelled inpatient. The
+    patients in hospital today are in both: they hold a bed now and are part of next week's census. Adding them
+    back to the free beds avoids counting them twice (allocation_diagnosis.md)."""
+    if cases is None or not len(cases):
+        return pd.DataFrame(columns=["district_code", "resource", "census"])
+    last = cases["week_start"].max()
+    w = cases[cases["week_start"] == last]
+    los = w["disease"].map(DA.LOS_DAYS).fillna(0.0)
+    census = (w["admissions"].astype(float) * los / 7.0).groupby(w["district_code"]).sum()
+    return pd.DataFrame({"district_code": census.index, "resource": "beds", "census": census.values})
+
+
+def net_need(demand, stock=None, census=None):
     plan = planning_demand(demand)
     if stock is not None and len(stock):
         plan = plan.merge(stock[["district_code", "resource", "stock"]], on=["district_code", "resource"], how="left")
     else:
         plan["stock"] = 0.0
     plan["stock"] = plan["stock"].fillna(0.0)
+    if census is not None and len(census):
+        plan = plan.merge(census, on=["district_code", "resource"], how="left")
+        plan["stock"] = plan["stock"] + plan.pop("census").fillna(0.0)
     plan["need"] = (plan["demand"] - plan["stock"]).clip(lower=0.0)
     return plan
 
 
-def optimise(demand, stock, pop, division):
-    need = net_need(demand, stock)
+def optimise(demand, stock, pop, division, census=None):
+    need = net_need(demand, stock, census)
     alloc, curve, base, bref = run_grid(need, pop, division)
     rec = recommend_alpha(curve)
     return need, alloc, curve, base, bref, rec
@@ -91,8 +111,10 @@ def main():
     try:
         demand = io.read_gold(spark, "gold.demand").toPandas()
         stock = io.read_gold(spark, "gold.stock_latest").toPandas() if io.gold_exists("gold.stock_latest") else None
+        cases = (io.read_gold(spark, "gold.cases_weekly").select("district_code", "disease", "week_start", "admissions")
+                 .toPandas() if io.gold_exists("gold.cases_weekly") else None)
         pop, division = load_reference(sorted(demand["district_code"].unique()))
-        need, alloc, curve, base, bref, rec = optimise(demand, stock, pop, division)
+        need, alloc, curve, base, bref, rec = optimise(demand, stock, pop, division, bed_census(cases))
         io.write_gold(spark.createDataFrame(alloc, ALLOC_SCHEMA), "gold.allocation")
     finally:
         spark.stop()
