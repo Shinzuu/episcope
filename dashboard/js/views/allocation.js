@@ -55,11 +55,12 @@ export function buildWhatIf(D) {
     .selectAll("option").data(D.resources).join("option").attr("value", (r) => r).text((r) => resourceLabel(r));
   d3.select("#resource-select").property("value", state.resource);
   box.append("p").attr("class", "hint").text(
-    "The plan shares one budget across all supplies for the next four weeks. A floor of 0 sends supplies only "
-    + "where there is a shortfall; 1 shares them by population alone; in between, every district first gets that "
-    + "fraction of its population share. Because the plan balances all supplies at once, raising the floor can "
-    + "lower one supply for a district and raise another, and can send a district more than its own shortfall. At "
-    + "1, a supply that only a few districts need must be shared by population, so far more is sent than is short.");
+    "The plan shares one budget across all supplies for the next four weeks and never sends a district more "
+    + "than its shortfall. A floor of 0 sends supplies only where they cover the most need; 1 gives every "
+    + "district its population share of what is sent, or its whole shortfall if that is less; in between, "
+    + "every district first gets that fraction of its population share. Because the plan balances all supplies "
+    + "at once, raising the floor can lower one supply for a district and raise another.");
+}
 }
 
 export function renderAllocation(D) {
