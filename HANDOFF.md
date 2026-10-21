@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 10:40)
+# Handoff (2026-10-21 11:00)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -88,10 +88,13 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
 ## Next, in order
 1. ING-6 measured at SF=1 (kept workspace, main checkout untouched): drop written 10:30:27, alerts refreshed
    10:35:28, latency 301.5 s (bronze 32.2, silver 117.6, gold 53.6, alerts 32.2, export 22.1 s; the rest is
-   the 60 s trigger wait). Target under 5 min missed by 1.5 s. Asked shinzuu whether to measure once more with
-   --interval 30. The workspace lake now includes the drop.
-2. Final hidden-drop drill on HEAD.
-3. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
+   the 60 s trigger wait). Target under 5 min missed by 1.5 s. Lilith: default trigger now 30 s (f3dcb33);
+   second SF=1 run with 30 s queued under flock after the drill (task bmm6k6e7n, same procedure, fresh stream
+   checkpoint, next 14-day drop). Report BOTH runs in the report and stream_latency.json, as measured.
+2. Final hidden-drop drill on HEAD running (task bhbxccww1, DRILL_WORKTREE=0, SF=0.05, make setup); log
+   /var/tmp/episcope-runs/drill-head.log. Report build (latexmk) also waits on the lock.
+3. Report edits uncommitted: s4 latency sentence (update for both runs), s6 scaling table and silver fix.
+4. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
 
 ## Decisions
 - ENG-3, ENG-4 left for Samira. AN-7 degenerate allocation is Rafi's (net need 0 except antimalarials).
