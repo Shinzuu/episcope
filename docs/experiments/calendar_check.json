@@ -1,0 +1,783 @@
+{
+  "what": "calendar onset week (SF=1 calendar_summary.csv) against the onset seen in each year's weekly counts per division (same rule on a 3-week moving average of observed cases)",
+  "cases_source": "gold.cases_weekly of the main checkout (SF=0.25, seed 42, real weather; same encounters and seasonal timing as SF=1)",
+  "summary": {
+    "dengue": {
+      "cells": 40,
+      "median_abs_diff_weeks": 0.0,
+      "within_2_weeks": 0.975
+    },
+    "diarrhoea": {
+      "cells": 40,
+      "median_abs_diff_weeks": 1.0,
+      "within_2_weeks": 0.85
+    },
+    "malaria": {
+      "cells": 15,
+      "median_abs_diff_weeks": 1.0,
+      "within_2_weeks": 0.8666666666666667
+    }
+  },
+  "rows": [
+    {
+      "division": "BD10",
+      "disease": "dengue",
+      "year": 2021,
+      "observed_onset": 30,
+      "calendar_onset": 32,
+      "diff_weeks": -2
+    },
+    {
+      "division": "BD10",
+      "disease": "dengue",
+      "year": 2022,
+      "observed_onset": 31,
+      "calendar_onset": 32,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD10",
+      "disease": "dengue",
+      "year": 2023,
+      "observed_onset": 33,
+      "calendar_onset": 32,
+      "diff_weeks": 1
+    },
+    {
+      "division": "BD10",
+      "disease": "dengue",
+      "year": 2024,
+      "observed_onset": 33,
+      "calendar_onset": 32,
+      "diff_weeks": 1
+    },
+    {
+      "division": "BD10",
+      "disease": "dengue",
+      "year": 2025,
+      "observed_onset": 31,
+      "calendar_onset": 32,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD10",
+      "disease": "diarrhoea",
+      "year": 2021,
+      "observed_onset": 7,
+      "calendar_onset": 6,
+      "diff_weeks": 1
+    },
+    {
+      "division": "BD10",
+      "disease": "diarrhoea",
+      "year": 2022,
+      "observed_onset": 36,
+      "calendar_onset": 6,
+      "diff_weeks": -22
+    },
+    {
+      "division": "BD10",
+      "disease": "diarrhoea",
+      "year": 2023,
+      "observed_onset": 7,
+      "calendar_onset": 6,
+      "diff_weeks": 1
+    },
+    {
+      "division": "BD10",
+      "disease": "diarrhoea",
+      "year": 2024,
+      "observed_onset": 6,
+      "calendar_onset": 6,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD10",
+      "disease": "diarrhoea",
+      "year": 2025,
+      "observed_onset": 8,
+      "calendar_onset": 6,
+      "diff_weeks": 2
+    },
+    {
+      "division": "BD20",
+      "disease": "dengue",
+      "year": 2021,
+      "observed_onset": 30,
+      "calendar_onset": 31,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD20",
+      "disease": "dengue",
+      "year": 2022,
+      "observed_onset": 31,
+      "calendar_onset": 31,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD20",
+      "disease": "dengue",
+      "year": 2023,
+      "observed_onset": 32,
+      "calendar_onset": 31,
+      "diff_weeks": 1
+    },
+    {
+      "division": "BD20",
+      "disease": "dengue",
+      "year": 2024,
+      "observed_onset": 32,
+      "calendar_onset": 31,
+      "diff_weeks": 1
+    },
+    {
+      "division": "BD20",
+      "disease": "dengue",
+      "year": 2025,
+      "observed_onset": 31,
+      "calendar_onset": 31,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD20",
+      "disease": "diarrhoea",
+      "year": 2021,
+      "observed_onset": 7,
+      "calendar_onset": 8,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD20",
+      "disease": "diarrhoea",
+      "year": 2022,
+      "observed_onset": 9,
+      "calendar_onset": 8,
+      "diff_weeks": 1
+    },
+    {
+      "division": "BD20",
+      "disease": "diarrhoea",
+      "year": 2023,
+      "observed_onset": 35,
+      "calendar_onset": 8,
+      "diff_weeks": -25
+    },
+    {
+      "division": "BD20",
+      "disease": "diarrhoea",
+      "year": 2024,
+      "observed_onset": 9,
+      "calendar_onset": 8,
+      "diff_weeks": 1
+    },
+    {
+      "division": "BD20",
+      "disease": "diarrhoea",
+      "year": 2025,
+      "observed_onset": 7,
+      "calendar_onset": 8,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD20",
+      "disease": "malaria",
+      "year": 2021,
+      "observed_onset": 22,
+      "calendar_onset": 22,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD20",
+      "disease": "malaria",
+      "year": 2022,
+      "observed_onset": 1,
+      "calendar_onset": 22,
+      "diff_weeks": -21
+    },
+    {
+      "division": "BD20",
+      "disease": "malaria",
+      "year": 2023,
+      "observed_onset": 20,
+      "calendar_onset": 22,
+      "diff_weeks": -2
+    },
+    {
+      "division": "BD20",
+      "disease": "malaria",
+      "year": 2024,
+      "observed_onset": 22,
+      "calendar_onset": 22,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD20",
+      "disease": "malaria",
+      "year": 2025,
+      "observed_onset": 22,
+      "calendar_onset": 22,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD30",
+      "disease": "dengue",
+      "year": 2021,
+      "observed_onset": 31,
+      "calendar_onset": 32,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD30",
+      "disease": "dengue",
+      "year": 2022,
+      "observed_onset": 31,
+      "calendar_onset": 32,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD30",
+      "disease": "dengue",
+      "year": 2023,
+      "observed_onset": 32,
+      "calendar_onset": 32,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD30",
+      "disease": "dengue",
+      "year": 2024,
+      "observed_onset": 33,
+      "calendar_onset": 32,
+      "diff_weeks": 1
+    },
+    {
+      "division": "BD30",
+      "disease": "dengue",
+      "year": 2025,
+      "observed_onset": 37,
+      "calendar_onset": 32,
+      "diff_weeks": 5
+    },
+    {
+      "division": "BD30",
+      "disease": "diarrhoea",
+      "year": 2021,
+      "observed_onset": 7,
+      "calendar_onset": 8,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD30",
+      "disease": "diarrhoea",
+      "year": 2022,
+      "observed_onset": 8,
+      "calendar_onset": 8,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD30",
+      "disease": "diarrhoea",
+      "year": 2023,
+      "observed_onset": 8,
+      "calendar_onset": 8,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD30",
+      "disease": "diarrhoea",
+      "year": 2024,
+      "observed_onset": 9,
+      "calendar_onset": 8,
+      "diff_weeks": 1
+    },
+    {
+      "division": "BD30",
+      "disease": "diarrhoea",
+      "year": 2025,
+      "observed_onset": 8,
+      "calendar_onset": 8,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD40",
+      "disease": "dengue",
+      "year": 2021,
+      "observed_onset": 31,
+      "calendar_onset": 32,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD40",
+      "disease": "dengue",
+      "year": 2022,
+      "observed_onset": 32,
+      "calendar_onset": 32,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD40",
+      "disease": "dengue",
+      "year": 2023,
+      "observed_onset": 32,
+      "calendar_onset": 32,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD40",
+      "disease": "dengue",
+      "year": 2024,
+      "observed_onset": 32,
+      "calendar_onset": 32,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD40",
+      "disease": "dengue",
+      "year": 2025,
+      "observed_onset": 32,
+      "calendar_onset": 32,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD40",
+      "disease": "diarrhoea",
+      "year": 2021,
+      "observed_onset": 8,
+      "calendar_onset": 8,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD40",
+      "disease": "diarrhoea",
+      "year": 2022,
+      "observed_onset": 8,
+      "calendar_onset": 8,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD40",
+      "disease": "diarrhoea",
+      "year": 2023,
+      "observed_onset": 8,
+      "calendar_onset": 8,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD40",
+      "disease": "diarrhoea",
+      "year": 2024,
+      "observed_onset": 8,
+      "calendar_onset": 8,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD40",
+      "disease": "diarrhoea",
+      "year": 2025,
+      "observed_onset": 8,
+      "calendar_onset": 8,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD45",
+      "disease": "dengue",
+      "year": 2021,
+      "observed_onset": 31,
+      "calendar_onset": 32,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD45",
+      "disease": "dengue",
+      "year": 2022,
+      "observed_onset": 31,
+      "calendar_onset": 32,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD45",
+      "disease": "dengue",
+      "year": 2023,
+      "observed_onset": 31,
+      "calendar_onset": 32,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD45",
+      "disease": "dengue",
+      "year": 2024,
+      "observed_onset": 32,
+      "calendar_onset": 32,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD45",
+      "disease": "dengue",
+      "year": 2025,
+      "observed_onset": 32,
+      "calendar_onset": 32,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD45",
+      "disease": "diarrhoea",
+      "year": 2021,
+      "observed_onset": 10,
+      "calendar_onset": 7,
+      "diff_weeks": 3
+    },
+    {
+      "division": "BD45",
+      "disease": "diarrhoea",
+      "year": 2022,
+      "observed_onset": 6,
+      "calendar_onset": 7,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD45",
+      "disease": "diarrhoea",
+      "year": 2023,
+      "observed_onset": 7,
+      "calendar_onset": 7,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD45",
+      "disease": "diarrhoea",
+      "year": 2024,
+      "observed_onset": 7,
+      "calendar_onset": 7,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD45",
+      "disease": "diarrhoea",
+      "year": 2025,
+      "observed_onset": 7,
+      "calendar_onset": 7,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD45",
+      "disease": "malaria",
+      "year": 2021,
+      "observed_onset": 21,
+      "calendar_onset": 20,
+      "diff_weeks": 1
+    },
+    {
+      "division": "BD45",
+      "disease": "malaria",
+      "year": 2022,
+      "observed_onset": 18,
+      "calendar_onset": 20,
+      "diff_weeks": -2
+    },
+    {
+      "division": "BD45",
+      "disease": "malaria",
+      "year": 2023,
+      "observed_onset": 20,
+      "calendar_onset": 20,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD45",
+      "disease": "malaria",
+      "year": 2024,
+      "observed_onset": 19,
+      "calendar_onset": 20,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD45",
+      "disease": "malaria",
+      "year": 2025,
+      "observed_onset": 20,
+      "calendar_onset": 20,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD50",
+      "disease": "dengue",
+      "year": 2021,
+      "observed_onset": 31,
+      "calendar_onset": 31,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD50",
+      "disease": "dengue",
+      "year": 2022,
+      "observed_onset": 31,
+      "calendar_onset": 31,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD50",
+      "disease": "dengue",
+      "year": 2023,
+      "observed_onset": 31,
+      "calendar_onset": 31,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD50",
+      "disease": "dengue",
+      "year": 2024,
+      "observed_onset": 31,
+      "calendar_onset": 31,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD50",
+      "disease": "dengue",
+      "year": 2025,
+      "observed_onset": 31,
+      "calendar_onset": 31,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD50",
+      "disease": "diarrhoea",
+      "year": 2021,
+      "observed_onset": 6,
+      "calendar_onset": 8,
+      "diff_weeks": -2
+    },
+    {
+      "division": "BD50",
+      "disease": "diarrhoea",
+      "year": 2022,
+      "observed_onset": 7,
+      "calendar_onset": 8,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD50",
+      "disease": "diarrhoea",
+      "year": 2023,
+      "observed_onset": 8,
+      "calendar_onset": 8,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD50",
+      "disease": "diarrhoea",
+      "year": 2024,
+      "observed_onset": 8,
+      "calendar_onset": 8,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD50",
+      "disease": "diarrhoea",
+      "year": 2025,
+      "observed_onset": 8,
+      "calendar_onset": 8,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD55",
+      "disease": "dengue",
+      "year": 2021,
+      "observed_onset": 31,
+      "calendar_onset": 31,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD55",
+      "disease": "dengue",
+      "year": 2022,
+      "observed_onset": 31,
+      "calendar_onset": 31,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD55",
+      "disease": "dengue",
+      "year": 2023,
+      "observed_onset": 31,
+      "calendar_onset": 31,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD55",
+      "disease": "dengue",
+      "year": 2024,
+      "observed_onset": 31,
+      "calendar_onset": 31,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD55",
+      "disease": "dengue",
+      "year": 2025,
+      "observed_onset": 31,
+      "calendar_onset": 31,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD55",
+      "disease": "diarrhoea",
+      "year": 2021,
+      "observed_onset": 7,
+      "calendar_onset": 9,
+      "diff_weeks": -2
+    },
+    {
+      "division": "BD55",
+      "disease": "diarrhoea",
+      "year": 2022,
+      "observed_onset": 7,
+      "calendar_onset": 9,
+      "diff_weeks": -2
+    },
+    {
+      "division": "BD55",
+      "disease": "diarrhoea",
+      "year": 2023,
+      "observed_onset": 8,
+      "calendar_onset": 9,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD55",
+      "disease": "diarrhoea",
+      "year": 2024,
+      "observed_onset": 7,
+      "calendar_onset": 9,
+      "diff_weeks": -2
+    },
+    {
+      "division": "BD55",
+      "disease": "diarrhoea",
+      "year": 2025,
+      "observed_onset": 9,
+      "calendar_onset": 9,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD60",
+      "disease": "dengue",
+      "year": 2021,
+      "observed_onset": 31,
+      "calendar_onset": 32,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD60",
+      "disease": "dengue",
+      "year": 2022,
+      "observed_onset": 31,
+      "calendar_onset": 32,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD60",
+      "disease": "dengue",
+      "year": 2023,
+      "observed_onset": 32,
+      "calendar_onset": 32,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD60",
+      "disease": "dengue",
+      "year": 2024,
+      "observed_onset": 32,
+      "calendar_onset": 32,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD60",
+      "disease": "dengue",
+      "year": 2025,
+      "observed_onset": 32,
+      "calendar_onset": 32,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD60",
+      "disease": "diarrhoea",
+      "year": 2021,
+      "observed_onset": 8,
+      "calendar_onset": 8,
+      "diff_weeks": 0
+    },
+    {
+      "division": "BD60",
+      "disease": "diarrhoea",
+      "year": 2022,
+      "observed_onset": 32,
+      "calendar_onset": 8,
+      "diff_weeks": 24
+    },
+    {
+      "division": "BD60",
+      "disease": "diarrhoea",
+      "year": 2023,
+      "observed_onset": 35,
+      "calendar_onset": 8,
+      "diff_weeks": -25
+    },
+    {
+      "division": "BD60",
+      "disease": "diarrhoea",
+      "year": 2024,
+      "observed_onset": 34,
+      "calendar_onset": 8,
+      "diff_weeks": -26
+    },
+    {
+      "division": "BD60",
+      "disease": "diarrhoea",
+      "year": 2025,
+      "observed_onset": 7,
+      "calendar_onset": 8,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD60",
+      "disease": "malaria",
+      "year": 2021,
+      "observed_onset": 15,
+      "calendar_onset": 21,
+      "diff_weeks": -6
+    },
+    {
+      "division": "BD60",
+      "disease": "malaria",
+      "year": 2022,
+      "observed_onset": 20,
+      "calendar_onset": 21,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD60",
+      "disease": "malaria",
+      "year": 2023,
+      "observed_onset": 22,
+      "calendar_onset": 21,
+      "diff_weeks": 1
+    },
+    {
+      "division": "BD60",
+      "disease": "malaria",
+      "year": 2024,
+      "observed_onset": 20,
+      "calendar_onset": 21,
+      "diff_weeks": -1
+    },
+    {
+      "division": "BD60",
+      "disease": "malaria",
+      "year": 2025,
+      "observed_onset": 21,
+      "calendar_onset": 21,
+      "diff_weeks": 0
+    }
+  ]
+}
