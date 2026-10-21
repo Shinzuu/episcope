@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 11:45)
+# Handoff (2026-10-21 11:55)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -99,7 +99,11 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
    README team line; short names in task rows and teammate boxes; no old spellings).
    Report 6 pages, 0 warnings (s1 table ragged columns, two long paths reworded, \raggedbottom).
 4. Report §4 (latency, drill) and §6 (scaling table, silver fix) committed.
-5. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
+5. SF=1 backtest/allocation/calendar outputs saved in docs/experiments/sf1/ (backtest rel. WIS 0.838 overall;
+   allocation still degenerate at SF=1: alpha 0 recommended, Gini 0.98, for Rafi). Detection at SF=1 not
+   evaluated (scaling does not run `make evaluate`; the kept workspace now holds two extra drops).
+   BDA-NEEDS-SHINZUU asked: new clean SF=1 build + evaluate (~35 min) for the report, or keep SF=0.25.
+6. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
 
 ## Decisions
 - ENG-3, ENG-4 left for Samira. AN-7 degenerate allocation is Rafi's (net need 0 except antimalarials).
