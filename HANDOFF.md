@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 12:00)
+# Handoff (2026-10-21 12:40)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -84,6 +84,19 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
 - scaling.json holds both SF=1 runs: the 22:34 run with timing_valid=false and the suspend note, and the
   09:35-10:03 run (MX1zs5) with timing_valid=true, 28.3 min. verify.py gate 5 skips invalid runs: PASS.
   scaling.sh keeps invalid entries when it replaces an SF. Ask shinzuu before any new SF=1 run.
+
+## 12:40 BRIEF-SUBMIT changes 11:55 and 11:58 (we do the whole project; persona test)
+- Supersedes "ENG-3/ENG-4 left for Samira" and "allocation is Rafi's": Shezan's side does every gap now.
+  Commits stay under the configured identity; teammates' reflections stay empty boxes.
+- Pre-fix SF=1+evaluate run stopped at 11:54 (in silver), workspace removed.
+- Allocation: three faults found and fixed in 28952eb (A stock not tied to cases or SF; B LP flat across
+  districts, corner solutions; C beds counted twice). docs/experiments/allocation_diagnosis.md has the evidence;
+  "after" numbers come from a fresh SF=0.25 build running now (task bcyoklpv1, log
+  /var/tmp/episcope-runs/alloc-after-sf0.25.log). Tests: optimiser 28 passed, generator passed.
+- Order (shinzuu): 1 allocation fix, 2 other gaps (ENG-3 with Spark UI, ENG-4 retries, PRV-3, report sections,
+  policy brief, contribution matrix draft), 3 clean SF=1 + evaluate under flock, 4 persona walkthroughs (3 AI
+  personas, one headless browser under flock, fix, confirm round; §7 as "simulated persona walkthroughs run
+  with AI agents"; AI_USAGE row), 5 re-run what depends on allocation, ten passes, BDA-FINAL-NUMBERS.
 
 ## Next, in order
 1. ING-6 measured at SF=1 (kept workspace, main checkout untouched): drop written 10:30:27, alerts refreshed
