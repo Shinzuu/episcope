@@ -1,0 +1,107 @@
+[
+  {
+    "sf": 0.25,
+    "seed": 42,
+    "status": "ok",
+    "stage_seconds": {
+      "generate": 14.8,
+      "bronze": 112.9,
+      "silver": 228.9,
+      "gold": 110.5,
+      "analytics": 413.7,
+      "serve": 44.7
+    },
+    "total_seconds": 925.5,
+    "encounter_rows": 8532704,
+    "stock_rows": 1330426,
+    "facilities": 736,
+    "bytes": {
+      "raw": 1190772806,
+      "bronze": 186574611,
+      "silver": 765671257,
+      "gold": 1978325,
+      "dashboard_data": 9737066
+    },
+    "hardware": {
+      "cpu": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "threads": 8,
+      "ram_gb": 15.4,
+      "os": "Linux-7.2.5-3-omarchy-x86_64-with-glibc2.44"
+    },
+    "spark": {
+      "master": "local[4]",
+      "driver_memory": "5g"
+    },
+    "commit": "89eea98"
+  },
+  {
+    "sf": 0.5,
+    "seed": 42,
+    "status": "ok",
+    "stage_seconds": {
+      "generate": 22.9,
+      "bronze": 167.3,
+      "silver": 402.4,
+      "gold": 140.5,
+      "analytics": 423.7,
+      "serve": 68.5
+    },
+    "total_seconds": 1225.3,
+    "encounter_rows": 17069141,
+    "stock_rows": 1330426,
+    "facilities": 736,
+    "bytes": {
+      "raw": 2157664381,
+      "bronze": 349472148,
+      "silver": 1471360337,
+      "gold": 2034217,
+      "dashboard_data": 9753954
+    },
+    "hardware": {
+      "cpu": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "threads": 8,
+      "ram_gb": 15.4,
+      "os": "Linux-7.2.5-3-omarchy-x86_64-with-glibc2.44"
+    },
+    "spark": {
+      "master": "local[4]",
+      "driver_memory": "5g"
+    },
+    "commit": "01534b6"
+  },
+  {
+    "sf": 1.0,
+    "seed": 42,
+    "status": "ok",
+    "stage_seconds": {
+      "generate": 36.9,
+      "bronze": 256.3,
+      "silver": 663.7,
+      "gold": 209.2,
+      "analytics": 480.3,
+      "serve": 52.7
+    },
+    "total_seconds": 1699.1,
+    "encounter_rows": 34136930,
+    "stock_rows": 1330426,
+    "facilities": 736,
+    "bytes": {
+      "raw": 4090859650,
+      "bronze": 672077166,
+      "silver": 2876180298,
+      "gold": 2117704,
+      "dashboard_data": 9778736
+    },
+    "hardware": {
+      "cpu": "Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz",
+      "threads": 8,
+      "ram_gb": 15.4,
+      "os": "Linux-7.2.5-3-omarchy-x86_64-with-glibc2.44"
+    },
+    "spark": {
+      "master": "local[4]",
+      "driver_memory": "5g"
+    },
+    "commit": "f1fc38d"
+  }
+]

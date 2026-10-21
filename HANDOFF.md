@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 10:05)
+# Handoff (2026-10-21 10:25)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -77,13 +77,13 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   (limit 45). Analytics: detection 56, forecast 32, backtest 365 s.
 - Workspace kept for Samira's Spark UI evidence (ENG-3): /var/tmp/episcope-scale-sf1.MX1zs5 (event logs hold
   the padded key: never copy into the repo; delete after her screenshots).
-- SF=0.5 re-timing (task bcaf6z58z), so all three points share the commit and power mode.
+- SF=0.5 re-timed: 20.4 min. All three points balanced mode, after the silver fix (commits 89eea98, 01534b6,
+  f1fc38d differ only in docs and the spill-folder option). scaling.json committed.
 
 ## Next, in order
-1. After SF=0.5: commit scaling.json.
-2. ING-6 latency: live `make stream`, then `make drop`, read docs/experiments/stream_latency.json.
-3. Final hidden-drop drill on HEAD.
-4. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
+1. ING-6 latency: live `make stream`, then `make drop`, read docs/experiments/stream_latency.json.
+2. Final hidden-drop drill on HEAD.
+3. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
 
 ## Decisions
 - ENG-3, ENG-4 left for Samira. AN-7 degenerate allocation is Rafi's (net need 0 except antimalarials).
