@@ -37,9 +37,8 @@ EARS C2 is the default: it finds one outbreak more and finds them sooner, at a s
 alerts are more often right (PPV 0.25 against 0.15). By shape, EARS C2 found 31 of 33 fast outbreaks, the slow
 one after 41 days and the nationwide surge after one day; CUSUM found 30 fast ones, the slow one after 69 days
 and the surge after one day. We expected CUSUM to win on slow growth. On our one slow outbreak it did not.
-Both methods missed the same outbreak, \texttt{OB42-017}. At SF=0.25 the same EARS threshold gave fewer false
-alerts (1.27 per district-year), because smaller counts make random spikes rarer. The threshold should be
-re-tuned on real counts.
+Both methods missed the same outbreak, \texttt{OB42-017}. The threshold was tuned on planted outbreaks and
+should be re-tuned on real counts.
 
 The reporting artefact (a facility that goes silent and then back-fills) is checked by a test: a naive detector
 on report-date counts alerts on the back-fill week, while ours, on onset-week counts with silent weeks missing,
@@ -61,9 +60,9 @@ the mean absolute error of the median forecast.
 \toprule
 Disease & $h$ & MAE & MAE base & Cov.\,80\% & Rel.\ WIS \\
 \midrule
-Dengue & 1 & 155 & 164 & 0.81 & 0.89 \\
+Dengue & 1 & 155 & 164 & 0.80 & 0.88 \\
  & 4 & 161 & 174 & 0.79 & 0.90 \\
-Diarrhoea & 1 & 67.5 & 96.2 & 0.80 & 0.70 \\
+Diarrhoea & 1 & 67.5 & 96.2 & 0.79 & 0.70 \\
  & 4 & 70.5 & 96.3 & 0.79 & 0.74 \\
 \midrule
 All & 1--4 & 113 & 133 & 0.79 & 0.84 \\
@@ -121,8 +120,8 @@ case for acting on the first alert (\texttt{seir\_scenarios.json}).
 \subsection{Scalability and Spark optimisations}
 \texttt{scripts/scaling.sh} builds each scale factor from a fresh clone and times every stage
 (Table~\ref{tab:scaling}). The laptop has an Intel Core i5-8350U (4 cores, 8 threads) and 15.4\,GB of RAM;
-Spark runs as \texttt{local[4]} with a 5\,GB driver. The scaling runs (20 and 21 October) predate the
-allocation fix and the second optimisation below; the last column is the final SF=1 build, also from a fresh
+Spark runs as \texttt{local[4]} with a 5\,GB driver. The three scaling runs (20 and 21 October, commits 89eea98, 01534b6
+and f1fc38d) predate the allocation fix and the second optimisation below; the last column is the final SF=1 build, also from a fresh
 clone (\texttt{sf1\_final\_run.json}). SF=1 finishes in 25 to 28 minutes, inside the 45-minute gate. Silver
 grows with the row count and is the slowest stage. Analytics hardly grows, because it works on weekly series
 per district, not on rows. A first SF=1 attempt failed in silver when Spark's spill filled the small
@@ -146,6 +145,10 @@ Analytics & 6.9 & 7.1 & 8.0 & 4.7 \\
 Serve & 0.7 & 1.1 & 0.9 & 1.0 \\
 \midrule
 Total & 15.4 & 20.4 & 28.3 & 25.3 \\
+\midrule
+Raw data (GB) & 1.19 & 2.16 & 4.09 & \\
+Bronze / silver (GB) & 0.19 / 0.77 & 0.35 / 1.47 & 0.67 / 2.88 & \\
+Gold / export (MB) & 2.0 / 9.7 & 2.0 / 9.8 & 2.1 / 9.8 & \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -159,8 +162,8 @@ the clean MERGE). They are now evaluated once and persisted. At SF=0.25 silver's
 \item \textbf{The backtest uses every core.} The Spark UI showed the backtest's model stage running as a single
 task for 5.1 minutes (Fig.~\ref{fig:sparkui}). Its input is only a few megabytes, so adaptive query execution
 had merged the shuffle into one partition and fitted all 64 districts one after another. Keeping one partition per
-district for that job gives 64 tasks. At SF=0.25 the job fell from 325\,s to 165\,s with identical scores;
-at SF=1 the backtest step fell from 365\,s to 161\,s (\texttt{backtest\_optimisation.json}).
+district for that job gives 64 tasks. At SF=0.25 the job fell from 325\,s to 165\,s with identical scores
+(\texttt{backtest\_optimisation.json}).
 \end{itemize}
 
 \begin{figure}[htbp]
