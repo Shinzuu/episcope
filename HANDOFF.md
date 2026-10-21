@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 12:55)
+# Handoff (2026-10-21 13:45)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -109,6 +109,18 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
 - README: no-Docker note, spill folder (a99339c).
 - Clean SF=1 + evaluate started 12:52 under flock at a99339c (task bgy00ag6x; log
   /var/tmp/episcope-runs/sf1-final.log; workspace /var/tmp/episcope-sf1-eval.EJLTFQ). Meanwhile: report prose.
+
+## 13:45 step 3 done, step 4 running
+- Clean SF=1 + evaluate at a99339c: 12:52-13:18 (25.3 min without evaluate; docs/experiments/sf1_final_run.json).
+  Results committed (2cdf9c9): EARS C2 33/35, 1.89 FA/district-year, median 8 d; CUSUM h=6.5 32/35, 1.82;
+  backtest rel. WIS 0.84 (dengue 0.89, diarrhoea 0.72); allocation LP 67.8% vs 34.4% at 0.5 B_ref, alpha 0
+  recommended; SEIR R0 2.04; quarantine 1,367,440 / 34,136,930; DQ-4 precision 0.999, recall 0.11.
+- Report (91edf56): every section from SF=1, policy brief, risk register, contribution matrix draft (support
+  cells, shares, signatures for the team), empty reflection boxes. 9 pages, 0 warnings. Draft footer still on.
+- Step 4: three persona agents (district officer BD2022 district view, store-keeper BD2015, ministry official)
+  on the final dashboard in /var/tmp/episcope-sf1-eval.EJLTFQ/repo/dashboard via dashboard/tools/walk.mjs under
+  flock. Results to the session scratchpad personas/*-round1.json. Then fix, round 2, §7 + AI_USAGE row.
+- Keep the SF=1 workspace until step 4 ends (dashboard data), then delete it.
 
 ## Next, in order
 1. ING-6 measured at SF=1 (kept workspace, main checkout untouched): drop written 10:30:27, alerts refreshed
