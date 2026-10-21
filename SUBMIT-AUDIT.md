@@ -106,7 +106,7 @@ now cover the report only.
 | ID | New status | Evidence |
 |---|---|---|
 | ING-3 | done | `pipeline/catalog.py`, `make catalog` (27 tables at SF=0.25); test passes |
-| ING-6 | done, latency to measure | `pipeline/stream.py`, `make stream`; test passes (new file reaches gold and alerts) |
+| ING-6 | done; latency 301.5 s at SF=1 (target under 300 s) | `pipeline/stream.py`, `make stream`; test passes; docs/experiments/stream_latency.json: 112 new files, bronze 32, silver 118, gold 54, alerts 32, export 22 s, plus up to 60 s trigger wait |
 | ING-7 | done | `pipeline/gold/asof.py`, `make asof DATE=...`; test reproduces gold before a 21-day-late record |
 | ENG-1 | done | README: prerequisites, hidden-drop steps, architecture |
 | AN-2 | results committed | `docs/experiments/detection_tradeoff.json` (SF=0.25): EARS C2 sensitivity 0.97, 1.27 false alerts per district-year, median 8 days; CUSUM 0.91, 1.49, 9 days |

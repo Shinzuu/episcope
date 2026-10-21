@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 10:35)
+# Handoff (2026-10-21 10:40)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -86,9 +86,10 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
   scaling.sh keeps invalid entries when it replaces an SF. Ask shinzuu before any new SF=1 run.
 
 ## Next, in order
-1. ING-6 latency running in the kept SF=1 workspace (task b3adhlwoo, script in the session scratchpad):
-   stream up, `make drop SF=1`, first refreshed epoch, stop. Log /var/tmp/episcope-runs/latency-sf1.log.
-   Main checkout untouched; copy stream_latency.json back after.
+1. ING-6 measured at SF=1 (kept workspace, main checkout untouched): drop written 10:30:27, alerts refreshed
+   10:35:28, latency 301.5 s (bronze 32.2, silver 117.6, gold 53.6, alerts 32.2, export 22.1 s; the rest is
+   the 60 s trigger wait). Target under 5 min missed by 1.5 s. Asked shinzuu whether to measure once more with
+   --interval 30. The workspace lake now includes the drop.
 2. Final hidden-drop drill on HEAD.
 3. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
 
