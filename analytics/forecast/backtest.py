@@ -97,7 +97,19 @@ def run_backtest(spark, cases_df, weather_df=None, diseases=BACKTEST_DISEASES, n
         weather_df = spark.createDataFrame([], WEATHER_SCHEMA)
     w = weather_df.select("district_code", "epi_year", "epi_week", "precip_mm_sum", "tmean_c_avg")
     fn = make_district_backtester(list(diseases), b["s"], b["e"], origins, refit_every)
-    return c.groupBy("district_code").cogroup(w.groupBy("district_code")).applyInPandas(fn, SCHEMA).toPandas()
+    # ENG-3: the cogroup input is a few MB, so AQE coalesced the shuffle into one partition and all 64
+    # districts were fitted one after another on one core (Spark UI: 1 task, 360 s at SF=1). Keeping one
+    # partition per district for this job lets the fits run on every core; each group's result is the same.
+    conf = spark.conf.get("spark.sql.adaptive.coalescePartitions.enabled")
+    spark.conf.set("spark.sql.adaptive.coalescePartitions.enabled", "false")
+    try:
+        n = c.select("district_code").distinct().count()
+        out = (c.repartition(n, "district_code").groupBy("district_code")
+               .cogroup(w.repartition(n, "district_code").groupBy("district_code"))
+               .applyInPandas(fn, SCHEMA).toPandas())
+    finally:
+        spark.conf.set("spark.sql.adaptive.coalescePartitions.enabled", conf)
+    return out.sort_values(["district_code", "disease", "origin_week_start", "horizon"]).reset_index(drop=True)
 
 
 def _metrics(df):
