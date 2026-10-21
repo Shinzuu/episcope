@@ -61,7 +61,6 @@ export function buildWhatIf(D) {
     + "every district first gets that fraction of its population share. Because the plan balances all supplies "
     + "at once, raising the floor can lower one supply for a district and raise another.");
 }
-}
 
 export function renderAllocation(D) {
   d3.select("#resource-select").property("value", state.resource);
