@@ -1,4 +1,4 @@
-# Handoff (2026-10-21 09:40)
+# Handoff (2026-10-21 10:05)
 
 Working from `BRIEF-SUBMIT.md` (untracked, written by shinzuu's assistant Lilith). House rule since 19:35: every
 heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most one browser, closed after use.
@@ -71,8 +71,16 @@ heavy job runs as `flock ~/.local/state/lilith/heavy.lock <command>`; at most on
 - Clean SF=1 re-run started 09:40 (task b6x925ky6), KEEP=1 EVENT_LOG=1. If it suspends again, ask shinzuu
   about a sleep inhibitor (systemd-inhibit) for timing runs.
 
+## 10:05 SF=1 clean: gate 5 met
+- SF=1 09:35-10:03, no suspend: 28.3 min (generate 36.9, bronze 256.3, silver 663.7, gold 209.2, analytics
+  480.3, serve 52.7), 34,136,930 encounter rows, raw 3.9 GB, silver 2.7 GB, dashboard data 9 MB. Gate 5 PASS
+  (limit 45). Analytics: detection 56, forecast 32, backtest 365 s.
+- Workspace kept for Samira's Spark UI evidence (ENG-3): /var/tmp/episcope-scale-sf1.MX1zs5 (event logs hold
+  the padded key: never copy into the repo; delete after her screenshots).
+- SF=0.5 re-timing (task bcaf6z58z), so all three points share the commit and power mode.
+
 ## Next, in order
-1. SF=1 (running); then commit scaling.json and check gate 5.
+1. After SF=0.5: commit scaling.json.
 2. ING-6 latency: live `make stream`, then `make drop`, read docs/experiments/stream_latency.json.
 3. Final hidden-drop drill on HEAD.
 4. Report: SF=1 numbers, §4/§6 data parts; then ten passes (report only), versions in report/versions/.
