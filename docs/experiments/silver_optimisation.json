@@ -37,5 +37,17 @@
     "quarantine": 341724,
     "stock": 1330426
   },
-  "method": "Spark event logs of both runs in the same workspace (same data, same salt); identity = per-table row count and sum of xxhash64 over all non-timestamp columns"
+  "method": "Spark event logs of both runs in the same workspace (same data, same salt); identity = per-table row count and sum of xxhash64 over all non-timestamp columns",
+  "rerun_for_screenshots": {
+    "date": "2026-10-21",
+    "spark_app_seconds": {
+      "before": 378.5,
+      "after": 249.2
+    },
+    "completed_jobs": {
+      "before": 163,
+      "after": 154
+    },
+    "note": "Fresh SF=0.25 build (seed 42) at commit 99bd8b7; 'before' is the silver code of 007d391^. Same speed-up ratio as the first measurement (0.66); output identity was checked in the first measurement only. Screenshot: report/figures/sparkui-silver.png. Event logs deleted (they hold the padded HMAC key)."
+  }
 }
