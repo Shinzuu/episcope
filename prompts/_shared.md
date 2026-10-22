@@ -1,3 +1,4 @@
+<!-- docs/ANALYSIS.md (our reading of the brief) was a working file and is not in the repository. -->
 <shared_rules>
 You are one of six parallel workers on EpiScope, our CSE 4345 Big Data Analytics group project
 (repo ~/Documents/study/episcope). Five other workers are building other components in the same folder at

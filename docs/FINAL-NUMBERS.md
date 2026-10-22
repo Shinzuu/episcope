@@ -8,6 +8,9 @@ both seed 42 with real weather, 2026-10-21, unless a row says otherwise:
   `backtest_metrics.csv`, `seir_scenarios.json`, `calendar_summary.csv`, `dq4_patient_dedup.json`). The code for
   these outputs did not change between the two commits (only the optimiser, the export and the checks did), and the 1acb5e1 run gave the same detection, backtest, calendar and SEIR results.
 
+A third clean build at the final detection defaults (e97464c) reproduced every result file byte for byte
+(`sf1_final_run.json`, `detection_default_rerun`).
+
 The calendar check (`calendar_check.json`) ran on the SF=0.25 build with the same seed.
 
 | Topic | Number | Source |
@@ -31,6 +34,6 @@ The calendar check (`calendar_check.json`) ran on the SF=0.25 build with the sam
 | SEIR | R0 2.04 (generator 1.8), R2 0.91; 40% contact cut at detection: peak -87%, cases -63%; two weeks late: -80%, -53% | `docs/experiments/seir_scenarios.json` |
 | DQ-4 at SF=1 | 8,499 pairs flagged, 8,493 true (precision 0.999), recall in window 0.11 | `docs/experiments/dq4_patient_dedup.json` |
 | ING-6 latency at SF=1 | 60 s trigger: 301.5 s; 30 s trigger (default): 219.2 s | `docs/experiments/stream_latency.json` |
-| Hidden-drop drill | PASS on the final ingestion code (commit ce611f7; later commits changed only the LP and dashboard JS): seed 4675, +8,888 rows, 0 duplicates, 9.76 MB, 1,717 s | `docs/experiments/hidden_drop_drill.json` |
+| Hidden-drop drill | PASS on the final ingestion code (commit ce611f7; later commits changed no ingestion code, only the LP, the detection thresholds, the dashboard JavaScript and comments): seed 4675, +8,888 rows, 0 duplicates, 9.76 MB, 1,717 s | `docs/experiments/hidden_drop_drill.json` |
 | Dashboard export | under 10 MB; district bundles at most 0.74 MB each | `make serve` output |
 | Persona walkthroughs (simulated, AI agents) | round 1: 0 of 15 tasks done; round 2: 13 of 15; 48 problems, 26 fixed, 20 partly, 2 not | `docs/usability/` |

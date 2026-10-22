@@ -38,8 +38,8 @@ ALPHAS = tuple(round(0.1 * k, 1) for k in range(0, 11))
 # Headline scenario written first in the dashboard: half the money needed.
 DEFAULT_BUDGET_LEVEL = 0.5
 
-# alpha recommendation: the largest alpha whose share of need met is within this many percentage points of
-# the pure-efficiency answer (alpha = 0) at every scarce budget (< B_ref).
+# alpha recommendation: alphas whose share of need met stays within this many points of alpha = 0 at every
+# scarce budget (< B_ref) are admissible; of those, the one with the best mean lowest-district coverage wins.
 RECOMMEND_TOLERANCE_PP = 2.0
 
 # Unmet need priced in K equal slices with rising weights (lp.py): the deepest shortfall in a district costs

@@ -12,7 +12,7 @@ Big data surveillance, forecasting and response-planning platform (CSE 4345 CEP,
 - [mise](https://mise.jdx.dev) (installs Java 17 and Python 3.12 from `mise.toml`), `make`, `git`.
 - Node is needed only to rebuild the TopoJSON map (`npx mapshaper`); the built map is committed.
 - No account or API key. The processed public reference data is committed in `data/reference/`.
-- No Docker: `mise.toml` pins Java and Python and `requirements.txt` pins every Python package, which is
+- No Docker: `mise.toml` pins Java and Python and `requirements.txt` pins every direct Python dependency, which is
   lighter on a 16 GB laptop than a Spark container. A machine with Docker can still run the same commands in a
   plain Python 3.12 + Java 17 image.
 - If `/tmp` is a small RAM disk, set `EPISCOPE_SPARK_LOCAL_DIR` in `.env` to a disk folder (SF=1 spills there).

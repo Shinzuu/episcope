@@ -89,7 +89,7 @@ in detail and the rest only as division totals.
 \section{Contribution Matrix}
 L marks each member's lead role from the proposal (\texttt{docs/proposal.md}, Section~5): Nishadul Islam Shezan
 data engineering, Tahsin Ahmed Rafi analytics, Rimjhim Dey visualisation, and Samira Sultana platform and
-evaluation. The matrix records these roles, not who wrote the code. Tahsin Ahmed Rafi, Rimjhim Dey and Samira
+evaluation; two leads were agreed later: problem analysis (Samira Sultana) and video (Shezan). The matrix records these roles, not who wrote the code. Tahsin Ahmed Rafi, Rimjhim Dey and Samira
 Sultana were away during the final phase of the project, and Nishadul Islam Shezan implemented the remaining
 parts of their areas; the Git history shows these commits. S marks that work.
 
@@ -97,8 +97,8 @@ parts of their areas; the Git history shows these commits. S marks that work.
 \caption{Contribution matrix (L lead role from the proposal, S support, blank none)}
 \label{tab:contrib}
 \centering\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.3cm}cccc@{}}
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.8cm}cccc@{}}
 \toprule
 Work area & Shezan & Rafi & Rimjhim & Samira \\
 \midrule
@@ -147,9 +147,9 @@ because performance problems shaped more of the design than I expected.
 \subsection*{Tahsin Ahmed Rafi}
 I led the analytics side of EpiScope: outbreak detection, forecasting, and the optimisation that turns forecasts
 into a supply plan and a preparedness calendar. The part I found most interesting was choosing between methods
-that look similar on paper. EARS C2 reacts quickly to a sudden jump, while CUSUM is better at a slow rise, and
-seeing both run on the same districts made the trade-off between catching outbreaks early and raising false
-alarms much easier to understand than any lecture slide.
+that look similar on paper. EARS C2 is built for a sudden jump and CUSUM for a slow rise, but on our one slow
+outbreak CUSUM was the slower of the two (69 days against 41), which taught me to test a textbook claim instead
+of assuming it.
 
 Forecasting taught me to be careful with evaluation. A model can look accurate until it is tested only on data
 that comes after its training period, which is why the backtest matters more than the training fit. For the

@@ -40,4 +40,4 @@ stream:     ; $(RUN) -m pipeline.stream   # ING-6: refresh alerts as new encount
 asof:       ; $(RUN) -m pipeline.gold.asof $(DATE)   # ING-7: make asof DATE=2025-06-30
 dashboard:  ; cd dashboard && python3 -m http.server 8000
 test:       ; $(RUN) -m pytest -q tests
-clean:      ; rm -rf data lake spark-warehouse metastore_db derby.log
+clean:      ; test ! -d data || find data -mindepth 1 -maxdepth 1 ! -name reference -exec rm -rf {} +; rm -rf lake spark-warehouse metastore_db derby.log

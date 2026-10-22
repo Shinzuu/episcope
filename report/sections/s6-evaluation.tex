@@ -5,7 +5,7 @@ million encounters, of which 1.37 million, 4.0\%, were quarantined), with the re
 backtest and the SEIR scenarios come from the build before it (a99339c), whose code for those outputs is the
 same (only the optimiser and the export changed), and the final build gave the same results. The exceptions are the scaling runs
 (Table~\ref{tab:scaling}), the calendar check (SF=0.25) and the before-and-after measurements of the fixes,
-which say where they come from.
+which say where they come from. A third build at the final detection defaults (e97464c) reproduced every result file.
 
 \subsection{Detection}
 \texttt{make evaluate} scores every alert against the 35 injected outbreaks in \texttt{ground\_truth/}, the only
