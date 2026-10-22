@@ -180,9 +180,11 @@ def alerts_json(spark, sup, since) -> list:
     out = []
     for r in a.orderBy("district_code", "disease", "method", "week_start").collect():
         hidden = bool(r["suppressed"])
-        out.append({"d": r["district_code"], "dz": r["disease"], "w": _clean(r["week_start"]), "method": r["method"],
-                    "stat": None if hidden else _num(r["statistic"]), "thr": _num(r["threshold"]),
-                    "alert": bool(r["alert"])})
+        row = {"d": r["district_code"], "dz": r["disease"], "w": _clean(r["week_start"]), "method": r["method"],
+               "stat": None if hidden else _num(r["statistic"]), "thr": _num(r["threshold"]), "alert": bool(r["alert"])}
+        if not hidden and not r["gate"]:   # alarm gate closed (too few cases); written only then, to save space
+            row["gate"] = False
+        out.append(row)
     return out
 
 

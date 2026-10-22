@@ -62,6 +62,10 @@ export function renderHeatmap(D) {
     .attr("fill", (c) => C[c.action] || C.muted).attr("stroke", "#fff")
     .on("mousemove", (event, c) => showTip(`<b>Week ${c.w}</b>: ${esc(c.action)}<br>seasonal index ${fmtNum(c.idx, 2)} (${esc(c.div)})`, event))
     .on("mouseleave", hideTip);
+  if (!cal.length && D.getCalendar(dist?.div, dz).length) {   // calendar's low-signal rule: no season to time
+    g.append("text").attr("class", "axis-label").attr("x", 0).attr("y", -5)
+      .text("No preparedness weeks: too few cases in this division for a season");
+  }
 
   const lg = d3.select("#heat-legend");
   lg.selectAll("*").remove();

@@ -152,8 +152,10 @@ function build(raw) {
   };
 }
 
-// An alert under the current threshold multiplier. At 1x the exported flag is used as-is.
+// An alert under the current threshold multiplier. At 1x the exported flag is used as-is; at other levels the
+// alarm gate still applies (gate: false is exported only where it is closed). For CUSUM this approximates,
+// because the exported statistic resets at the default h.
 export function isAlert(a, mult) {
   if (!a || a.stat == null) return false;
-  return mult === 1 ? a.alert : a.stat > a.thr * mult;
+  return mult === 1 ? a.alert : a.gate !== false && a.stat > a.thr * mult;
 }

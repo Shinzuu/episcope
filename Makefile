@@ -11,7 +11,7 @@ mock:      ; $(RUN) -m serving.mock_data
 dashboard-verify: ; node dashboard/tools/verify.mjs
 check:     ; $(RUN) scripts/verify.py
 
-.PHONY: check setup reference reference-rebuild all generate bronze silver gold analytics evaluate serve catalog stream asof \
+.PHONY: check setup reference reference-rebuild all generate bronze silver gold analytics evaluate calendar-check serve catalog stream asof \
         drop mock dashboard dashboard-verify test clean
 
 setup:
@@ -34,6 +34,7 @@ silver:     ; $(RUN) -m pipeline.silver.build
 gold:       ; $(RUN) -m pipeline.gold.build
 analytics:  ; $(RUN) -m analytics.run_all
 evaluate:   ; $(RUN) -m analytics.evaluation.run
+calendar-check: ; $(RUN) -m analytics.calendar.check   # AN-9 check, report VI-E (needs a built lake)
 serve:      ; $(RUN) -m serving.export
 catalog:    ; $(RUN) -m pipeline.catalog --list
 stream:     ; $(RUN) -m pipeline.stream   # ING-6: refresh alerts as new encounter files land

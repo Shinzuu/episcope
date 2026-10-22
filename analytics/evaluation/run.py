@@ -56,6 +56,15 @@ def evaluate_frames(prepared_pd, ears_pd, outbreaks, budget=sweep.DEFAULT_BUDGET
     return curve, report
 
 
+def _no_nan(v):
+    """NaN (e.g. the EARS rows' k) becomes null, so strict JSON parsers can read the file."""
+    if isinstance(v, dict):
+        return {k: _no_nan(x) for k, x in v.items()}
+    if isinstance(v, (list, tuple)):
+        return [_no_nan(x) for x in v]
+    return None if isinstance(v, float) and v != v else v
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--cases", default=str(DC.CASES_WEEKLY_PATH))
@@ -84,7 +93,7 @@ def main(argv=None):
     out = pathlib.Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     curve.to_csv(out / "detection_tradeoff.csv", index=False)
-    (out / "detection_tradeoff.json").write_text(json.dumps(report, indent=1, default=str))
+    (out / "detection_tradeoff.json").write_text(json.dumps(_no_nan(report), indent=1, default=str, allow_nan=False))
     print(f"trade-off curve -> {out}/detection_tradeoff.csv, .json")
     for method, r in report["recommended"].items():
         print(f"  {method}: {r['param_name']}={r['param']}  sensitivity={r['sensitivity']:.2f}  "

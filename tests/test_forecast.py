@@ -186,6 +186,29 @@ def test_calendar_short_history_fallback():
     assert len(rows) == 52 and np.isfinite(rows["seasonal_index"]).all()
 
 
+def test_calendar_sparse_series_gets_no_actions():
+    weeks = pd.date_range("2021-01-04", periods=5 * 52, freq="7D")
+    cases = np.where((weeks.isocalendar().week.values % 9) == 0, 1, 0)   # a stray case every ninth week
+    rows, s = C.calendar_for_series(pd.DataFrame({"week_start": weeks, "cases": cases}), "malaria")
+    assert s["mean_weekly_cases"] < C.MIN_MEAN_WEEKLY_CASES and s["no_seasonality"]
+    assert (rows["action"] == "none").all() and s["preposition_by_week"] is None
+
+
+def test_calendar_check_finds_onset_of_each_year():
+    from analytics.calendar import check as K
+
+    rows = []
+    for yr, shift in ((2021, 0), (2022, 3)):
+        for wk in range(1, 53):
+            n = 50 if 20 + shift <= wk <= 35 + shift else 2      # season starts in week 20, then week 23
+            rows.append(("BD2003", "dengue", yr, wk, n))
+    cases = pd.DataFrame(rows, columns=["district_code", "disease", "epi_year", "epi_week", "cases"])
+    cal = pd.DataFrame([{"division_code": "BD20", "disease": "dengue", "onset_week": 20, "no_seasonality": False}])
+    got = {r["year"]: r["diff_weeks"] for r in K.yearly_onsets(cases, cal)}
+    assert abs(got[2021]) <= 1 and abs(got[2022] - 3) <= 1
+    assert K.summarise(K.yearly_onsets(cases, cal))["dengue"]["cells"] == 2
+
+
 # ---------- Spark (applyInPandas) ----------
 
 @pytest.fixture(scope="module")
@@ -222,4 +245,6 @@ def test_spark_calendar_contract(spark):
     assert len(cal) == 2 * 3 * 52                     # 2 divisions x 3 diseases x 52 weeks
     assert set(cal["action"]) <= {"preposition", "campaign", "none"}
     per = cal.groupby(["division_code", "disease"])["action"].apply(lambda a: (a == "preposition").sum())
-    assert (per == 1).all()
+    weekly = CASES.groupby(["division_code", "disease", "week_start"])["cases"].sum()
+    sparse = weekly.groupby(["division_code", "disease"]).mean() < C.MIN_MEAN_WEEKLY_CASES   # low-signal rule
+    assert sparse.any() and (per == (~sparse).astype(int)).all()

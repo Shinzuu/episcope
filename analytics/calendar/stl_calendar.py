@@ -12,6 +12,8 @@ Recipe (research.md §11):
    Peak = the week with the largest index.
 5. Lead-time rule: pre-position supplies by onset - SUPPLY_LEAD_WEEKS; start the prevention campaign by
    onset - CAMPAIGN_LEAD_WEEKS[disease]. Weeks wrap around the year.
+6. Low-signal rule: a series with fewer than MIN_MEAN_WEEKLY_CASES cases a week on average is too sparse to carry
+   a season (malaria outside the endemic districts), so it is marked no_seasonality and gets no action weeks.
 
 Output: gold.calendar (docs/contracts.md): division_code, disease, epi_week (1..52), seasonal_index,
 action in {preposition, campaign, none}; plus <results>/calendar_summary.csv/.json with onset, peak,
@@ -32,6 +34,8 @@ from pyspark.sql import functions as Fn
 PERIOD = 52
 STL_SEASONAL = 13
 ONSET_FRACTION = 0.25
+MIN_MEAN_WEEKLY_CASES = 1.0  # Below this the STL "season" is noise: the four non-endemic malaria divisions have
+                             # 0.03-0.2 a week at SF=0.25, the endemic ones 1.9 or more (8 or more at SF=1).
 
 SUPPLY_LEAD_WEEKS = 3        # ASSUMPTION. Procurement + transport to district stores, 2-4 weeks (research.md §11).
 CAMPAIGN_LEAD_WEEKS = {      # ASSUMPTION. How long prevention needs to act before cases rise.
@@ -45,7 +49,8 @@ DEFAULT_CAMPAIGN_LEAD = 4
 OUT_SCHEMA = "division_code string, disease string, epi_week int, seasonal_index double, action string"
 RULE_TEXT = (f"Pre-position supplies {SUPPLY_LEAD_WEEKS} weeks before the seasonal onset; start the prevention "
              f"campaign {{lead}} weeks before onset. Onset = first week after the trough where the STL seasonal "
-             f"index exceeds trough + {int(ONSET_FRACTION * 100)}% of the trough-to-peak range.")
+             f"index exceeds trough + {int(ONSET_FRACTION * 100)}% of the trough-to-peak range. No action weeks "
+             f"where a division averages fewer than {MIN_MEAN_WEEKLY_CASES:g} case a week.")
 
 
 def _wrap(w):
@@ -54,7 +59,7 @@ def _wrap(w):
 
 def seasonal_profile(weekly):
     """weekly: DataFrame(week_start, cases) for one division x disease. Returns (52-vector of log seasonal
-    effects for epi-weeks 1..52, DataFrame(year, epi_week, seasonal) per observed week)."""
+    effects for epi-weeks 1..52, DataFrame(year, epi_week, seasonal) per observed week, mean weekly cases)."""
     s = weekly.copy()
     s["week_start"] = pd.to_datetime(s["week_start"])
     s = s.groupby("week_start")["cases"].sum()
@@ -72,7 +77,7 @@ def seasonal_profile(weekly):
     per = pd.DataFrame({"year": iso["year"].values.astype(int), "epi_week": wk, "seasonal": seas})
     prof = per.groupby("epi_week")["seasonal"].mean().reindex(range(1, PERIOD + 1))
     prof = prof.interpolate(limit_direction="both").fillna(0.0)
-    return prof.values - prof.values.mean(), per
+    return prof.values - prof.values.mean(), per, float(np.expm1(y).mean())
 
 
 def onset_peak(profile):
@@ -94,11 +99,11 @@ def onset_peak(profile):
 
 def calendar_for_series(weekly, disease):
     """Returns (52 gold.calendar-shaped rows without division_code, summary dict)."""
-    prof, per = seasonal_profile(weekly)
+    prof, per, mean_weekly = seasonal_profile(weekly)
     onset, peak = onset_peak(prof)
     lead_c = CAMPAIGN_LEAD_WEEKS.get(disease, DEFAULT_CAMPAIGN_LEAD)
-    prep, camp = _wrap(onset - SUPPLY_LEAD_WEEKS), _wrap(onset - lead_c)
-    flat = float(np.ptp(prof)) < 1e-9
+    flat = float(np.ptp(prof)) < 1e-9 or mean_weekly < MIN_MEAN_WEEKLY_CASES
+    prep, camp = (None, None) if flat else (_wrap(onset - SUPPLY_LEAD_WEEKS), _wrap(onset - lead_c))
     rows = pd.DataFrame({"epi_week": np.arange(1, PERIOD + 1, dtype="int32"), "seasonal_index": np.exp(prof),
                          "action": "none"})
     if not flat:
@@ -113,7 +118,7 @@ def calendar_for_series(weekly, disease):
                "campaign_by_week": camp, "supply_lead_weeks": SUPPLY_LEAD_WEEKS, "campaign_lead_weeks": lead_c,
                "peak_to_trough_ratio": float(np.exp(np.ptp(prof))),
                "onset_week_sd_across_years": float(np.std(yearly)) if len(yearly) > 1 else None,
-               "years_used": len(yearly), "no_seasonality": flat,
+               "years_used": len(yearly), "mean_weekly_cases": mean_weekly, "no_seasonality": flat,
                "rule": RULE_TEXT.format(lead=lead_c)}
     return rows, summary
 
@@ -143,7 +148,10 @@ def summaries(cases_df):
     for (div, dz), g in pdf.groupby(["division_code", "disease"]):
         _, s = calendar_for_series(g, dz)
         out.append({"division_code": div, **s})
-    return pd.DataFrame(out)
+    df = pd.DataFrame(out)
+    for c in ("preposition_by_week", "campaign_by_week"):   # empty where no_seasonality, integers elsewhere
+        df[c] = df[c].astype("Int64")
+    return df
 
 
 def main():
