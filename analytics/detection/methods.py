@@ -19,8 +19,8 @@ variance only grows with s. All of it is window-function sums, so it runs in Spa
 - Naive detector (AN-3 comparison only): textbook EARS C2 on raw counts, z = (y - mean) / max(sd, MIN_SIGMA),
   missing weeks as zero, no completeness or seasonal adjustment.
 
-Every scored frame has the gold.alerts columns plus `week_start` and `cases`; `to_alerts` keeps the contract
-columns only. `gate` is kept so the dashboard's alert-level slider can apply it at other thresholds.
+Every scored frame has the gold.alerts columns plus `week_start`, `gate` and `cases`; `to_alerts` keeps the
+contract columns only.
 """
 
 import math
@@ -33,7 +33,7 @@ from pyspark.sql import functions as F
 from analytics.detection import config as C
 
 KEYS = C.GROUP_KEYS
-ALERT_COLS = ["district_code", "disease", "epi_year", "epi_week", "method", "statistic", "threshold", "alert", "gate"]
+ALERT_COLS = ["district_code", "disease", "epi_year", "epi_week", "method", "statistic", "threshold", "alert"]
 CUSUM_INPUT = ["week_start", "epi_year", "epi_week", "cases", "cusum_z"]
 SCORED_SCHEMA = (
     "district_code string, disease string, week_start date, epi_year int, epi_week int, method string, "

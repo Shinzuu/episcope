@@ -36,7 +36,7 @@ week-year boundary is unambiguous and Spark supports it natively. The report sta
 
 | Table | Columns |
 |---|---|
-| `gold.alerts` | district_code, disease, epi_year, epi_week, method (ears_c2, cusum), statistic, threshold, alert (bool), gate (bool: at least 5 cases in the last 4 weeks; `alert` requires it) |
+| `gold.alerts` | district_code, disease, epi_year, epi_week, method (ears_c2, cusum), statistic, threshold, alert (bool) |
 | `gold.forecasts` | district_code, disease, origin_week_start, horizon (1-4), target_week_start, mean, q10, q50, q90 |
 | `gold.demand` | district_code, resource, horizon_weeks, demand_mean, demand_q90 |
 | `gold.allocation` | scenario_id, budget, alpha, district_code, resource, allocation, unmet |
@@ -48,7 +48,7 @@ week-year boundary is unambiguous and Spark supports it natively. The report sta
 |---|---|
 | `meta.json` | `{generated_at, data_through, diseases[], suppression_threshold: 5}` |
 | `weekly.json` | `[{d: district_code, dz: disease, w: week_start, c: cases or null if suppressed, s: true if suppressed, inc: per100k}]` |
-| `alerts.json` | `[{d, dz, w, method, stat, thr, alert, gate?}]`; `gate: false` only where the alarm gate is closed and the cell is visible |
+| `alerts.json` | `[{d, dz, w, method, stat, thr, alert}]` |
 | `forecasts.json` | `[{d, dz, origin, h, target, mean, q10, q50, q90}]` |
 | `allocation.json` | `{scenarios: [{id, budget, alpha}], rows: [{id, d, r, alloc, unmet, demand, stock}]}` |
 | `calendar.json` | `[{div, dz, w, idx, action}]` |

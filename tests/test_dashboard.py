@@ -42,8 +42,7 @@ def test_row_shapes_match_contract(exports):
         "dq.json": {"batch_id", "source", "rows_in", "rows_clean", "rows_quarantined", "rules"},
     }
     for name, keys in shapes.items():
-        assert all(set(r) - {"gate"} == keys for r in f[name]), name
-    assert all(r["gate"] is False for r in f["alerts.json"] if "gate" in r)
+        assert all(set(r) == keys for r in f[name]), name
     alloc = f["allocation.json"]
     assert set(alloc) == {"scenarios", "rows"}
     assert all(set(s) == {"id", "budget", "alpha"} for s in alloc["scenarios"])

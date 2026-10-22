@@ -63,6 +63,16 @@ export async function loadAll() {
 
 const key = (...parts) => parts.join("|");
 
+// The detection's alarm gate (analytics/detection/config.py): no alarm unless the last 4 weeks hold at least 5
+// cases. Recomputed here from the published counts only, so it reveals nothing about hidden ones; a hidden
+// count is taken as unknown and adds nothing, so near-empty series stay quiet at every alert level.
+const GATE_WEEKS = 4, GATE_MIN_CASES = 5;
+function gateOpen(s, i) {
+  let sum = 0;
+  for (let j = Math.max(0, i - GATE_WEEKS + 1); j <= i; j += 1) sum += s?.[j]?.c ?? 0;
+  return sum >= GATE_MIN_CASES;
+}
+
 function build(raw) {
   const { meta, weekly, alerts, forecasts, allocation, calendar, dq, geo } = raw;
   const threshold = meta.suppression_threshold ?? 5;
@@ -86,7 +96,7 @@ function build(raw) {
     if (i === undefined) continue;
     const k = key(a.d, a.dz, a.method);
     if (!alertIdx.has(k)) alertIdx.set(k, new Array(weeks.length).fill(null));
-    alertIdx.get(k)[i] = { stat: a.stat, thr: a.thr, alert: !!a.alert };
+    alertIdx.get(k)[i] = { stat: a.stat, thr: a.thr, alert: !!a.alert, gate: gateOpen(series.get(key(a.d, a.dz)), i) };
   }
 
   // Latest forecast origin per district x disease.
@@ -153,9 +163,9 @@ function build(raw) {
 }
 
 // An alert under the current threshold multiplier. At 1x the exported flag is used as-is; at other levels the
-// alarm gate still applies (gate: false is exported only where it is closed). For CUSUM this approximates,
-// because the exported statistic resets at the default h.
+// alarm gate (gateOpen) still applies. For CUSUM this approximates, because the exported statistic resets at
+// the default h.
 export function isAlert(a, mult) {
   if (!a || a.stat == null) return false;
-  return mult === 1 ? a.alert : a.gate !== false && a.stat > a.thr * mult;
+  return mult === 1 ? a.alert : a.gate && a.stat > a.thr * mult;
 }
