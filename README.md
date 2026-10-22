@@ -6,6 +6,8 @@ Big data surveillance, forecasting and response-planning platform (CSE 4345 CEP,
 
 **Video:** _link added at M3_
 
+Portfolio: https://shinzuu.asktechguy.com/
+
 ## Prerequisites
 
 - Linux or macOS, 16 GB RAM, about 15 GB free disk for SF=1 (about 4 GB for SF=0.25, including the 1 GB Python environment).
