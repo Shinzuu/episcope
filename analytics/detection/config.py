@@ -36,16 +36,19 @@ SEASON_INDEX_CLAMP = (0.05, 20.0)
 
 # --- EARS C2 (Hutwagner 2003; R surveillance earsC: baseline lags 3..9, 2-period guard band) -----
 EARS_BASELINE_LAGS = (3, 9)
-EARS_THRESHOLD = 3.0
+# Operating point chosen by the sweep (make evaluate, docs/experiments/detection_tradeoff.json): the most
+# sensitive setting with at most two false alerts per district-year. 3.0 gives 4.11.
+EARS_THRESHOLD = 4.0
 MIN_SIGMA = 1.0              # R's minSigma: floors the SD so sparse series do not divide by ~0
 MIN_BASELINE_WEEKS = 4       # non-missing weeks needed in the baseline before a statistic is produced
 
 # --- CUSUM (Page 1954), one-sided upper, reset after an alarm ------------------------------------
-# k = 0.5 targets a 1-SD shift. h = 5 is the upper end of the textbook 4-5; the sweep calibrates it.
+# k = 0.5 targets a 1-SD shift. h = 6.5 is the sweep's operating point (detection_tradeoff.json: at most two
+# false alerts per district-year; the textbook h = 5 gives 2.76).
 # z_t uses the same seasonal quasi-Poisson baseline as EARS (methods.py) over 26 weeks behind a 2-week
 # guard band: a longer, steadier baseline, so CUSUM accumulates small sustained excesses (slow outbreaks).
 CUSUM_K = 0.5
-CUSUM_H = 5.0
+CUSUM_H = 6.5
 CUSUM_BASELINE_WEEKS = 26
 CUSUM_GUARD_WEEKS = 2
 
