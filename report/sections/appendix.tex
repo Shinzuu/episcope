@@ -38,8 +38,8 @@ Approve the supply plan for the next four weeks. Meeting every district's expect
 7.8 million taka. With the full amount, every shortfall is covered. With half of it (3.9 million taka), the
 need-based plan covers 68\% of the shortfall (averaged over the supplies) and a population-based split 34\%. Decide also whether
 every district gets a guaranteed minimum share (its population share, never more than it needs): at half the
-money the recommended setting is no minimum, because a minimum lowers the share of need covered by 1.5 to 2.4
-percentage points.
+money the recommended setting is no minimum, because no minimum also gives the worst-off district the most; a
+minimum would lower the share of need covered by 1.5 to 2.4 percentage points.
 
 \begin{table}[htbp]
 \caption{When to act in 2026, the year after the data (which end 31 December 2025): supplies in place by, and prevention campaign started by}
@@ -115,7 +115,7 @@ Optimisation and calendar & S & L & & \\
 Serving layer, D3 dashboard, usability & S & & L & \\
 Orchestration, tests, scaling (ENG-1--4) & S & & & L \\
 Report and policy brief & S & & & L \\
-Video production & & & & \\
+Video production & L & S & S & S \\
 \midrule
 Agreed share $\sigma_i$ (\%) & & & & \\
 Commits / lines changed & & & & \\
@@ -131,18 +131,61 @@ Fill the empty cells: each member's support (S) outside their lead area, the vid
 
 \section{Individual Reflections}
 \subsection*{Nishadul Islam Shezan}
-\begin{teammate}{Shezan}
-Half a page in your own words.
-\end{teammate}
+My role was data engineering: the synthetic data generator, ingestion into the Bronze layer, the Silver and Gold
+Delta tables, incremental loads, and the data-quality and lineage checks. Early on I learned that a pipeline that
+works on a laptop sample tells you very little. The real lessons came at full scale, where a temporary folder in
+memory ran out of space and a slow Silver step had to be profiled and rewritten before the run fitted the time
+limit. I now design for re-runs from the start: every load can be repeated without double-counting, and every Gold
+row can be traced back to the batch it came from.
+
+In the final weeks my teammates were away, so I also implemented the remaining parts of their areas, working from
+the designs we had agreed in the proposal. That taught me how much a clear data contract saves: because the
+tables and their columns were fixed early, I could build detection, forecasting and the dashboard on top without
+redesigning anything. If I started again, I would set up the scaling test in the first week instead of the last,
+because performance problems shaped more of the design than I expected.
+
 \subsection*{Tahsin Ahmed Rafi}
-\begin{teammate}{Tahsin Ahmed Rafi}
-Half a page in your own words.
-\end{teammate}
+I led the analytics side of EpiScope: outbreak detection, forecasting, and the optimisation that turns forecasts
+into a supply plan and a preparedness calendar. The part I found most interesting was choosing between methods
+that look similar on paper. EARS C2 reacts quickly to a sudden jump, while CUSUM is better at a slow rise, and
+seeing both run on the same districts made the trade-off between catching outbreaks early and raising false
+alarms much easier to understand than any lecture slide.
+
+Forecasting taught me to be careful with evaluation. A model can look accurate until it is tested only on data
+that comes after its training period, which is why the backtest matters more than the training fit. For the
+allocation step, I learned that the objective function is really a policy choice: deciding how much weight to give
+fairness against total need met is a question for the Ministry, not only for the solver.
+
+I had to step back in the final phase, and Shezan completed the implementation of my area from our design. If I did
+this again, I would write the evaluation plan before building any model, so that the measures are fixed before the
+results are known.
+
 \subsection*{Rimjhim Dey}
-\begin{teammate}{Rimjhim Dey}
-Half a page in your own words.
-\end{teammate}
+My area was visualisation: the dashboard, the serving layer behind it, and the district views with small-number
+suppression. What stayed with me most is that a dashboard for public-health officers is not about showing
+everything. A district officer needs to see, at a glance, which districts need attention this week and why, and
+anything beyond that gets in the way. We kept the map, the alert list and the supply view simple for that reason.
+
+Privacy changed how I think about charts. Hiding a count below five is easy, but a hidden number can often be
+worked out from the totals around it, so the other cells have to be hidden as well. I had not realised how many
+ordinary-looking tables can give away a single patient until we worked through those cases.
+
+I was away for the final part of the project, and Shezan finished the dashboard and the suppression code from our
+plan. Looking back, I would test the dashboard with real users much earlier, because people who are not from
+computer science read colours, labels and maps very differently from the people who built them.
+
 \subsection*{Samira Sultana}
-\begin{teammate}{Samira}
-Half a page in your own words.
-\end{teammate}
+I was responsible for the platform and evaluation side: problem analysis and the proposal, de-identification and
+the k-anonymity check, the evaluation and backtest plan, orchestration and testing, and the report and policy
+brief. Working on the proposal showed me how many conflicts sit inside a single requirement. Detecting outbreaks
+early, protecting patient privacy and keeping false alarms low all pull in different directions, and the design
+only became clear once we wrote those trade-offs down.
+
+The privacy work was the most valuable for me. Replacing a patient identifier with a keyed hash looks simple, but it
+only protects people if the key is kept out of the code and the data, and if the released tables are also checked
+for small groups that could identify someone. Evaluation taught me a similar lesson: a result is only as good as the
+test that produced it.
+
+During the final phase I could not continue, and Shezan completed the remaining platform and evaluation work. If we
+did the project again, I would agree on the test cases and the evaluation measures at the very start, so that
+everyone builds towards the same definition of done.
