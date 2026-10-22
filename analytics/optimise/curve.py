@@ -89,18 +89,23 @@ def recommend_alpha(curve, tol_pp=A.RECOMMEND_TOLERANCE_PP):
         bl = curve[(curve["kind"] == "population_proportional") & (curve["budget_level"] == ref)]
         if len(bl):
             detail["pct_need_met_population_baseline"] = float(bl["pct_need_met"].iloc[0])
+    others = {a: v for a, v in eq.items() if a != alpha}
     reason = (f"alpha = {alpha:.1f}: of the equity floors that keep the share of need met within {tol_pp:g} "
-              f"percentage points of pure efficiency at every scarce budget (alpha <= "
-              f"{max(admissible):.1f} qualifies), it gives the best-covered worst-off district on average "
-              f"(mean lowest district coverage {eq[alpha]:.2f} vs {eq.get(min(admissible), float('nan')):.2f} "
-              f"at alpha = {min(admissible):.1f}).")
+              f"percentage points of pure efficiency at every scarce budget (admissible alphas: "
+              f"{', '.join(f'{a:.1f}' for a in sorted(admissible))}), it gives the best-covered worst-off district "
+              f"on average (mean lowest district coverage {eq[alpha]:.2f}"
+              + (f", against {max(others.values()):.2f} for the next best, alpha = "
+                 f"{max(others, key=others.get):.1f}" if others else "")
+              + ").")
     if detail:
+        same = alpha == float(lpc["alpha"].min())
         reason += (f" At {detail['reference_budget_level']:g}xB_ref it meets {detail['pct_need_met_recommended']:.1f}% "
-                   f"of need (vs {detail['pct_need_met_alpha0']:.1f}% at alpha = 0"
-                   + (f", {detail['pct_need_met_population_baseline']:.1f}% for the population-proportional baseline"
+                   f"of need ("
+                   + ("" if same else f"vs {detail['pct_need_met_alpha0']:.1f}% at alpha = 0, ")
+                   + (f"{detail['pct_need_met_population_baseline']:.1f}% for the population-proportional baseline"
                       if "pct_need_met_population_baseline" in detail else "")
                    + f"); the worst-covered district gets {detail['min_district_coverage_recommended']:.2f} of its "
-                   f"need (vs {detail['min_district_coverage_alpha0']:.2f} at alpha = 0).")
+                   + ("need." if same else f"need (vs {detail['min_district_coverage_alpha0']:.2f} at alpha = 0)."))
     return {"alpha": alpha, "tolerance_pp": tol_pp, "admissible_alphas": sorted(float(a) for a in admissible),
             "per_budget_max_alpha": {str(k): v for k, v in per_budget.items()},
             "reason": reason, **detail}

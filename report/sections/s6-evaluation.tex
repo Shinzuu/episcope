@@ -1,8 +1,11 @@
 \section{Evaluation}\label{sec:eval}
-Every number in this section comes from one clean SF=1 build (seed 42, real weather; 34.1 million encounters,
-of which 1.37 million, 4.0\%, were quarantined) from a fresh clone of the final code, with the result files
-in \texttt{docs/experiments}. The exceptions are the scaling runs (Table~\ref{tab:scaling}) and the
-before-and-after measurements of the fixes, which say where they come from.
+Every number in this section comes from clean SF=1 builds from a fresh clone (seed 42, real weather; 34.1
+million encounters, of which 1.37 million, 4.0\%, were quarantined), with the result files in
+\texttt{docs/experiments}. The allocation results come from the final code (commit 1acb5e1); detection, the
+backtest and the SEIR scenarios come from the build before it (a99339c), whose code for those outputs is the
+same (only the optimiser and the export changed), and the final build gave the same results. The exceptions are the scaling runs
+(Table~\ref{tab:scaling}), the calendar check (SF=0.25) and the before-and-after measurements of the fixes,
+which say where they come from.
 
 \subsection{Detection}
 \texttt{make evaluate} scores every alert against the 35 injected outbreaks in \texttt{ground\_truth/}, the only
@@ -45,8 +48,8 @@ on report-date counts alerts on the back-fill week, while ours, on onset-week co
 does not.
 
 \subsection{Forecast backtest}
-The backtest refits the per-district NB-GLM at 52 rolling origins (every fourth origin, reused in between) and
-forecasts one to four weeks ahead using only data up to each origin. The seasonal-naive baseline is scored on
+The backtest forecasts one to four weeks ahead from 52 weekly origins, refitting the per-district NB-GLM at every
+fourth origin and reusing the fit in between, using only data up to each origin. The seasonal-naive baseline is scored on
 the same district, disease, origin and horizon cells. The weighted interval score~\cite{bracher2021wis}
 uses eleven central intervals plus the median; relative WIS below 1 means the model beats the baseline. MAE is
 the mean absolute error of the median forecast.
@@ -110,9 +113,9 @@ The LP meets about twice the share of need at every scarce budget. The efficienc
 \input{sections/fig-equity} The floor is capped at need: a district gets at least
 $\min(\alpha\,p_d\sum_e x_{e,r},\ \text{need}_{d,r})$ and never more than its need, so $\alpha=1$ means a
 population share of what is sent, but never more than a district needs. No scenario now sends any district
-more than its need (\texttt{excess\_cost} is 0 throughout). At a quarter and three quarters of $B_{\text{ref}}$
-every floor costs less than one point of need met. At half the budget a floor from 0.1 to 0.9 costs 2.5 points
-(65.3\% against 67.8\%) and $\alpha=1$ costs 1.5, so the rule recommends $\alpha=0$. The tranche prices already
+more than its need (\texttt{excess\_cost} is at most 0.03\,BDT, solver rounding). At a quarter and three quarters of $B_{\text{ref}}$
+every floor changes need met by under one point; at three quarters a high floor even raises it slightly (83.4\% at $\alpha=1$), because the LP minimises the tranche-weighted shortfall, not the share of need met. At half the budget a floor from 0.1 to 0.9 costs 2.3 to 2.4 points
+(65.3 to 65.5\% against 67.8\%) and $\alpha=1$ costs 1.5, so the rule recommends $\alpha=0$. The tranche prices already
 spread the money: at $\alpha=0$ and half the budget the worst-covered district gets half of its need. The floor
 does not improve on that. At half the budget, $\alpha=0.1$ lowers the worst-covered district from 0.50 to 0.375
 of its need and moves the Gini of per-capita spend from 0.261 to 0.271, and at no budget does any $\alpha$

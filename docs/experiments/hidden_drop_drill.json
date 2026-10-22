@@ -52,6 +52,6 @@
   },
   "inputs_not_from_readme": [
     "data/reference copied from the working checkout",
-    "random EPISCOPE_HASH_SALT written to .env (setup copies the placeholder)"
+    "random EPISCOPE_HASH_SALT written to .env (replaces the random salt make setup writes)"
   ]
 }

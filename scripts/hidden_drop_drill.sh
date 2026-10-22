@@ -11,8 +11,8 @@
 #
 # Two inputs are not produced by the README steps and are copied from this checkout, both stated in the JSON:
 #   - data/reference/ (built from public downloads by pipeline/reference; data/ is git-ignored);
-#   - a fresh random EPISCOPE_HASH_SALT in .env (`make setup` copies the .env.example placeholder, which the
-#     de-identification step refuses by design). The salt is generated here and never printed.
+#   - a fresh random EPISCOPE_HASH_SALT in .env. `make setup` already writes a random salt; the drill replaces
+#     it with its own, so the clone never shares a salt with this checkout. The salt is never printed.
 #
 # Usage: scripts/hidden_drop_drill.sh   (env: SF=0.05 SEED=42 DROP_SEED=<random> DRILL_SETUP=make|link
 #                                        DRILL_TMP=/var/tmp KEEP=0)
@@ -177,7 +177,7 @@ res = {"ok": ok, "summary": summary, "rows_added": rows_added, "duplicates_after
        "sf": float(sf), "seed": int(seed), "drop_seed": int(drop), "setup": setup, "seconds": int(secs),
        "before": b, "after": a, "rerun": r, "export": e,
        "inputs_not_from_readme": ["data/reference copied from the working checkout",
-                                  "random EPISCOPE_HASH_SALT written to .env (setup copies the placeholder)"]}
+                                  "random EPISCOPE_HASH_SALT written to .env (replaces the random salt make setup writes)"]}
 for k in ("before", "after", "rerun"):
     res[k].pop("gold_hash", None)
 json.dump(res, open(out, "w"), indent=2)

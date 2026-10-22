@@ -11,7 +11,8 @@ mock:      ; $(RUN) -m serving.mock_data
 dashboard-verify: ; node dashboard/tools/verify.mjs
 check:     ; $(RUN) scripts/verify.py
 
-.PHONY: check setup all generate bronze silver gold analytics serve catalog stream asof dashboard test clean
+.PHONY: check setup reference reference-rebuild all generate bronze silver gold analytics evaluate serve catalog stream asof \
+        drop mock dashboard dashboard-verify test clean
 
 setup:
 	mise install

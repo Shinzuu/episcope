@@ -1,7 +1,7 @@
-# EpiScope CEP: analysis of the brief
+# EpiScope CEP: requirements analysis
 
 Source: `source/CEP_EpiScope.pdf` (12 pages, CSE 4345, instructor Rokan Uddin Faruqui, Spring 2026).
-This file is our reading of what the brief demands, where the marks are, and what can go wrong.
+This file is our reading of what the brief requires, how each part is assessed, and the risks we planned for.
 Technical detail for each method and dataset, checked against primary sources, is in `research.md`.
 
 ## 1. The problem in one paragraph
@@ -38,7 +38,7 @@ exactly three items: the repository, the report and the video.
 | Processing | Spark for all heavy transforms. Pandas is allowed only for small reference data or final aggregates |
 | AI tools | Allowed, but `AI_USAGE.md` is required, and code you cannot explain earns no credit |
 
-## 3. Where the marks are
+## 3. How the work is assessed
 
 | Criterion | Marks | What actually earns it |
 |---|---:|---|
@@ -98,7 +98,7 @@ Two items are almost free given the design choices below:
   did we know on date t" backtest honest.
 - **AN-3:** the rubric's top band asks for "artefact handled", so this one is effectively required.
 
-## 6. Traps that are easy to miss
+## 6. Risks that are easy to miss (traps)
 
 1. **Hidden test drop.** The pipeline must work on new dates it has never seen. Rules:
    - never hard-code dates, file names or row counts;

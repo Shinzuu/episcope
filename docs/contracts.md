@@ -30,6 +30,7 @@ week-year boundary is unambiguous and Spark supports it natively. The report sta
 | `gold.weather_weekly` | district × week | district_code, epi_year, epi_week, precip_mm_sum, tmean_c_avg, rh_pct_avg |
 | `gold.stock_latest` | district × resource | district_code, resource (beds, iv_saline, ns1_kits, ors, antimalarials), stock, as_of |
 | `gold.dq_report` | load | batch_id, source, rows_in, rows_clean, rows_quarantined, rule_pass_rates (map), loaded_at |
+| `gold._snapshots` | Delta version of `gold.cases_weekly` (ING-7) | version (long), data_through (latest report_date included), recorded_at; read by `pipeline/gold/asof.py` (`make asof`) |
 
 ## Analytics outputs (produced by `analytics/`)
 
@@ -52,6 +53,8 @@ week-year boundary is unambiguous and Spark supports it natively. The report sta
 | `allocation.json` | `{scenarios: [{id, budget, alpha}], rows: [{id, d, r, alloc, unmet, demand, stock}]}` |
 | `calendar.json` | `[{div, dz, w, idx, action}]` |
 | `dq.json` | `[{batch_id, source, rows_in, rows_clean, rows_quarantined, rules: {code: pass_rate}}]` |
+| `detection_tradeoff.json` | copied from `docs/experiments/` when `make evaluate` has run: `{generated_at, data_weeks, false_alert_budget_per_district_year, recommended, by_shape_at_recommended, curve, definitions}` |
+| `dashboard/roles/<district_code>/*.json` (PRV-3) | one bundle per district user, same file shapes as above: the own district in full; every other division, and the own division without the own district, as aggregate series; calendar and dq copied; `meta.json` adds `role: {district, aggregates}`. An aggregate cell is published only if every district cell under it is visible nationally (`serving/roles.py`) |
 
 Any count from 1 to 4 is shown as `null` with `s: true` (PRV-2). Complementary suppression ensures no hidden
 cell can be recovered by subtraction.

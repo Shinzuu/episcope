@@ -24,3 +24,9 @@ participant took part, and the quotes in the JSON files are written by the agent
   (commit 62791b4) but not tested again.
 
 Files: `persona-<a|b|c>-round<1|2>.json`.
+
+## Real non-CS testers (to do)
+
+Slot for two real non-CS testers, on the same five tasks, 20 to 30 minutes each. Not done yet. Records go in
+`human-1.md` and `human-2.md` (task, done / partly / not done, problems seen, quotes), and into report §7
+(Table VIII).

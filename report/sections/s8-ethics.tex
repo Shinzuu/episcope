@@ -6,13 +6,14 @@ cell. One residual risk is known and written in the code: the padded HMAC key ap
 Spark event logs of the silver job must be treated as secret and kept outside the repository.
 
 \textbf{Record-level extracts and public release (PRV-4).} \texttt{pipeline/privacy/kanon.py} measures
-k-anonymity~\cite{sweeney2002k} on any record-level extract. The quasi-identifiers are age band, sex,
+k-anonymity~\cite{sweeney2002k} on any record-level extract. It is a check function with unit tests, not a pipeline step: the pipeline publishes only aggregates, so there is no extract for it to check yet. The quasi-identifiers are age band, sex,
 district, onset week, disease and facility. k-anonymity does not stop a homogeneity attack, where everyone in a class
 shares one diagnosis, so a disease extract also needs l-diversity. For a public release, differential
 privacy~\cite{dwork2006dp} is the stronger tool: the Laplace mechanism adds noise with standard deviation
 $\sqrt{2}/\varepsilon$ to each count, about 1.4 cases at $\varepsilon=1$. The privacy budget adds up over every
 published cell and week, and noisy counts can be negative and must be post-processed. We would use it for the
 public release only; ministry users keep exact counts with suppression.
+
 \textbf{Role-based access (PRV-3).} A district user receives a bundle with their own district in detail and
 every other area only as a division total. A division total is published only if every district count under
 it is visible in the national view. Subtracting one published number from another can then never reveal a
@@ -34,6 +35,6 @@ teach officers to ignore the list; the operating point was chosen to keep false 
 a year for that reason. Big-data signals can drift away from the truth when behaviour or reporting
 changes~\cite{lazer2014flu}, so the alerts are a prompt to investigate, not a diagnosis.
 
-\textbf{Footprint.} The whole pipeline runs on one 15\,GB laptop in under 30 minutes at full scale, with no
+\textbf{Footprint.} The whole pipeline runs on one 16\,GB laptop in under 30 minutes at full scale, with no
 cluster, cloud service or GPU, which keeps both the energy use and the running cost low enough for a district
 office to repeat.

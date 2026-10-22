@@ -32,7 +32,7 @@
       "0.5": 1.0,
       "0.75": 1.0
     },
-    "reason": "alpha = 0.0: of the equity floors that keep the share of need met within 2 percentage points of pure efficiency at every scarce budget (alpha <= 1.0 qualifies), it gives the best-covered worst-off district on average (mean lowest district coverage 0.46 vs 0.46 at alpha = 0.0). At 0.5xB_ref it meets 67.8% of need (vs 67.8% at alpha = 0, 34.4% for the population-proportional baseline); the worst-covered district gets 0.50 of its need (vs 0.50 at alpha = 0).",
+    "reason": "alpha = 0.0: of the equity floors that keep the share of need met within 2 percentage points of pure efficiency at every scarce budget (admissible alphas: 0.0, 1.0), it gives the best-covered worst-off district on average (mean lowest district coverage 0.46, against 0.38 for the next best, alpha = 1.0). At 0.5xB_ref it meets 67.8% of need (34.4% for the population-proportional baseline); the worst-covered district gets 0.50 of its need.",
     "reference_budget_level": 0.5,
     "pct_need_met_alpha0": 67.78184415533651,
     "pct_need_met_recommended": 67.78184415533651,

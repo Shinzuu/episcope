@@ -34,7 +34,7 @@ lighter as division totals.
 
 \textbf{Simulated persona walkthroughs.} We had no access to non-CS users in the final phase, so the
 usability check was run as \emph{simulated persona walkthroughs with AI agents}: three AI agents, each briefed
-as one persona, used the real dashboard of the final SF=1 build through a scripted headless browser. They are
+as one persona, used the real dashboard of an SF=1 build of 21 October, before the allocation cap, through a scripted headless browser. They are
 not human participants, and their findings are a design review, not user evidence. The personas were a
 district health officer in Cox's Bazar using the district view, a hospital store-keeper in Chattogram, and a
 senior ministry official. Each did five tasks: find this week's alerts, read a forecast with its range, explain
@@ -63,7 +63,7 @@ used codes such as q90 and $\alpha$, gave no units or currency, and opened on a 
 allocate. We added a line naming the districts on alert in the last full week, marked the partial
 week, added a forecast table with a cautious four-week total, removed the threshold line, renamed every label
 in plain words, and added a sentence explaining each district's allocation. In the confirm round the agents
-rated 26 of the 48 problems fixed, 20 partly fixed and 2 not fixed (Table~\ref{tab:usability}). Round 2 logged 17 new problems, 13 of them distinct, two of high severity: the hollow alert markers were drawn
+rated 26 of the 48 problems fixed, 20 partly fixed and 2 not fixed. Round 2 logged 17 new problems, 13 of them distinct, two of high severity: the hollow alert markers were drawn
 solid, and at the largest budget with $\alpha=1$ the plan sent 9,237 antimalarial courses against a national
 shortfall of 684, because a full population split forces supplies to every district. We then fixed the
 markers, called a cell hidden to protect another cell ``hidden'' instead of ``fewer than 5'', made the ranking
@@ -71,3 +71,9 @@ fit its panel, added a cautious four-week total and an all-supplies line, and sa
 not move stock between districts. These fixes were not tested in a third round. The over-allocation
 was then removed by capping every allocation at need (Section~\ref{sec:alloc}). Still open: unlabelled budget lines in the equity chart, no
 delivery week, and method names that remain partly technical.
+
+\begin{teammate}{Rimjhim Dey: two real non-CS testers}
+Slot for the usability test with two real non-CS users: the same five tasks, 20 to 30 minutes each. Write the
+records to \texttt{docs/usability/human-1.md} and \texttt{human-2.md}, then add one sentence here and one row
+per tester to Table~\ref{tab:usability}.
+\end{teammate}

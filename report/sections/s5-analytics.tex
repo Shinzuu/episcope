@@ -18,10 +18,10 @@ they happened, and the silent weeks count as missing, not as zero.
 \subsection{Forecasting (AN-4)}
 For dengue and diarrhoea, one model per district and horizon $h=1,\dots,4$:
 \begin{multline}
-\log\mu_t = \beta_0 + \textstyle\sum_{k=1}^{2} \text{Fourier}_k(t) + \beta_r\,\text{rain}_{t-\ell} \\
-+ \beta_T\,\text{temp}_{t-\ell} + \beta_y \log(1+\text{level}_{t-h})
+\log\mu_t = \beta_0 + \textstyle\sum_{k=1}^{2} \bigl[\gamma_k \sin(2\pi k\tau_t) + \delta_k \cos(2\pi k\tau_t)\bigr] \\
++ \beta_r\,\text{rain}_{t-\ell} + \beta_T\,\text{temp}_{t-\ell} + \beta_y \log(1+\text{level}_{t-h})
 \end{multline}
-with lags $\ell$ of four to eight weeks and $\text{Var}(y)=\mu+\alpha\mu^2$ (NB2~\cite{hilbe2011nb}), fitted with
+with $\tau_t$ the position of week $t$ in the year (mid-week day of year over 365.25), lags $\ell$ of four to eight weeks and $\text{Var}(y)=\mu+\alpha\mu^2$ (NB2~\cite{hilbe2011nb}), fitted with
 statsmodels. The baseline is the seasonal-naive forecast, the value of the same week a year earlier~\cite{hyndman2021fpp3}.
 Because every weather lag is at least as long as the horizon, no weather forecast is needed. Districts are
 fitted in parallel through a cogrouped \texttt{applyInPandas}. Predictive quantiles are the plug-in NB

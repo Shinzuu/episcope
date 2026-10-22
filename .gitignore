@@ -16,3 +16,11 @@ dashboard/data/*.json
 !/data/reference/*.parquet
 dashboard/roles/
 HANDOFF.md
+# Internal working files (kept locally, not part of the submission)
+/SUBMIT-AUDIT.md
+/share/
+/report/versions/
+/BRIEF-SUBMIT.md
+/REVIEW-EXAMINER-*.md
+/review-loop/
+/video/

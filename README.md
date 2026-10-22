@@ -72,10 +72,11 @@ Hive catalog (`make catalog`). Details and the reasons for each choice are in th
 | ID | File | Report section |
 |---|---|---|
 | ING-1 | generator/generate.py, pipeline/reference/, pipeline/bronze/ingest.py | §4 |
-| ING-2 | pipeline/silver/build.py | §3 |
+| ING-2 | pipeline/silver/build.py | §4 |
 | ING-3 | pipeline/gold/build.py, pipeline/catalog.py | §3 |
-| ING-4 | pipeline/silver/build.py | §3, §6 |
-| ING-6 | pipeline/stream.py | §3, §6 |
+| ING-4 | pipeline/silver/build.py | §4 |
+| ING-5 | not done: local filesystem on purpose, to save RAM | §3, §9 |
+| ING-6 | pipeline/stream.py | §3, §4 |
 | ING-7 | pipeline/gold/asof.py | §4, §6 |
 | DQ-1 | pipeline/quality/rules.py | §4 |
 | DQ-2 | pipeline/quality/engine.py | §4 |
@@ -107,8 +108,6 @@ Hive catalog (`make catalog`). Details and the reasons for each choice are in th
 | ENG-3 | pipeline/quality/engine.py, analytics/forecast/backtest.py, docs/experiments/silver_optimisation.json, docs/experiments/backtest_optimisation.json | §6 |
 | ENG-4 | tests/, scripts/dag.py (DAG with retries) | §6 |
 
-_Filled in as each requirement lands._
-
 ## Data sources
 
 - Boundaries and population: BBS / OCHA ROAP via HDX COD-AB and COD-PS (CC BY-IGO).
@@ -119,6 +118,10 @@ _Filled in as each requirement lands._
 ## Docs
 
 - `docs/proposal.md`: M1 proposal
-- `docs/ANALYSIS.md`: our reading of the brief, marks, traps, plan
+- `docs/EpiScope-report.pdf`: the technical report (IEEE format), with the policy brief in Appendix A
+- `docs/FINAL-NUMBERS.md`: every headline number and the result file it comes from
+- `docs/contracts.md`: data contracts between components (tables, exports, role bundles)
+- `docs/ANALYSIS.md`: requirements analysis of the brief and the plan
+- `AI_USAGE.md`: where AI tools were used, as the brief requires
 - `docs/research.md`: primary-source research for every method, dataset and tool
 - `generator/schema.json`: schema contract for S4–S6

@@ -13,7 +13,7 @@ seeded per (seed, stream, district, year), so the same arguments give byte-ident
 of worker processes. Rates are per head of population, so the row count follows the census, not a
 constant: SF=1 gives 34.1 million encounter rows for 2021--2025, planted defects included.
 
-Each disease has its own annual cycle. Dengue peaks in early October, because OpenDengue's national counts peak
+Each disease has its own annual cycle. Dengue peaks in early October, because OpenDengue's national counts~\cite{clarke2024opendengue} peak
 in October in 2022 and 2024, later than ``follows the monsoon'' suggests. Dengue responds to rainfall and
 temperature four to eight weeks earlier, diarrhoea spikes after extreme rainfall, malaria is concentrated in
 the three Hill Tracts districts and Cox's Bazar, and every count has negative-binomial noise. Reporting delay is
@@ -101,7 +101,7 @@ silver 96\,s, gold 41\,s, detection 25\,s, export 18\,s).
 \subsection{Hidden-drop drill}
 \texttt{scripts/hidden\_drop\_drill.sh} rehearses the instructor's test: clone, \texttt{make setup},
 \texttt{make all}, a new 14-day drop with an unseen seed, the incremental steps, then the same steps again. On
-the final code (21 October, SF=0.05) it passed every check. The drop (seed 4675) became one new bronze batch,
+the final ingestion code (21 October, SF=0.05; later commits changed only the LP and the dashboard JavaScript) it passed every check. The drop (seed 4675) became one new bronze batch,
 silver gained 8,888 rows, and the data moved from 31 December 2025 to 14 January 2026. The re-run changed
 nothing and left no duplicate IDs or gold keys. The export was 9.76\,MB with no count from 1 to 4. The whole
 drill took 1,717\,s (28.6 minutes), including \texttt{make setup}. Two inputs do not come from the clone's
