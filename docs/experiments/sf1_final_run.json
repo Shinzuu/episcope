@@ -48,5 +48,11 @@
   "what": "clean SF=1 build plus make evaluate from a fresh clone after setting the detection defaults to the sweep's operating point (EARS C2 4.0, CUSUM h 6.5); every committed result file (detection_tradeoff, backtest_metrics, seir_scenarios, calendar_summary, dq4_patient_dedup, allocation_curve) came out byte-identical, allocation_summary.json identical in content; exported alerts now carry thr 4.0 (ears_c2) and 6.5 (cusum)",
   "start": "2026-10-22 11:31:42",
   "end": "2026-10-22 12:05:55"
+ },
+ "calendar_rule_rerun": {
+  "commit": "cc7a121",
+  "what": "clean SF=1 build plus make evaluate and make serve from a fresh clone after adding the calendar's low-signal rule (no action weeks under 1 case a week) and NaN-free detection_tradeoff.json; calendar_summary changed only in the malaria rows of BD10, BD30, BD40, BD50 (no_seasonality true, no action weeks; mean weekly cases 0.12, 0.79, 0.18, 0.31) and gained the mean_weekly_cases column; detection_tradeoff.csv, backtest_metrics, seir_scenarios, dq4_patient_dedup and allocation_curve byte-identical, detection_tradeoff.json identical apart from generated_at with NaN written as null, allocation_summary.json identical in content",
+  "start": "2026-10-22 14:26:39",
+  "end": "2026-10-22 14:54:41"
  }
 }

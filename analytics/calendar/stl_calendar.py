@@ -34,8 +34,9 @@ from pyspark.sql import functions as Fn
 PERIOD = 52
 STL_SEASONAL = 13
 ONSET_FRACTION = 0.25
-MIN_MEAN_WEEKLY_CASES = 1.0  # Below this the STL "season" is noise: the four non-endemic malaria divisions have
-                             # 0.03-0.2 a week at SF=0.25, the endemic ones 1.9 or more (8 or more at SF=1).
+MIN_MEAN_WEEKLY_CASES = 1.0  # Below this the STL "season" is noise. Malaria in the four divisions without an
+                             # endemic district: 0.1-0.8 cases a week at SF=1 (0.03-0.2 at SF=0.25); in the
+                             # other four: 7.3 or more at SF=1 (1.9 or more at SF=0.25).
 
 SUPPLY_LEAD_WEEKS = 3        # ASSUMPTION. Procurement + transport to district stores, 2-4 weeks (research.md §11).
 CAMPAIGN_LEAD_WEEKS = {      # ASSUMPTION. How long prevention needs to act before cases rise.

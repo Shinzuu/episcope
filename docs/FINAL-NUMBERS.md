@@ -9,9 +9,11 @@ both seed 42 with real weather, 2026-10-21, unless a row says otherwise:
   these outputs did not change between the two commits (only the optimiser, the export and the checks did), and the 1acb5e1 run gave the same detection, backtest, calendar and SEIR results.
 
 A third clean build at the final detection defaults (e97464c) reproduced every result file byte for byte
-(`sf1_final_run.json`, `detection_default_rerun`).
+(`sf1_final_run.json`, `detection_default_rerun`). A fourth (cc7a121, `calendar_rule_rerun`) added the calendar's
+low-signal rule: only the malaria rows of Barishal, Dhaka, Khulna and Rajshahi changed (no action weeks); every
+other result file came out the same.
 
-The calendar check (`calendar_check.json`) ran on the SF=0.25 build with the same seed.
+The calendar check (`calendar_check.json`, `analytics/calendar/check.py`, `make calendar-check`) ran on the SF=0.25 build with the same seed.
 
 | Topic | Number | Source |
 |---|---|---|

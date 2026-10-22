@@ -8,7 +8,7 @@ Big data surveillance, forecasting and response-planning platform (CSE 4345 CEP,
 
 ## Prerequisites
 
-- Linux or macOS, 16 GB RAM, about 15 GB free disk for SF=1 (2 GB for SF=0.25).
+- Linux or macOS, 16 GB RAM, about 15 GB free disk for SF=1 (about 4 GB for SF=0.25, including the 1 GB Python environment).
 - [mise](https://mise.jdx.dev) (installs Java 17 and Python 3.12 from `mise.toml`), `make`, `git`.
 - Node is needed only to rebuild the TopoJSON map (`npx mapshaper`); the built map is committed.
 - No account or API key. The processed public reference data is committed in `data/reference/`.
@@ -23,6 +23,7 @@ Big data surveillance, forecasting and response-planning platform (CSE 4345 CEP,
 make setup          # Java 17 + Python 3.12 via mise, pinned deps, .env with a random salt
 make all SF=0.25    # DAG with retries (scripts/dag.py): reference -> generate -> bronze -> silver -> gold -> analytics -> serve, catalog
 make evaluate       # detection scored against the injected outbreaks (the only reader of ground_truth/)
+make calendar-check # calendar onset against each year's observed onset (docs/experiments/calendar_check.json)
 make dashboard      # http://localhost:8000
 make check          # five verification gates (scripts/verify.py)
 ```
@@ -94,7 +95,7 @@ Hive catalog (`make catalog`). Details and the reasons for each choice are in th
 | AN-6 | analytics/forecast/demand.py | §5 |
 | AN-7 | analytics/optimise/lp.py | §5 |
 | AN-8 | analytics/optimise/curve.py | §6 |
-| AN-9 | analytics/calendar/stl_calendar.py | §5 |
+| AN-9 | analytics/calendar/stl_calendar.py, analytics/calendar/check.py | §5, §6 |
 | AN-10 | analytics/scenario/seir.py | §5, §6 |
 | VIS-1 | dashboard/index.html | §7 |
 | VIS-2 | dashboard/js/views/ | §7 |

@@ -48,7 +48,9 @@ for every $\alpha$ because $x=0$ satisfies every constraint.
 
 The preparedness calendar fits a seasonal-trend decomposition by loess (STL)~\cite{cleveland1990stl} to each division and disease, inside \texttt{applyInPandas}. Onset is the first week
 after the trough where the seasonal index passes 25\% of the trough-to-peak range; supplies are pre-positioned
-three weeks before onset and campaigns start four to six weeks before it.
+three weeks before onset and campaigns start four to six weeks before it. A division with fewer than one case a
+week on average has no season to time (malaria in the four divisions without an endemic district), so it gets
+no action weeks.
 
 \subsection{Epidemic scenarios (AN-10)}
 A deterministic SEIR model~\cite{kermack1927} (\texttt{scenario/seir.py}) is fitted to the national

@@ -1,6 +1,6 @@
 {
   "what": "calendar onset week (SF=1 calendar_summary.csv) against the onset seen in each year's weekly counts per division (same rule on a 3-week moving average of observed cases)",
-  "cases_source": "gold.cases_weekly of the main checkout (SF=0.25, seed 42, real weather; same encounters and seasonal timing as SF=1)",
+  "cases_source": "gold.cases_weekly of the main checkout (SF=0.25, seed 42, real weather; same seed and seasonal timing as SF=1)",
   "summary": {
     "dengue": {
       "cells": 40,

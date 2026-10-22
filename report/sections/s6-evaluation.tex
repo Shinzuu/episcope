@@ -5,7 +5,9 @@ million encounters, of which 1.37 million, 4.0\%, were quarantined), with the re
 backtest and the SEIR scenarios come from the build before it (a99339c), whose code for those outputs is the
 same (only the optimiser and the export changed), and the final build gave the same results. The exceptions are the scaling runs
 (Table~\ref{tab:scaling}), the calendar check (SF=0.25) and the before-and-after measurements of the fixes,
-which say where they come from. A third build at the final detection defaults (e97464c) reproduced every result file.
+which say where they come from. A third build at the final detection defaults (e97464c) reproduced every result
+file, and a fourth (cc7a121) changed only the four malaria calendar rows that the low-signal rule now leaves
+without action weeks.
 
 \subsection{Detection}
 \texttt{make evaluate} scores every alert against the 35 injected outbreaks in \texttt{ground\_truth/}, the only
@@ -107,7 +109,7 @@ Population split (\%) & 17.6 & 34.4 & 50.1 & 63.1 & 70.9 \\
 \end{tabular}
 \end{table}
 
-The LP meets about twice the share of need at every scarce budget. The efficiency and equity curve
+The LP meets 1.6 to 2.9 times the population split's share of need at every scarce budget. The efficiency and equity curve
 (Fig.~\ref{fig:equity}) gives the price of equity.
 
 \input{sections/fig-equity} The floor is capped at need: a district gets at least
@@ -135,9 +137,11 @@ case for acting on the first alert (\texttt{seir\_scenarios.json}).
 \subsection{Preparedness calendar}
 To check the calendar (AN-9) against what happened, we applied its onset rule to each year's observed weekly
 cases per division (three-week moving average) and compared the year's onset with the calendar's. For dengue
-the median difference is 0 weeks and 39 of 40 division-years fall within two weeks; for diarrhoea and malaria
-the median difference is one week, with 85\% and 87\% within two weeks (\texttt{calendar\_check.json}, run on
-the SF=0.25 build with the same seed, so the same seasonal timing). We did not publish an ILI calendar check:
+the median difference is 0 weeks and 39 of 40 division-years fall within two weeks; for diarrhoea it is one
+week, with 85\% within two weeks. Malaria was checked only in the three divisions with cases in at least 40
+weeks of every year (Chattogram, Mymensingh, Sylhet): 13 of 15 division-years fall within two weeks, median one
+week (\texttt{analytics/calendar/check.py}, \texttt{make calendar-check}; run on the SF=0.25 build with the
+same seed, so the same seasonal timing). We did not publish an ILI calendar check:
 its yearly onset spreads widely between years (standard deviation 4.6 to 16.5 weeks by division), which the nationwide surge distorts.
 
 \subsection{Scalability and Spark optimisations}

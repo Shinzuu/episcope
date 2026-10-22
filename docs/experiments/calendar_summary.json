@@ -11,8 +11,9 @@
     "peak_to_trough_ratio": 112.2568460399,
     "onset_week_sd_across_years": 0.4898979486,
     "years_used": 5,
+    "mean_weekly_cases": 417.9773584906,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD10",
@@ -26,8 +27,9 @@
     "peak_to_trough_ratio": 2.2241642562,
     "onset_week_sd_across_years": 0.0,
     "years_used": 5,
+    "mean_weekly_cases": 1386.8490566038,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD10",
@@ -41,23 +43,25 @@
     "peak_to_trough_ratio": 7.8958292552,
     "onset_week_sd_across_years": 6.5848310533,
     "years_used": 5,
+    "mean_weekly_cases": 1098.0943396226,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD10",
     "disease": "malaria",
     "onset_week": 28,
     "peak_week": 22,
-    "preposition_by_week": 25,
-    "campaign_by_week": 22,
+    "preposition_by_week": null,
+    "campaign_by_week": null,
     "supply_lead_weeks": 3,
     "campaign_lead_weeks": 6,
     "peak_to_trough_ratio": 2.0431934311,
     "onset_week_sd_across_years": 2.9393876913,
     "years_used": 5,
-    "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "mean_weekly_cases": 0.120754717,
+    "no_seasonality": true,
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD20",
@@ -71,8 +75,9 @@
     "peak_to_trough_ratio": 100.4041160245,
     "onset_week_sd_across_years": 0.4,
     "years_used": 5,
+    "mean_weekly_cases": 2408.3056603774,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD20",
@@ -86,8 +91,9 @@
     "peak_to_trough_ratio": 1.9831842201,
     "onset_week_sd_across_years": 0.8,
     "years_used": 5,
+    "mean_weekly_cases": 5836.9509433962,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD20",
@@ -101,8 +107,9 @@
     "peak_to_trough_ratio": 7.4591410377,
     "onset_week_sd_across_years": 4.5869379765,
     "years_used": 5,
+    "mean_weekly_cases": 5434.4905660377,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD20",
@@ -116,8 +123,9 @@
     "peak_to_trough_ratio": 20.9872268241,
     "onset_week_sd_across_years": 0.7483314774,
     "years_used": 5,
+    "mean_weekly_cases": 735.0830188679,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD30",
@@ -131,8 +139,9 @@
     "peak_to_trough_ratio": 95.7701365459,
     "onset_week_sd_across_years": 0.4898979486,
     "years_used": 5,
+    "mean_weekly_cases": 11383.3660377358,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD30",
@@ -146,8 +155,9 @@
     "peak_to_trough_ratio": 2.2561965597,
     "onset_week_sd_across_years": 0.4898979486,
     "years_used": 5,
+    "mean_weekly_cases": 8484.7811320755,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD30",
@@ -161,23 +171,25 @@
     "peak_to_trough_ratio": 8.5040659533,
     "onset_week_sd_across_years": 16.5239220526,
     "years_used": 5,
+    "mean_weekly_cases": 10134.9773584906,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD30",
     "disease": "malaria",
     "onset_week": 23,
     "peak_week": 26,
-    "preposition_by_week": 20,
-    "campaign_by_week": 17,
+    "preposition_by_week": null,
+    "campaign_by_week": null,
     "supply_lead_weeks": 3,
     "campaign_lead_weeks": 6,
     "peak_to_trough_ratio": 7.4491430258,
     "onset_week_sd_across_years": 5.7410800378,
     "years_used": 5,
-    "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "mean_weekly_cases": 0.7924528302,
+    "no_seasonality": true,
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD40",
@@ -191,8 +203,9 @@
     "peak_to_trough_ratio": 101.699397673,
     "onset_week_sd_across_years": 0.4,
     "years_used": 5,
+    "mean_weekly_cases": 812.5622641509,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD40",
@@ -206,8 +219,9 @@
     "peak_to_trough_ratio": 2.0177808468,
     "onset_week_sd_across_years": 10.3846039886,
     "years_used": 5,
+    "mean_weekly_cases": 2902.0830188679,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD40",
@@ -221,23 +235,25 @@
     "peak_to_trough_ratio": 8.0148689528,
     "onset_week_sd_across_years": 13.3356664625,
     "years_used": 5,
+    "mean_weekly_cases": 2121.0716981132,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD40",
     "disease": "malaria",
     "onset_week": 20,
     "peak_week": 24,
-    "preposition_by_week": 17,
-    "campaign_by_week": 14,
+    "preposition_by_week": null,
+    "campaign_by_week": null,
     "supply_lead_weeks": 3,
     "campaign_lead_weeks": 6,
     "peak_to_trough_ratio": 2.0852787203,
     "onset_week_sd_across_years": 6.0,
     "years_used": 5,
-    "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "mean_weekly_cases": 0.1849056604,
+    "no_seasonality": true,
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD45",
@@ -251,8 +267,9 @@
     "peak_to_trough_ratio": 109.1478749312,
     "onset_week_sd_across_years": 0.8,
     "years_used": 5,
+    "mean_weekly_cases": 792.2981132075,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD45",
@@ -266,8 +283,9 @@
     "peak_to_trough_ratio": 2.2474356488,
     "onset_week_sd_across_years": 0.4898979486,
     "years_used": 5,
+    "mean_weekly_cases": 2186.3396226415,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD45",
@@ -281,8 +299,9 @@
     "peak_to_trough_ratio": 7.8147661644,
     "onset_week_sd_across_years": 15.8669467762,
     "years_used": 5,
+    "mean_weekly_cases": 1767.7056603774,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD45",
@@ -296,8 +315,9 @@
     "peak_to_trough_ratio": 28.3260255348,
     "onset_week_sd_across_years": 0.0,
     "years_used": 5,
+    "mean_weekly_cases": 35.4452830189,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD50",
@@ -311,8 +331,9 @@
     "peak_to_trough_ratio": 96.429593175,
     "onset_week_sd_across_years": 0.4898979486,
     "years_used": 5,
+    "mean_weekly_cases": 1334.6981132075,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD50",
@@ -326,8 +347,9 @@
     "peak_to_trough_ratio": 2.0489319329,
     "onset_week_sd_across_years": 0.9797958971,
     "years_used": 5,
+    "mean_weekly_cases": 3629.6566037736,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD50",
@@ -341,23 +363,25 @@
     "peak_to_trough_ratio": 7.5504546644,
     "onset_week_sd_across_years": 13.7985506485,
     "years_used": 5,
+    "mean_weekly_cases": 2578.9886792453,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD50",
     "disease": "malaria",
     "onset_week": 31,
     "peak_week": 31,
-    "preposition_by_week": 28,
-    "campaign_by_week": 25,
+    "preposition_by_week": null,
+    "campaign_by_week": null,
     "supply_lead_weeks": 3,
     "campaign_lead_weeks": 6,
     "peak_to_trough_ratio": 3.002373854,
     "onset_week_sd_across_years": 2.9393876913,
     "years_used": 5,
-    "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "mean_weekly_cases": 0.3094339623,
+    "no_seasonality": true,
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD55",
@@ -371,8 +395,9 @@
     "peak_to_trough_ratio": 93.8971665975,
     "onset_week_sd_across_years": 0.4,
     "years_used": 5,
+    "mean_weekly_cases": 1153.1811320755,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD55",
@@ -386,8 +411,9 @@
     "peak_to_trough_ratio": 2.2220128284,
     "onset_week_sd_across_years": 0.4898979486,
     "years_used": 5,
+    "mean_weekly_cases": 3550.1471698113,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD55",
@@ -401,8 +427,9 @@
     "peak_to_trough_ratio": 7.1334588989,
     "onset_week_sd_across_years": 8.9353231615,
     "years_used": 5,
+    "mean_weekly_cases": 2310.7509433962,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD55",
@@ -416,8 +443,9 @@
     "peak_to_trough_ratio": 20.1401407867,
     "onset_week_sd_across_years": 0.894427191,
     "years_used": 5,
+    "mean_weekly_cases": 7.3245283019,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD60",
@@ -431,8 +459,9 @@
     "peak_to_trough_ratio": 118.3573329357,
     "onset_week_sd_across_years": 0.7483314774,
     "years_used": 5,
+    "mean_weekly_cases": 843.1471698113,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD60",
@@ -446,8 +475,9 @@
     "peak_to_trough_ratio": 2.1605943037,
     "onset_week_sd_across_years": 0.4,
     "years_used": 5,
+    "mean_weekly_cases": 2191.7433962264,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD60",
@@ -461,8 +491,9 @@
     "peak_to_trough_ratio": 7.2102709312,
     "onset_week_sd_across_years": 5.1768716422,
     "years_used": 5,
+    "mean_weekly_cases": 1851.9509433962,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 4 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   },
   {
     "division_code": "BD60",
@@ -476,7 +507,8 @@
     "peak_to_trough_ratio": 22.4542239657,
     "onset_week_sd_across_years": 0.9797958971,
     "years_used": 5,
+    "mean_weekly_cases": 42.2301886792,
     "no_seasonality": false,
-    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range."
+    "rule": "Pre-position supplies 3 weeks before the seasonal onset; start the prevention campaign 6 weeks before onset. Onset = first week after the trough where the STL seasonal index exceeds trough + 25% of the trough-to-peak range. No action weeks where a division averages fewer than 1 case a week."
   }
 ]
