@@ -43,7 +43,8 @@ alerts are more often right (PPV 0.25 against 0.15). By shape, EARS C2 found 31 
 one after 41 days and the nationwide surge after one day; CUSUM found 30 fast ones, the slow one after 69 days
 and the surge after one day. We expected CUSUM to win on slow growth. On our one slow outbreak it did not.
 Both methods missed the same outbreak, \texttt{OB42-017}. The threshold was tuned on planted outbreaks and
-should be re-tuned on real counts.
+should be re-tuned on real counts. These scores are in-sample: the thresholds were chosen on the same 35
+outbreaks. A run with another generator seed would give an out-of-sample check.
 
 The reporting artefact (a facility that goes silent and then back-fills) is checked by a test: a naive detector
 on report-date counts alerts on the back-fill week, while ours, on onset-week counts with silent weeks missing,
@@ -51,7 +52,7 @@ does not.
 
 \subsection{Forecast backtest}
 The backtest forecasts one to four weeks ahead from 52 weekly origins, refitting the per-district NB-GLM at every
-fourth origin and reusing the fit in between, using only data up to each origin. The seasonal-naive baseline is scored on
+fourth origin and reusing the fit in between, using only onset weeks up to each origin (as finally reported). The seasonal-naive baseline is scored on
 the same district, disease, origin and horizon cells. The weighted interval score~\cite{bracher2021wis}
 uses eleven central intervals plus the median; relative WIS below 1 means the model beats the baseline. MAE is
 the mean absolute error of the median forecast.

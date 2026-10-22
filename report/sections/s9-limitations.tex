@@ -8,7 +8,8 @@ allocation. Next: load a real stock feed through the same S6 contract.
 \item \textbf{Detection.} The threshold was tuned on outbreaks we planted, and a district that stops reporting
 raises no alert. Next: re-tune on reported outbreaks from DGHS bulletins, and add a reporting-gap alert.
 \item \textbf{Forecasting.} The intervals ignore parameter uncertainty, and dengue forecasts tend to fall short
-in a surge. Next: a bootstrap over the fit and a growth term.
+in a surge. The backtest reads the final counts, and malaria forecasts are not backtested. Next: a bootstrap
+over the fit, a growth term, and scoring each origin on the as-of snapshot.
 \item \textbf{Allocation.} Costs and units per case are rough assumptions, and the LP plans one four-week round.
 Next: real prices and a rolling plan that carries stock forward.
 \item \textbf{Dashboard and access.} Role bundles are not enforced by the static server. Next: a login with a

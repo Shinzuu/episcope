@@ -23,10 +23,16 @@ Big data surveillance, forecasting and response-planning platform (CSE 4345 CEP,
 make setup          # Java 17 + Python 3.12 via mise, pinned deps, .env with a random salt
 make all SF=0.25    # DAG with retries (scripts/dag.py): reference -> generate -> bronze -> silver -> gold -> analytics -> serve, catalog
 make evaluate       # detection scored against the injected outbreaks (the only reader of ground_truth/)
-make calendar-check # calendar onset against each year's observed onset (docs/experiments/calendar_check.json)
+make calendar-check # calendar onset against each year's observed onset (calendar_check.json)
 make dashboard      # http://localhost:8000
 make check          # five verification gates (scripts/verify.py)
 ```
+
+Result files (backtest, allocation, calendar, SEIR, calendar check) go to `data/results/`, so a build does not
+replace the committed SF=1 results in `docs/experiments/` that the report cites. To write there on purpose, run
+`EPISCOPE_RESULTS_DIR=docs/experiments make all SF=1`; `git checkout -- docs/experiments` restores the committed
+files. The per-cell backtest scores (`data/evaluation/backtest_scores.csv`) hold unsuppressed district-week
+counts and are never committed.
 
 `SF=1` gives the full 25M+ encounters. `make test` runs the unit tests (about 35 minutes on a laptop).
 

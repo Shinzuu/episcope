@@ -9,8 +9,10 @@ left out, and so are divisions the calendar marks no_seasonality.
 Writes <results>/calendar_check.json: the per-row differences and, per disease, the number of division-years,
 the median absolute difference in weeks and the share within two weeks.
 
-Run: python -m analytics.calendar.check --source "SF=0.25, seed 42"   (or `make calendar-check`)
-The committed file was run on the SF=0.25 build against the SF=1 calendar_summary.csv.
+Run: python -m analytics.calendar.check --source "SF=0.25, seed 42"   (or `make calendar-check`), which compares
+with the calendar of the same build (<results> = data/results by default). The committed file was run on the
+SF=0.25 build against the committed SF=1 calendar:
+    EPISCOPE_RESULTS_DIR=docs/experiments make calendar-check
 """
 
 import argparse

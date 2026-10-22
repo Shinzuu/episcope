@@ -3,7 +3,8 @@
 Direct identifiers stop at bronze: silver and gold hold only the keyed hash; clean rows keep age bands (the quarantine keeps exact age for review); the key never enters
 Git, and every export hides counts from 1 to 4 with complementary suppression, so a total cannot reveal a hidden
 cell. One residual risk is known and written in the code: the padded HMAC key appears in Spark's query plan, so
-Spark event logs of the silver job must be treated as secret and kept outside the repository.
+Spark event logs of the silver job must be treated as secret and kept outside the repository. An earlier commit
+published unsuppressed backtest cells of the synthetic data; the file is no longer committed.
 
 \textbf{Record-level extracts and public release (PRV-4).} \texttt{pipeline/privacy/kanon.py} measures
 k-anonymity~\cite{sweeney2002k} on any record-level extract. It is a check function with unit tests, not a pipeline step: the pipeline publishes only aggregates, so there is no extract for it to check yet. The quasi-identifiers are age band, sex,

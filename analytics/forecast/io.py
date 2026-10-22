@@ -1,7 +1,8 @@
 """Lake paths and Delta read/write helpers for the analytics outputs. Serves AN-4 … AN-9.
 
 Gold tables live at <EPISCOPE_LAKE_DIR>/gold/<name> (Delta). Reference files at <EPISCOPE_DATA_DIR>/reference.
-Result files for the report (CSV/JSON) go to <EPISCOPE_RESULTS_DIR>, default docs/experiments.
+Result files (CSV/JSON) go to <EPISCOPE_RESULTS_DIR>, default <EPISCOPE_DATA_DIR>/results, so a build never
+overwrites the committed SF=1 results in docs/experiments (set EPISCOPE_RESULTS_DIR=docs/experiments to replace them).
 Nothing here hard-codes a date, file name of a drop, or row count.
 """
 
@@ -19,7 +20,7 @@ def data_dir():
 
 
 def results_dir():
-    p = pathlib.Path(os.environ.get("EPISCOPE_RESULTS_DIR", "./docs/experiments")).resolve()
+    p = pathlib.Path(os.environ.get("EPISCOPE_RESULTS_DIR") or data_dir() / "results").resolve()
     p.mkdir(parents=True, exist_ok=True)
     return p
 

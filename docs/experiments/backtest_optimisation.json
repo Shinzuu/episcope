@@ -7,7 +7,7 @@
   "spark_app_seconds": {"before": 325.3, "after": 165.4},
   "model_stage": {"before": {"seconds": 307.3, "tasks": 1}, "after": {"seconds": 143.9, "tasks": 64}},
   "sf1_scaling_run_model_stage_before": {"seconds": 360.1, "tasks": 1},
-  "outputs": "backtest_scores.csv identical row for row (25,856 cells, after sorting by district, disease, origin, horizon); backtest_metrics.csv equal to within 7.1e-15 (floating-point summation order)",
+  "outputs": "backtest_scores.csv (compared locally, not committed: it holds unsuppressed district-week counts) identical row for row (25,856 cells, after sorting by district, disease, origin, horizon); backtest_metrics.csv equal to within 7.1e-15 (floating-point summation order)",
   "evidence": ["report/figures/sparkui-backtest-before.png", "report/figures/sparkui-backtest-after.png"],
   "method": "python -m analytics.forecast.backtest on the same SF=0.25 lake, Spark event logs replayed in the Spark history server"
 }

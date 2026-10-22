@@ -36,6 +36,6 @@ The calendar check (`calendar_check.json`, `analytics/calendar/check.py`, `make 
 | SEIR | R0 2.04 (generator 1.8), R2 0.91; 40% contact cut at detection: peak -87%, cases -63%; two weeks late: -80%, -53% | `docs/experiments/seir_scenarios.json` |
 | DQ-4 at SF=1 | 8,499 pairs flagged, 8,493 true (precision 0.999), recall in window 0.11 | `docs/experiments/dq4_patient_dedup.json` |
 | ING-6 latency at SF=1 | 60 s trigger: 301.5 s; 30 s trigger (default): 219.2 s | `docs/experiments/stream_latency.json` |
-| Hidden-drop drill | PASS on the final ingestion code (commit ce611f7; later commits changed no ingestion code, only the LP, the detection thresholds, the dashboard JavaScript and comments): seed 4675, +8,888 rows, 0 duplicates, 9.76 MB, 1,717 s | `docs/experiments/hidden_drop_drill.json` |
+| Hidden-drop drill | PASS on the final ingestion code (commit ce611f7; later commits changed no ingestion code: they changed analytics (the LP, detection thresholds, the calendar rule, the evaluation output), the dashboard JavaScript, Makefile targets and comments): seed 4675, +8,888 rows, 0 duplicates, 9.76 MB, 1,717 s | `docs/experiments/hidden_drop_drill.json` |
 | Dashboard export | under 10 MB; district bundles at most 0.74 MB each | `make serve` output |
 | Persona walkthroughs (simulated, AI agents) | round 1: 0 of 15 tasks done; round 2: 13 of 15; 48 problems, 26 fixed, 20 partly, 2 not | `docs/usability/` |

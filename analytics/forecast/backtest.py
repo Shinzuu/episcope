@@ -1,7 +1,9 @@
 """Rolling-origin backtest. Implements AN-5.
 
 Origins: each of the last 52 weeks before the latest observed week (fewer if the history is short), FPP3 §5.10
-expanding window. At every origin T the NB2 models forecast T+1..T+4 using only data <= T. The seasonal-naive
+expanding window. At every origin T the NB2 models forecast T+1..T+4 using only onset weeks <= T, as finally
+reported: the backtest reads the final gold.cases_weekly, not the as-of snapshot (gold._snapshots), so the weeks
+just before T are more complete than they were at the time, which flatters the shortest horizons. The seasonal-naive
 baseline (model.py) is scored on exactly the same (district, disease, origin, horizon) cells.
 
 Scores (scoring.py): MAE of the median, 80% interval coverage (q10 <= y <= q90), WIS over K = 11 central
@@ -11,8 +13,9 @@ gold.forecasts publishes), and relative WIS = WIS_model / WIS_baseline (< 1 mean
 Cost control: `refit_every` (default 4) refits each horizon's model every 4th origin and reuses it in between
 with the features known at each origin. 64 districts x 2 diseases x 13 refits x 4 horizons is about 6.7k fits.
 
-Outputs, in <EPISCOPE_RESULTS_DIR> (default docs/experiments):
-    backtest_scores.csv     one row per scored cell
+Outputs, in <EPISCOPE_RESULTS_DIR> (default <EPISCOPE_DATA_DIR>/results):
+    backtest_scores.csv     one row per scored cell, always in <EPISCOPE_DATA_DIR>/evaluation instead: it holds
+                            unsuppressed district-week counts (y, bl_*), so it never goes to docs/experiments (PRV-2)
     backtest_metrics.csv    per disease x horizon, per disease, and overall
     backtest_summary.json   the same plus settings and fallback counts
 
@@ -153,7 +156,9 @@ def write_results(scores, settings):
     keep = ["district_code", "disease", "origin_week_start", "horizon", "target_week_start", "y", "method",
             "mean", qcol(0.1), qcol(0.5), qcol(0.9), "bl_method", "bl_mean", "bl_" + qcol(0.1),
             "bl_" + qcol(0.5), "bl_" + qcol(0.9), "wis_model", "wis_baseline"]
-    s[keep].to_csv(out / "backtest_scores.csv", index=False)
+    local = io.data_dir() / "evaluation"
+    local.mkdir(parents=True, exist_ok=True)
+    s[keep].to_csv(local / "backtest_scores.csv", index=False)
     metrics = summarise(scores)
     metrics.to_csv(out / "backtest_metrics.csv", index=False)
     summary = {

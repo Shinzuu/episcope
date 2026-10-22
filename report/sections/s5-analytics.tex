@@ -25,7 +25,8 @@ with $\tau_t$ the position of week $t$ in the year (mid-week day of year over 36
 statsmodels. The baseline is the seasonal-naive forecast, the value of the same week a year earlier~\cite{hyndman2021fpp3}.
 Because every weather lag is at least as long as the horizon, no weather forecast is needed. Districts are
 fitted in parallel through a cogrouped \texttt{applyInPandas}. Predictive quantiles are the plug-in NB
-quantiles, which ignore parameter uncertainty.
+quantiles, which ignore parameter uncertainty. Malaria is forecast the same way, only to size antimalarials;
+it is not in the backtest.
 
 \subsection{Demand, allocation and calendar (AN-6, AN-7, AN-9)}
 Forecast cases become demand for beds, IV saline, NS1 kits, ORS and antimalarials through admission shares
