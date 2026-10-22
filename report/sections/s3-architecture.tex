@@ -32,7 +32,9 @@ means a locked metastore can never stop the pipeline.
 \textbf{Orchestration (ENG-4).} \texttt{scripts/dag.py} runs the stages in dependency order and retries a
 failed stage twice, 30\,s and then 60\,s later, before it stops; each run leaves a JSON record of attempts and
 times in the lake. Retrying is safe because every stage is idempotent: bronze skips files it has already
-loaded, silver merges and gold rebuilds only changed weeks.
+loaded, silver merges and gold rebuilds only changed weeks. The 168 unit tests (\texttt{make test}, gate 1 of \texttt{make check}) cover the generator, the quality
+rules, de-identification and suppression, idempotent loads, detection, forecasting, the LP constraints, the
+SEIR fit, the dashboard export and the DAG.
 
 \begin{table}[htbp]
 \caption{Alternatives considered}

@@ -39,7 +39,7 @@ make bronze silver gold analytics serve   # loads only files not seen before, re
 ```
 
 Nothing names a date, file or row count: files are found by glob and checksum, so the same command handles any
-drop. Running it twice changes nothing. To rehearse with a drop of our own: `make drop DROP_SEED=1234` writes a
+drop. Running it twice changes nothing. To rehearse with a drop of our own: `make drop SF=<base SF> DROP_SEED=1234` writes a
 fresh 14-day drop after the last date in `data/raw/`; `scripts/hidden_drop_drill.sh` does the whole test from a
 clean clone and writes `docs/experiments/hidden_drop_drill.json`.
 
@@ -77,7 +77,7 @@ Hive catalog (`make catalog`). Details and the reasons for each choice are in th
 | ING-4 | pipeline/silver/build.py | §4 |
 | ING-5 | not done: local filesystem on purpose, to save RAM | §3, §9 |
 | ING-6 | pipeline/stream.py | §3, §4 |
-| ING-7 | pipeline/gold/asof.py | §4, §6 |
+| ING-7 | pipeline/gold/asof.py | §4 |
 | DQ-1 | pipeline/quality/rules.py | §4 |
 | DQ-2 | pipeline/quality/engine.py | §4 |
 | DQ-3 | pipeline/quality/engine.py | §4 |
@@ -85,7 +85,7 @@ Hive catalog (`make catalog`). Details and the reasons for each choice are in th
 | PRV-1 | pipeline/privacy/deid.py | §4 |
 | PRV-2 | pipeline/privacy/suppression.py | §4 |
 | PRV-3 | serving/roles.py, dashboard/js/data.js (`?district=`) | §7, §8 |
-| PRV-4 | pipeline/privacy/kanon.py | §4, §8 |
+| PRV-4 | pipeline/privacy/kanon.py | §8 |
 | AN-1 | analytics/detection/methods.py | §5 |
 | AN-2 | analytics/evaluation/run.py | §6 |
 | AN-3 | analytics/detection/prepare.py | §5, §6 |
@@ -106,7 +106,7 @@ Hive catalog (`make catalog`). Details and the reasons for each choice are in th
 | ENG-1 | Makefile | §3 |
 | ENG-2 | scripts/scaling.sh | §6 |
 | ENG-3 | pipeline/quality/engine.py, analytics/forecast/backtest.py, docs/experiments/silver_optimisation.json, docs/experiments/backtest_optimisation.json | §6 |
-| ENG-4 | tests/, scripts/dag.py (DAG with retries) | §6 |
+| ENG-4 | tests/, scripts/dag.py (DAG with retries) | §3 |
 
 ## Data sources
 
@@ -121,7 +121,6 @@ Hive catalog (`make catalog`). Details and the reasons for each choice are in th
 - `docs/EpiScope-report.pdf`: the technical report (IEEE format), with the policy brief in Appendix A
 - `docs/FINAL-NUMBERS.md`: every headline number and the result file it comes from
 - `docs/contracts.md`: data contracts between components (tables, exports, role bundles)
-- `docs/ANALYSIS.md`: requirements analysis of the brief and the plan
 - `AI_USAGE.md`: where AI tools were used, as the brief requires
 - `docs/research.md`: primary-source research for every method, dataset and tool
 - `generator/schema.json`: schema contract for S4–S6

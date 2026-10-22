@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Hidden-drop drill. Implements the ENG-4 / ING-4 rehearsal of the instructor's test (ANALYSIS.md trap 1):
+# Hidden-drop drill. Implements the ENG-4 / ING-4 rehearsal of the instructor's hidden-drop test:
 #   1. clone the repo to a temp dir (plus the working tree's uncommitted, non-ignored files, so the drill tests
 #      what is about to be committed; DRILL_WORKTREE=0 tests HEAD only);
 #   2. set up from the README (`make setup`; DRILL_SETUP=link reuses this checkout's .venv to save time);

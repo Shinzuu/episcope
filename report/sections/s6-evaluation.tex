@@ -115,7 +115,9 @@ $\min(\alpha\,p_d\sum_e x_{e,r},\ \text{need}_{d,r})$ and never more than its ne
 population share of what is sent, but never more than a district needs. No scenario now sends any district
 more than its need (\texttt{excess\_cost} is at most 0.03\,BDT, solver rounding). At a quarter and three quarters of $B_{\text{ref}}$
 every floor changes need met by under one point; at three quarters a high floor even raises it slightly (83.4\% at $\alpha=1$), because the LP minimises the tranche-weighted shortfall, not the share of need met. At half the budget a floor from 0.1 to 0.9 costs 2.3 to 2.4 points
-(65.3 to 65.5\% against 67.8\%) and $\alpha=1$ costs 1.5, so the rule recommends $\alpha=0$. The tranche prices already
+(65.3 to 65.5\% against 67.8\%) and $\alpha=1$ costs 1.5. Our rule keeps the floors that cost at most 2 points of need met at every scarce budget
+($\alpha=0$ and $\alpha=1$), then takes the one with the best-covered worst-off district on average (0.46 against
+0.38), which is $\alpha=0$. The tranche prices already
 spread the money: at $\alpha=0$ and half the budget the worst-covered district gets half of its need. The floor
 does not improve on that. At half the budget, $\alpha=0.1$ lowers the worst-covered district from 0.50 to 0.375
 of its need and moves the Gini of per-capita spend from 0.261 to 0.271, and at no budget does any $\alpha$

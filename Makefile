@@ -5,7 +5,7 @@ RUN := env -u HADOOP_CONF_DIR -u HADOOP_HOME -u YARN_CONF_DIR mise x -- $(PY)
 SF ?= 0.25
 SEED ?= 42
 
-# Incremental 14-day drop at the same SF as the base build; DROP_SEED picks the drop (ING-4 drill).
+# Incremental 14-day drop; pass the same SF as the base build (SF defaults to 0.25); DROP_SEED picks the drop (ING-4 drill).
 drop:      ; $(RUN) -m generator.generate --incremental-days 14 --sf $(SF) --seed $(or $(DROP_SEED),7)
 mock:      ; $(RUN) -m serving.mock_data
 dashboard-verify: ; node dashboard/tools/verify.mjs

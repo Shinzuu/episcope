@@ -13,6 +13,7 @@
 //   {"do": "hover", "sel": "#map .district[data-code=BD1004]"},
 //   {"do": "text", "sel": "#table"},                                   // visible text, first 3000 characters
 //   {"do": "shot", "name": "after-filter"},                            // full-page screenshot
+//   {"do": "shot", "name": "table", "sel": "#table"},                  // one element only
 //   {"do": "wait", "ms": 500}]}
 import { spawn } from "node:child_process";
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync } from "node:fs";
@@ -124,7 +125,11 @@ async function main() {
         const h = await evalJs("Math.ceil(document.documentElement.scrollHeight)");
         await s("Emulation.setDeviceMetricsOverride", { width, height: Math.min(h, 4000), deviceScaleFactor: 1, mobile });
         await sleep(300);
-        const { data } = await s("Page.captureScreenshot", { format: "png" });
+        // With "sel", only that element is captured (page coordinates, so scrolling does not matter).
+        const clip = st.sel ? await evalJs(`(() => { const el = document.querySelector(${q(st.sel)}); if (!el) return null;
+          const r = el.getBoundingClientRect(); return { x: r.left + scrollX, y: r.top + scrollY, width: r.width, height: r.height, scale: 1 }; })()`) : null;
+        if (st.sel && !clip) rec.error = "element not found";
+        const { data } = await s("Page.captureScreenshot", clip ? { format: "png", clip, captureBeyondViewport: true } : { format: "png" });
         rec.file = join(OUT, `${st.name || `step-${i}`}.png`);
         writeFileSync(rec.file, Buffer.from(data, "base64"));
         await s("Emulation.setDeviceMetricsOverride", { width, height: mobile ? 844 : 900, deviceScaleFactor: 1, mobile });

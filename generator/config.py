@@ -26,7 +26,8 @@ AGE_LO = np.array([0, 5, 15, 25, 45, 65])
 AGE_HI = np.array([4, 14, 24, 44, 64, 65])  # 65+ handled with an exponential tail
 
 # Encounters per 1,000 population per year at SF=1. With the 2022 population (~165.7M) this is about
-# 6.2M encounters a year, so 2021-2025 is about 31M rows (the brief asks for 25M or more).
+# 6.2M encounters a year from these rates; SF=1 gives 34.1M rows for 2021-2025, planted defects included
+# (the brief asks for 25M or more).
 RATE_PER_1000 = np.array([4.2, 9.7, 7.8, 0.24, 15.1])
 
 # NB2 dispersion alpha per disease (Var = mu + alpha mu^2), research.md §8.1.
@@ -91,7 +92,7 @@ DELAY_MEAN, DELAY_SIZE, DELAY_MAX = 3.0, 1.5, 21
 WEEKEND_SHIFT_P = 0.65   # share of Fri/Sat reports pushed to the next Sunday
 HOLIDAY_SHIFT_P = 0.80   # share of holiday reports pushed to the next working day
 
-# Built-in defects (brief §5.2, ANALYSIS.md trap 4). Rates are shares of output rows.
+# Built-in defects (brief §5.2). Rates are shares of output rows.
 DUP_RATE = 0.02          # extra rows that repeat an existing encounter_id (resubmissions)
 ORPHAN_RATE = 0.005      # facility_id not in S5
 INVALID_AGE_RATE = 0.005

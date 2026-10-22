@@ -11,7 +11,7 @@ participant took part, and the quotes in the JSON files are written by the agent
   - **b**: hospital store-keeper, Chattogram; plans orders in Excel, dislikes statistical terms; national view.
   - **c**: senior non-technical decision-maker at the Ministry; five minutes, defends budgets in meetings;
     national view.
-- They used the real dashboard of the final clean SF=1 build, one headless Chrome at a time under a lock,
+- They used the real dashboard of a clean SF=1 build of 21 October (commit a99339c, before the allocation cap), one headless Chrome at a time under a lock,
   through `dashboard/tools/walk.mjs` (clicks, selections, hovers, screenshots, visible text). They could not
   read or change the code.
 - Five tasks each: (1) find this week's alerts for their district, (2) read a forecast with its range,

@@ -8,7 +8,7 @@ Raw columns may arrive as strings (bronze reads CSV/JSON as written) or already 
 mode, where a plain cast or comparison on a malformed string throws, so every rule reads values through
 ``try_cast`` and treats an unparseable value as its own defect (the DQ_TYPE_* rules).
 
-Injected defects (ANALYSIS.md section 6, trap 4) map one-to-one:
+Injected defects (brief §5.2) map one-to-one:
 
     duplicated encounter_id      DQ_DUP_ENCOUNTER
     orphan facility_id           DQ_ORPHAN_FACILITY
