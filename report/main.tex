@@ -6,7 +6,10 @@
 \usepackage[most]{tcolorbox}
 \usetikzlibrary{positioning,calc,arrows.meta}
 \usepackage{pgfplots}\pgfplotsset{compat=1.18}\usepgfplotslibrary{groupplots}
-\usepackage[hidelinks]{hyperref}
+\usepackage{hyperref}
+% Link colours follow the project palette (slides site and dashboard): teal for internal links, blue for citations and URLs
+\definecolor{epiteal}{HTML}{0B7A75}\definecolor{epiblue}{HTML}{2C5A8C}
+\hypersetup{colorlinks=true,linkcolor=epiteal,citecolor=epiblue,urlcolor=epiblue,filecolor=epiblue}
 \hypersetup{pdftitle={EpiScope: A Big Data Platform for Disease Surveillance, Forecasting and Response Planning in Bangladesh},
   pdfauthor={Group Sentinel BD: Nishadul Islam Shezan, Tahsin Ahmed Rafi, Rimjhim Dey, Samira Sultana}}
 \setlength{\emergencystretch}{1.5em}

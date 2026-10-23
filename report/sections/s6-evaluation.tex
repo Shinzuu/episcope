@@ -55,7 +55,7 @@ The backtest forecasts one to four weeks ahead from 52 weekly origins, refitting
 fourth origin and reusing the fit in between, using only onset weeks up to each origin (as finally reported). The seasonal-naive baseline is scored on
 the same district, disease, origin and horizon cells. The weighted interval score~\cite{bracher2021wis}
 uses eleven central intervals plus the median; relative WIS below 1 means the model beats the baseline. MAE is
-the mean absolute error of the median forecast.
+the mean absolute error of the median forecast. Table~\ref{tab:backtest} gives the scores.
 
 \begin{table}[htbp]
 \caption{Backtest over 52 origins, model against the seasonal-naive baseline}

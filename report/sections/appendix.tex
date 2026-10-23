@@ -86,10 +86,10 @@ back into the number, and ages become age groups. Only totals reach the dashboar
 four is hidden, together with any other number that could reveal it. A district officer sees their own district
 in detail and the rest only as division totals.
 
-\section{Contribution Matrix}
+\section{Contribution Matrix}\label{app:contrib}
 L marks each member's lead role from the proposal (\texttt{docs/proposal.md}, Section~5): Nishadul Islam Shezan
 data engineering, Tahsin Ahmed Rafi analytics, Rimjhim Dey visualisation, and Samira Sultana platform and
-evaluation; two leads were agreed later: problem analysis (Samira Sultana) and video (Shezan). The matrix records these roles, not who wrote the code. Tahsin Ahmed Rafi, Rimjhim Dey and Samira
+evaluation; two leads were agreed later: problem analysis (Samira Sultana) and video (Shezan). The matrix (Table~\ref{tab:contrib}) records these roles, not who wrote the code. Tahsin Ahmed Rafi, Rimjhim Dey and Samira
 Sultana were away during the final phase of the project, and Nishadul Islam Shezan implemented the remaining
 parts of their areas; the Git history shows these commits. S marks support outside a member's lead area, including that work.
 
@@ -129,8 +129,11 @@ Fill the empty cells: each member's support (S) outside their lead area, the vid
 (total 100), the commit and line counts from \texttt{git shortlog -sn} at the final tag, and signatures.
 \end{teammate}
 
-\section{Individual Reflections}
+\section{Individual Reflections}\label{app:reflections}
 \subsection*{Nishadul Islam Shezan}
+\begin{teammate}{Nishadul Islam Shezan: short answer}
+What part did you build or lead, and one problem you solved? (Two or three sentences.)
+\end{teammate}
 My role was data engineering: the synthetic data generator, ingestion into the Bronze layer, the Silver and Gold
 Delta tables, incremental loads, and the data-quality and lineage checks. Early on I learned that a pipeline that
 works on a laptop sample tells you very little. The real lessons came at full scale, where a temporary folder in
@@ -145,6 +148,9 @@ redesigning anything. If I started again, I would set up the scaling test in the
 because performance problems shaped more of the design than I expected.
 
 \subsection*{Tahsin Ahmed Rafi}
+\begin{teammate}{Tahsin Ahmed Rafi: short answer}
+What part did you build or lead, and one problem you solved? (Two or three sentences.)
+\end{teammate}
 I led the analytics side of EpiScope: outbreak detection, forecasting, and the optimisation that turns forecasts
 into a supply plan and a preparedness calendar. The part I found most interesting was choosing between methods
 that look similar on paper. EARS C2 is built for a sudden jump and CUSUM for a slow rise, but on our one slow
@@ -161,6 +167,9 @@ this again, I would write the evaluation plan before building any model, so that
 results are known.
 
 \subsection*{Rimjhim Dey}
+\begin{teammate}{Rimjhim Dey: short answer}
+What part did you build or lead, and one problem you solved? (Two or three sentences.)
+\end{teammate}
 My area was visualisation: the dashboard, the serving layer behind it, and the district views with small-number
 suppression. What stayed with me most is that a dashboard for public-health officers is not about showing
 everything. A district officer needs to see, at a glance, which districts need attention this week and why, and
@@ -175,6 +184,9 @@ plan. Looking back, I would test the dashboard with real users much earlier, bec
 computer science read colours, labels and maps very differently from the people who built them.
 
 \subsection*{Samira Sultana}
+\begin{teammate}{Samira Sultana: short answer}
+What part did you build or lead, and one problem you solved? (Two or three sentences.)
+\end{teammate}
 I was responsible for the platform and evaluation side: problem analysis and the proposal, de-identification and
 the k-anonymity check, the evaluation and backtest plan, orchestration and testing, and the report and policy
 brief. Working on the proposal showed me how many conflicts sit inside a single requirement. Detecting outbreaks

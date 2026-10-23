@@ -5,7 +5,7 @@ jobs that read gold and write gold, a serving step that exports suppressed JSON,
 v7~\cite{bostock2011d3} dashboard. One command, \texttt{make all}, runs every stage as a small DAG with retries
 (\texttt{reference}, \texttt{generate}, \texttt{bronze}, \texttt{silver}, \texttt{gold}, \texttt{analytics},
 \texttt{serve}, \texttt{catalog}; Fig.~\ref{fig:arch}); Java~17 and Python~3.12 come from \texttt{mise.toml} and every Python package
-is pinned in \texttt{requirements.txt}.
+is pinned in \texttt{requirements.txt}. Table~\ref{tab:alternatives} lists the main alternatives and why each was rejected.
 
 \input{sections/fig-architecture}
 
