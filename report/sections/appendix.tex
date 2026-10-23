@@ -148,10 +148,16 @@ redesigning anything. If I started again, I would set up the scaling test in the
 because performance problems shaped more of the design than I expected.
 
 \subsection*{Tahsin Ahmed Rafi}
-\begin{teammate}{Tahsin Ahmed Rafi: short answer}
-What part did you build or lead, and one problem you solved? (Two or three sentences.)
-\end{teammate}
-I led the analytics side of EpiScope: outbreak detection, forecasting, and the optimisation that turns forecasts
+\paragraph*{My part} I led the analytics: EARS C2 and CUSUM outbreak detection on seasonally adjusted counts,
+the per-district negative-binomial forecasts with lagged weather, the conversion of forecasts into supply demand,
+the allocation optimiser, and the dengue preparedness calendar.
+
+\paragraph*{Problem and how I solved it} Two facilities that went silent for three weeks and then back-filled
+everything would have triggered false alarms. I marked a week as missing when fewer than 80\% of expected
+facilities reported and scaled the count up otherwise. Together with onset-week counting in gold, the back-fill
+spike never reaches the detector.
+
+\paragraph*{Reflection} I led the analytics side of EpiScope: outbreak detection, forecasting, and the optimisation that turns forecasts
 into a supply plan and a preparedness calendar. The part I found most interesting was choosing between methods
 that look similar on paper. EARS C2 is built for a sudden jump and CUSUM for a slow rise, but on our one slow
 outbreak CUSUM was the slower of the two (69 days against 41), which taught me to test a textbook claim instead
@@ -167,10 +173,34 @@ this again, I would write the evaluation plan before building any model, so that
 results are known.
 
 \subsection*{Rimjhim Dey}
-\begin{teammate}{Rimjhim Dey: short answer}
-What part did you build or lead, and one problem you solved? (Two or three sentences.)
-\end{teammate}
-My area was visualisation: the dashboard, the serving layer behind it, and the district views with small-number
+\paragraph*{My part} I led the visualisation side of EpiScope, which is everything between the analysed
+data and what a health officer sees. That covers three things:
+\begin{itemize}
+\item The serving layer (\texttt{serving/export.py}). It turns the gold tables and analytics results into small
+aggregated JSON files of at most 10 MB for the dashboard, with every count from 1 to 4 suppressed.
+\item The D3.js dashboard. It has five linked views: a district map, an alert table, time series, a seasonal
+heatmap and a supply-allocation view. It also has a what-if panel with an alert-level slider and a budget control.
+\item The district views (\texttt{serving/roles.py}). A district user sees their own district in detail and every
+other area only as a division total.
+\end{itemize}
+These cover requirements VIS-1 to VIS-7, PRV-2 (suppression in outputs) and PRV-3 (role-based views).
+
+\paragraph*{Problem and how I solved it} The main problem was privacy. Hiding every count below five is not enough,
+because a hidden number can be worked out by subtracting the visible cells from a row, column or division total.
+I solved it in two steps.
+\begin{enumerate}
+\item Complementary suppression. If a row or column had exactly one hidden cell, I also hid its smallest visible
+cell, so no single hidden cell can be recovered by subtraction. Derived values such as incidence rates are hidden
+wherever their count is hidden, because rate times population would give the count back.
+\item District views. A division total shown next to a district's own hidden cell would leak it. So a district user
+sees the total of their division's other districts only, and an aggregate is published only if every district cell
+under it is visible. A district user can't reconstruct a hidden number by comparing or subtracting the figures they
+are shown.
+\end{enumerate}
+The alert-level slider had the same problem. Exporting the alarm gate would have exposed hidden counts, so the
+dashboard recomputes it in the browser from the published counts only.
+
+\paragraph*{Reflection} My area was visualisation: the dashboard, the serving layer behind it, and the district views with small-number
 suppression. What stayed with me most is that a dashboard for public-health officers is not about showing
 everything. A district officer needs to see, at a glance, which districts need attention this week and why, and
 anything beyond that gets in the way. We kept the map, the alert list and the supply view simple for that reason.
@@ -184,10 +214,14 @@ plan. Looking back, I would test the dashboard with real users much earlier, bec
 computer science read colours, labels and maps very differently from the people who built them.
 
 \subsection*{Samira Sultana}
-\begin{teammate}{Samira Sultana: short answer}
-What part did you build or lead, and one problem you solved? (Two or three sentences.)
-\end{teammate}
-I was responsible for the platform and evaluation side: problem analysis and the proposal, de-identification and
+\paragraph*{My part} I worked on the platform and evaluation part of EpiScope. I focused on evaluating the
+system's outbreak detection, forecasting accuracy, privacy protection, and performance at different data scales.
+
+\paragraph*{Problem and how I solved it} One challenge was balancing early outbreak detection with avoiding too
+many false alarms. I addressed this by testing different alert thresholds against planted outbreaks and comparing
+the results using detection rate, false alarms, and detection time to choose suitable thresholds.
+
+\paragraph*{Reflection} I was responsible for the platform and evaluation side: problem analysis and the proposal, de-identification and
 the k-anonymity check, the evaluation and backtest plan, orchestration and testing, and the report and policy
 brief. Working on the proposal showed me how many conflicts sit inside a single requirement. Detecting outbreaks
 early, protecting patient privacy and keeping false alarms low all pull in different directions, and the design
