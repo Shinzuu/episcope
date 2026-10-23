@@ -14,7 +14,7 @@ want to learn. There are no wrong answers.
 
 ## Before you start
 
-1. Open this link in Chrome, Edge or Firefox: **<DASHBOARD LINK>**
+1. Open this link in Chrome, Edge or Firefox: **https://shinzuu.github.io/episcope/**
 2. Wait until a map of Bangladesh appears. This can take up to half a minute.
 3. At the top of the page you will see the title **EpiScope** and a row of boxes: **Disease**, **District**,
    **Alert method** and **Time range**. Leave **Alert method** and **Time range** as they are for the whole test.
@@ -73,7 +73,7 @@ left or right. The number next to its name changes as you move it.
 2. Read the **All supplies** line. It says what share of the shortfall the plan covers. Write down the number.
 3. Drag the **Budget for all supplies** slider all the way to the right. Read the **All supplies** line and the
    **Chattogram** line again.
-4. Drag the same slider back to the middle.
+4. Drag the same slider back to where it started, at **50% of the cost of all need**.
 5. Drag the slider **Minimum share for every district (equity floor α)** all the way to the right. Read the
    **All supplies** line again, and look at the small chart under the bars, called **Cost of a minimum share**.
 

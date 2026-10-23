@@ -1,0 +1,12 @@
+{"query":"","width":1366,"steps":[
+{"do":"wait","ms":2500},
+{"do":"click","text":"dengue"},
+{"do":"select","sel":"#district-select","value":"BD2015"},
+{"do":"select","sel":"#resource-select","value":"iv_saline"},
+{"do":"wait","ms":800},
+{"do":"input","sel":"#sl-budget","value":"4"},
+{"do":"input","sel":"#sl-budget","value":"1"},
+{"do":"input","sel":"#sl-alpha","value":"10"},
+{"do":"wait","ms":800},
+{"do":"text","sel":".p-alloc"},
+{"do":"shot","name":"t4-guide-path","sel":".p-alloc"}]}
