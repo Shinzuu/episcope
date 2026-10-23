@@ -4,7 +4,7 @@
 
 Big data surveillance, forecasting and response-planning platform (CSE 4345 CEP, Spring 2026).
 
-**Group Sentinel BD:** Nishadul Islam Shezan, Tahsin Ahmed Rafi, Rimjhim Dey, Samira Sultana.
+**Group Sentinel BD:** Nishadul Islam Shezan, Tahsin Ahmed Rafi, Rimjhim Dey, Samira Sultana Mysha.
 
 | | |
 |---|---|

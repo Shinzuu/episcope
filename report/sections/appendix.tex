@@ -88,9 +88,9 @@ in detail and the rest only as division totals.
 
 \section{Contribution Matrix}\label{app:contrib}
 L marks each member's lead role from the proposal (\texttt{docs/proposal.md}, Section~5): Nishadul Islam Shezan
-data engineering, Tahsin Ahmed Rafi analytics, Rimjhim Dey visualisation, and Samira Sultana platform and
-evaluation; two leads were agreed later: problem analysis (Samira Sultana) and video (Shezan). The matrix (Table~\ref{tab:contrib}) records these roles, not who wrote the code. Tahsin Ahmed Rafi, Rimjhim Dey and Samira
-Sultana were away during the final phase of the project, and Nishadul Islam Shezan implemented the remaining
+data engineering, Tahsin Ahmed Rafi analytics, Rimjhim Dey visualisation, and Samira Sultana Mysha platform and
+evaluation; two leads were agreed later: problem analysis (Samira Sultana Mysha) and video (Shezan). The matrix (Table~\ref{tab:contrib}) records these roles, not who wrote the code. Tahsin Ahmed Rafi, Rimjhim Dey and Samira
+Sultana Mysha were away during the final phase of the project, and Nishadul Islam Shezan implemented the remaining
 parts of their areas; the Git history shows these commits. S marks support outside a member's lead area, including that work.
 
 \begin{table}[htbp]
@@ -118,7 +118,7 @@ Report and policy brief & S & & & L \\
 Video production & L & S & S & S \\
 \midrule
 Agreed share $\sigma_i$ (\%) & & & & \\
-Commits / lines changed & & & & \\
+Commits / lines changed & 128 & 0 & 0 & 0 \\
 Signature & & & & \\
 \bottomrule
 \end{tabular}
@@ -131,10 +131,13 @@ Fill the empty cells: each member's support (S) outside their lead area, the vid
 
 \section{Individual Reflections}\label{app:reflections}
 \subsection*{Nishadul Islam Shezan}
-\begin{teammate}{Nishadul Islam Shezan: short answer}
-What part did you build or lead, and one problem you solved? (Two or three sentences.)
-\end{teammate}
-My role was data engineering: the synthetic data generator, ingestion into the Bronze layer, the Silver and Gold
+I led the data engineering: the synthetic data generator, ingestion into the Bronze layer, the Silver and Gold
+Delta tables, incremental loads, and the data-quality and lineage checks. The problem I remember most came at full
+scale: the temporary folder held in memory ran out of space and the Silver step blew past the time limit, so I moved
+the temporary data to disk and profiled and rewrote the slow step until the full run fitted. Every load can now be
+re-run without double-counting.
+
+\paragraph*{Reflection} My role was data engineering: the synthetic data generator, ingestion into the Bronze layer, the Silver and Gold
 Delta tables, incremental loads, and the data-quality and lineage checks. Early on I learned that a pipeline that
 works on a laptop sample tells you very little. The real lessons came at full scale, where a temporary folder in
 memory ran out of space and a slow Silver step had to be profiled and rewritten before the run fitted the time
@@ -213,7 +216,7 @@ I was away for the final part of the project, and Shezan finished the dashboard 
 plan. Looking back, I would test the dashboard with real users much earlier, because people who are not from
 computer science read colours, labels and maps very differently from the people who built them.
 
-\subsection*{Samira Sultana}
+\subsection*{Samira Sultana Mysha}
 \paragraph*{My part} I worked on the platform and evaluation part of EpiScope. I focused on evaluating the
 system's outbreak detection, forecasting accuracy, privacy protection, and performance at different data scales.
 
