@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 280" width="1200" height="280" role="img" aria-labelledby="t d">
+  <title id="t">EpiScope</title>
+  <desc id="d">EpiScope: disease surveillance, forecasting and response planning for Bangladesh. Bronze, silver and gold Delta tables feed analytics and a dashboard.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#10242b"/>
+      <stop offset=".55" stop-color="#0b5f5b"/>
+      <stop offset="1" stop-color="#2c5a8c"/>
+    </linearGradient>
+    <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4fc2bb" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#4fc2bb" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="280" rx="18" fill="url(#bg)"/>
+  <!-- weekly case curve with a seasonal peak and an alert -->
+  <path d="M640 230 C700 228 730 222 770 205 S840 120 880 92 S940 120 980 170 S1060 214 1160 222 L1160 250 L640 250 Z" fill="url(#area)"/>
+  <path d="M640 230 C700 228 730 222 770 205 S840 120 880 92 S940 120 980 170 S1060 214 1160 222" fill="none" stroke="#bfe9e5" stroke-width="3"/>
+  <path d="M880 48 l14 24 h-28 z" fill="#f0a35a"/>
+  <circle cx="880" cy="92" r="6" fill="#f0a35a"/>
+  <text x="60" y="118" fill="#ffffff" font-family="Atkinson Hyperlegible, Segoe UI, Helvetica, Arial, sans-serif" font-size="68" font-weight="700">EpiScope</text>
+  <text x="62" y="160" fill="#d7ecea" font-family="Atkinson Hyperlegible, Segoe UI, Helvetica, Arial, sans-serif" font-size="24">Disease surveillance, forecasting and response planning</text>
+  <text x="62" y="190" fill="#d7ecea" font-family="Atkinson Hyperlegible, Segoe UI, Helvetica, Arial, sans-serif" font-size="24">for the 64 districts of Bangladesh</text>
+  <g font-family="Atkinson Hyperlegible, Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#ffffff">
+    <rect x="60" y="214" width="92" height="30" rx="15" fill="#9c5b2e"/><text x="106" y="234" text-anchor="middle">bronze</text>
+    <rect x="160" y="214" width="84" height="30" rx="15" fill="#6b7c86"/><text x="202" y="234" text-anchor="middle">silver</text>
+    <rect x="252" y="214" width="74" height="30" rx="15" fill="#a8851c"/><text x="289" y="234" text-anchor="middle">gold</text>
+    <rect x="334" y="214" width="110" height="30" rx="15" fill="#3b528b"/><text x="389" y="234" text-anchor="middle">analytics</text>
+    <rect x="452" y="214" width="116" height="30" rx="15" fill="#3f9b4a"/><text x="510" y="234" text-anchor="middle">dashboard</text>
+  </g>
+</svg>

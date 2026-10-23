@@ -1,10 +1,16 @@
+<p align="center"><img src="docs/img/banner.svg" alt="EpiScope: disease surveillance, forecasting and response planning for Bangladesh" width="100%"></p>
+
 # EpiScope
 
 Big data surveillance, forecasting and response-planning platform (CSE 4345 CEP, Spring 2026).
 
 **Group Sentinel BD:** Nishadul Islam Shezan, Tahsin Ahmed Rafi, Rimjhim Dey, Samira Sultana.
 
-**Video:** https://youtu.be/8HprXP6ck6w
+| | |
+|---|---|
+| **Video** | https://youtu.be/8HprXP6ck6w |
+| **Slides** | https://shinzuu.github.io/episcope-video/ |
+| **Report** | [`docs/EpiScope-report.pdf`](docs/EpiScope-report.pdf) (IEEE format, policy brief in Appendix A) |
 
 ## Prerequisites
 
