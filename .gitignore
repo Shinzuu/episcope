@@ -27,3 +27,16 @@ HANDOFF.md
 /docs/ANALYSIS.md
 /docs/experiments/backtest_scores.csv
 video/recording/
+# Tool caches and editor/OS junk
+.pytest_cache/
+.remember/
+node_modules/
+*.log
+*.tmp
+*.swp
+.DS_Store
+# Any recording, wherever it lands
+*.mp4
+*.mkv
+*.webm
+*.mov
